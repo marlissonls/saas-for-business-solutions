@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import DashboardCards from "./pages/dashboardCards";
-import LandingPage from "./pages/landingPage.jsx";
+import LandingPage from "./pages/landingPage";
 import Login from "./pages/login";
 import MlModel from "./pages/mlModel";
 import MlModelCards from "./pages/mlModelCards";
