@@ -1,0 +1,10 @@
+python-dotenv
+fastapi
+uvicorn
+pydantic[email]
+passlib[bcrypt]
+sqlalchemy
+psycopg2-binary
+python-multipart
+PIL
+pyjwt
