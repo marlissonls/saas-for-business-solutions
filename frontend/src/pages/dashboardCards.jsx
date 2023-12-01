@@ -1,7 +1,9 @@
-import React from "react";
+import AppBar from "../components/appBar"
 
 function DashboardCards(props) {
-    return <div>Dashboard Cards</div>
+    return (<div>
+        <AppBar />
+    </div>)
 }
 
 export default DashboardCards

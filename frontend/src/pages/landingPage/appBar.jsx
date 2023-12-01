@@ -12,12 +12,15 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Sobre', 'Serviços', 'Preços'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigate = useNavigate()
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -123,7 +126,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          <Button variant="outlined" sx={{color: "white", borderColor: "white"}}>Login</Button>
+          <Button variant="outlined" sx={{color: "white", borderColor: "white"}} onClick={() => {navigate("/login")}}>Login</Button>
         </Toolbar>
       </Container>
     </AppBar>
