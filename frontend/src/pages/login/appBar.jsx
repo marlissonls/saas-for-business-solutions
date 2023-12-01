@@ -123,7 +123,6 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          <Button variant="outlined" sx={{color: "white", borderColor: "white"}}>Login</Button>
         </Toolbar>
       </Container>
     </AppBar>

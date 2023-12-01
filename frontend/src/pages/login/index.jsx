@@ -1,4 +1,4 @@
-import { redirect, useParams } from "react-router-dom";
+import { redirect, useParams, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -12,7 +12,7 @@ function Login(props) {
   const [username, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const { enqueueSnackbar } = useSnackbar()
-
+  const navigate = useNavigate()
   function validateUsername() {
     let message = ""
     if (username.length > 10) message = "Username bigger"
@@ -41,15 +41,27 @@ function Login(props) {
   }
 
   async function handleSubmit() {
-    const response = await api.post("/login", {
-      username: username, password: password
-    })
+    // const response = await api.post("/login", {
+    //   username: username, password: password
+    // })
+
+    // isso deve morrer depois
+    const response = {
+      data: {
+        status: true,
+        message: "Sucessamente",
+        data: {
+          token: "token",
+          username: username,
+        }
+      }
+    }
 
     if (response.data.status) {
       setToken(response.data.data.token)
       setUsername(response.data.data.username)
-      messageSuccess("Login realizado!")
-      redirect("/welcome")
+      messageSuccess(response.data.message)
+      navigate("/welcome")
     } else {
       messageError(response.data.message)
     }

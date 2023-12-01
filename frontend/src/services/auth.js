@@ -17,4 +17,21 @@ function setUsername(un) {
     localStorage.setItem(USERNAME, un)
 }
 
-export {getToken, setToken, getUsername, setUsername}
+function isAuthenticated() {
+    if (getToken()) return true;
+    return false;
+}
+
+function logout() {
+    localStorage.removeItem(USERNAME)
+    localStorage.removeItem(TOKEN)
+}
+
+export {
+    getToken, 
+    setToken, 
+    getUsername, 
+    setUsername, 
+    isAuthenticated,
+    logout,
+}
