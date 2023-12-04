@@ -17,7 +17,7 @@ class IUserController(ABC):
     def create_user_controller(self, user: UserIn) -> UserId:
         pass
     @abstractmethod
-    def check_user_controller(self, form: UserForm) -> ResLogin:
+    def login(self, form: UserForm) -> ResLogin:
         pass
 
     @abstractmethod

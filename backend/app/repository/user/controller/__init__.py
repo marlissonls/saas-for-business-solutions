@@ -59,9 +59,9 @@ class UserController(IUserController):
             raise UserControllerException("Failed to create user.") from error
 
 
-    def check_user_controller(self, form: UserForm, session: Session) -> ResLogin:
+    def login(self, form: UserForm, session: Session) -> ResLogin:
         try:
-            return self._service.check_user_service(form, session)
+            return self._service.login(form, session)
         except UserNotFoundError as error:
             logger.error("User not found: %s", error)
             raise
@@ -70,7 +70,7 @@ class UserController(IUserController):
             raise
         except Exception as error:
             logger.error("An error occurred: %s", error)
-            raise UserControllerException("Failed to fetch user by name.") from error
+            raise UserControllerException("Failed to fetch user by email.") from error
 
 
     def update_user_controller(self, user_id: str, user: UserIn, session: Session) -> UserOut:

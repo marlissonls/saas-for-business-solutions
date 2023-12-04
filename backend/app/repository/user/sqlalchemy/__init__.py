@@ -15,8 +15,8 @@ class UserRepository(IUserRepository):
     
 
     def get_user_by_email_repository(self, email: str, session: Session) -> UserSchema | None:
-        return session.query(UserSchema).filter(UserSchema.email == email).first()
-
+        return  session.query(UserSchema).filter(UserSchema.email == email).first()
+        
 
     def create_user_repository(self, user: UserSchema, session: Session) -> None:
         session.add(user)

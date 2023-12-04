@@ -17,7 +17,7 @@ class IUserService(ABC):
         pass
 
     @abstractmethod
-    def check_user_service(self, form: UserForm) -> UserOut:
+    def login(self, form: UserForm) -> UserOut:
         pass
 
     @abstractmethod

@@ -93,7 +93,7 @@ class UserService(IUserService):
             raise
 
 
-    def check_user_service(self, form: UserForm, session: Session) -> UserOut:
+    def login(self, form: UserForm, session: Session) -> UserOut:
         try:
             user = self._repository.get_user_by_name_repository(form.email, session)
 

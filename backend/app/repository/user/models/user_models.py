@@ -16,8 +16,14 @@ class UserIn(UserBase):
 class UserOut(UserId, UserBase):
     pass
 
-class ResLogin(UserId, UserBase):
+class Data(BaseModel):
     token: str
+    username: str
+
+class ResLogin(BaseModel):
+    status: bool
+    message: str 
+    data: Data
 
 class UserForm(BaseModel):
     email: str

@@ -6,7 +6,7 @@
 # Caso o produto esteja pronto, o serviço encontrar o diretório com mesmo nome de id do produto
 # e deve retornar os dados do dash ou fazar a previsão com o modelo e devolver o resultado.
 from app.repository.user.exceptions import UserNotFoundError, InvalidPasswordError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm
+from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm, ResLogin, Data
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
@@ -98,24 +98,27 @@ class UserService(IUserService):
             raise
 
 
-    def check_user_service(self, form: UserForm, session: Session) -> UserOut:
+    def login(self, form: UserForm, session: Session) -> ResLogin:
         try:
-            user = self._repository.get_user_by_name_repository(form.email, session)
+            user = self._repository.get_user_by_email_repository(form.email, session)
 
             if not user:
                 raise UserNotFoundError(email=form.email)
 
             if Hasher.verify_password(form.password, user.password):
-                return UserOut(
-                    id=user.id,
-                    name=user.name,
-                    email=user.email,
-                    token=jwt.encode(
-                        {"email": user.email, "type": "admin"},
-                        configs.jwt_configs["hash_key"],
-                        algorithm="HS256"
+                return ResLogin(
+                    status=True,
+                    message="Login realizado com sucesso",
+                    data=Data(
+                        token=jwt.encode(
+                            {"email": user.email, "type": "admin"},
+                            config.jwt_configs["hash_key"],
+                            algorithm=config.jwt_configs['algorithm']
+                        ),
+                        username=user.name
                     )
                 )
+
             else:
                 raise InvalidPasswordError(email=form.email)
         except SQLAlchemyError as error:
