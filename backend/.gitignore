@@ -1,0 +1,8 @@
+__pycache__
+.mypy_cache
+.env
+*.jpg
+*.jpeg
+*.png
+test.py
+profile_images
