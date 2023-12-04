@@ -10,4 +10,5 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 jwt_configs = {
     "hash_key": getenv('JWT_SECRET'),
+    "algorithm": getenv('ALGORITHM')
 }

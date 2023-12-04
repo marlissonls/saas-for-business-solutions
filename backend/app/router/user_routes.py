@@ -46,9 +46,9 @@ def create_user(
     )
 
 
-@router.post('/checkuser', status_code=status.HTTP_200_OK, response_model=ResLogin)
-def check_user(form: UserForm, session: Session = Depends(get_db)) -> Any:
-    return controller.check_user_controller(form, session)
+@router.post('/login', status_code=status.HTTP_200_OK, response_model=ResLogin)
+def login(form: UserForm, session: Session = Depends(get_db)) -> Any:
+    return controller.login(form, session)
 
 
 @router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=UserOut)
