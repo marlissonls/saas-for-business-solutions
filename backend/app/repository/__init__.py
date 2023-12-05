@@ -6,7 +6,7 @@ from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
 from app.repository.user.service.hashing import Hasher
-from app.db.schema import UserSchema
+from app.db.schema import User
 from app import config
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
@@ -69,7 +69,7 @@ class UserService(IUserService):
 
             profile_image_name = f'{new_user_id}.jpeg'
 
-            new_user = UserSchema(
+            new_user = User(
                 id=new_user_id,
                 name=name,
                 email=email,
