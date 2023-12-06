@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { logout } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Dashboards', 'Modelos', 'Blog'];
 const settings = ['Perfil', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -151,19 +151,19 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-                <MenuItem key="Perfil" onClick={() => {
-                    handleCloseUserMenu();
-                    // Atualizar perfil
+              <MenuItem key="Perfil" onClick={() => {
+                handleCloseUserMenu();
+                // Atualizar perfil
                 }}>
-                  <Typography textAlign="center">Perfil</Typography>
+                <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <MenuItem key="Logout" onClick={() => {
-                    handleCloseUserMenu();
-                    logout();
-                    navigate("/login")
+                  handleCloseUserMenu();
+                  logout();
+                  navigate("/login")
                 }}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

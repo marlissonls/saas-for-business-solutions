@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/prediction-models",
+    path: "/models",
     element: <MlModelCards />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
