@@ -3,7 +3,61 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* GENERAL STYLES */
+:root {
+  --fonte-principal: 'Open Sans', sans-serif;
+  --largura-sidebar: 15%;
+  --page-height: 100vh;
+}
+
+.body {
+  font-family: var(--fonte-principal);
+  display: flex;
+}
+
+.side-bar {
+  display: flex;
+  flex-direction: column;
+
+  background-color: midnightblue;
+  color: #fff;
+  width: var(--largura-sidebar);
+  min-width: 230px;
+  height: var(--page-height);
+  box-shadow: 3px 0 7px #000a;
+  padding: 30px 20px;
+  gap: 25px
+}
+
+.side-bar-display {
+  font-size: 17px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  cursor: pointer;
+}
+
+.sidebar-icon-box {
+  width: 50px;
+  text-align: center;
+}
+
+.main-content {
+  width: calc(100% - var(--largura-sidebar));
+  height: var(--page-height);
+  padding: 15px;
+}
+
+/* LANDING PAGE */
 
 .pricing-cards {
   color: red
 }
+
+
+/* LOGIN PAGE */
+
+
+
+/* HOME PAGE */

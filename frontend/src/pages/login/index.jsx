@@ -1,21 +1,22 @@
 import { redirect, useParams, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { useSnackbar } from 'notistack';
+
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import AppBar from "./appBar";
+
+import { set_token, set_email, set_username } from "../../services/auth";
 import api from "../../services/api";
-import { getToken, setToken, getUsername, setUsername } from "../../services/auth";
-import { useSnackbar } from 'notistack';
 
 function Login(props) {
-  const [username, setUserName] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
-  function validateUsername() {
+  function validateEmail() {
     let message = ""
-    if (username.length > 10) message = "Username bigger"
+    if (email.length > 10) message = "Email bigger"
     return message
   }
 
@@ -27,7 +28,7 @@ function Login(props) {
 
   function getErrors() {
     const errors = []
-    errors[0] = validateUsername()
+    errors[0] = validateEmail()
     errors[1] = validatePassword()
     return errors
   }
@@ -42,28 +43,30 @@ function Login(props) {
 
   async function handleSubmit() {
     // const response = await api.post("/login", {
-    //   username: username, password: password
+    //   email: email, password: password
     // })
 
-    // isso deve morrer depois
+    //isso deve morrer depois
     const response = {
       data: {
         status: true,
         message: "Sucessamente",
         data: {
           token: "token",
-          username: username,
+          email: email,
+          username: "nome_teste"
         }
       }
     }
 
     if (response.data.status) {
-      setToken(response.data.data.token)
-      setUsername(response.data.data.username)
+      set_token(response.data.data.token)
+      set_email(response.data.data.email)
+      set_username(response.data.data.username)
       messageSuccess(response.data.message)
-      navigate("/welcome")
+      navigate("/home")
     } else {
-      messageError(response.data.message)
+      messageError("Falha ao realizar login.")
     }
     /*{
         status: true,
@@ -81,14 +84,13 @@ function Login(props) {
 
   return (
     <>
-      <AppBar />
       <Paper elevation={3} sx={{display: "flex", flexDirection: "column", gap: "10px", padding: "10px", width: "50%"}}>
         <TextField 
           id="outlined-basic" 
-          label="Outlined" 
+          label="E-mail" 
           variant="outlined" 
-          value={username} 
-          onChange = {(e) => setUserName(e.target.value)}
+          value={email} 
+          onChange = {(e) => setEmail(e.target.value)}
           helperText={errors[0]}
           error={errors[0] !== ""}
         />
