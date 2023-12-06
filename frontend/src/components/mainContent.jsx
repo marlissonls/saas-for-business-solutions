@@ -1,8 +1,8 @@
 import React from 'react';
 
-function MainContent(props) {
+function MainContent({ children }) {
   return <div className='main-content'>
-    Main Content
+    { children }
   </div>
 }
 

@@ -5,7 +5,6 @@ import { useSnackbar } from 'notistack';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import AppBar from "./appBar";
 
 import { set_token, set_email, set_username } from "../../services/auth";
 import api from "../../services/api";
@@ -47,7 +46,7 @@ function Login(props) {
     //   email: email, password: password
     // })
 
-    // isso deve morrer depois
+    //isso deve morrer depois
     const response = {
       data: {
         status: true,
@@ -85,7 +84,6 @@ function Login(props) {
 
   return (
     <>
-      <AppBar />
       <Paper elevation={3} sx={{display: "flex", flexDirection: "column", gap: "10px", padding: "10px", width: "50%"}}>
         <TextField 
           id="outlined-basic" 
