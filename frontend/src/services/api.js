@@ -1,5 +1,5 @@
 import axios from "axios"
-import {getToken} from "./auth"
+import { get_token } from "./auth"
 
 const HOST_API = "http://localhost"
 
@@ -9,7 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `Bearer ${getToken()}`;
+    config.headers.Authorization = `Bearer ${get_token()}`;
     return config;
   },
   (error) => Promise.reject(error),

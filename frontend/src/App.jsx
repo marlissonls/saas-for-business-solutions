@@ -1,20 +1,21 @@
 import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
-import Dashboard from "./pages/dashboard";
-import DashboardCards from "./pages/dashboardCards";
 import LandingPage from "./pages/landingPage";
 import Login from "./pages/login";
-import MlModel from "./pages/mlModel";
+import Home from "./pages/home";
+import DashboardCards from "./pages/dashboardCards";
+import Dashboard from "./pages/dashboard";
 import MlModelCards from "./pages/mlModelCards";
-import Welcome from "./pages/welcome";
+import MlModel from "./pages/mlModel";
 import { SnackbarProvider } from 'notistack';
 import { isAuthenticated } from "./services/auth";
+import './App.css'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
     loader: async () => {
-      if (isAuthenticated()) throw new redirect("/welcome");
+      if (isAuthenticated()) throw new redirect("/home");
       return {}
     }
   },
@@ -22,12 +23,20 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
     loader: async () => {
-      if (isAuthenticated()) throw new redirect("/welcome");
+      if (isAuthenticated()) throw new redirect("/home");
       return {}
     }
   },
   {
-    path: "/dashboardcards",
+    path: "/home",
+    element: <Home />,
+    loader: async () => {
+      if (!isAuthenticated()) throw new redirect("/login");
+      return {}
+    }
+  },
+  {
+    path: "/dashboards",
     element: <DashboardCards />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
@@ -35,7 +44,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/dashboard/:id",
+    path: "/dashboards/:id",
     element: <Dashboard />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
@@ -43,7 +52,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/mlmodelcards",
+    path: "/prediction-models",
     element: <MlModelCards />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
@@ -51,24 +60,14 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/mlmodel",
+    path: "/models/:id",
     element: <MlModel />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
       return {}
     }
   },
-  {
-    path: "/welcome",
-    element: <Welcome />,
-    loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
-      return {}
-    }
-  },
-
 ]);
-import './App.css'
 
 function App() {
   return <div>
