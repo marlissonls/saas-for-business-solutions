@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
 import SideBar from '../../components/sideBar';
 import MainContent from '../../components/mainContent';
-import DashCardContainer from "./dashCardContainer";
+import ModelCardContainer from "./modelCardContainer";
 
-function DashboardCards(props) {
+function MlModelCards(props) {
   return <div className='body'>
     <SideBar />
     <MainContent>
-      <DashCardContainer />
+      <ModelCardContainer />
     </MainContent>
   </div>
 }
 
-export default DashboardCards;
+export default MlModelCards
