@@ -5,28 +5,28 @@ import api from "../../services/api";
 import SideBar from "../../components/sideBar";
 import MainContent from "../../components/mainContent";
 
-import Dash1 from "./dashInterfaces/dash1";
-import Dash2 from "./dashInterfaces/dash2";
+import Model1 from "./modelInterfaces/model1";
+import Model2 from "./modelInterfaces/model2";
 
-function selectDash(id, data) {
+function selectModel(id, data) {
     switch (id) {
-        case 1: return <Dash1 data={ data }/>
-        case 2: return <Dash2 data={ data }/>
+        case 1: return <Model1 data={ data }/>
+        case 2: return <Model2 data={ data }/>
         default: return null
     }
 }
 
-async function getDashboard(id) {
+async function getModel(id) {
     const response = await api.get(`/dashboards/${id}`)
     return response.data
 }
 
-function Dashboard(props) {
+function Model(props) {
     const { id } = useParams();
     const [data, setData] = useState(null)
     useEffect(() => {
         async function updateData() {
-            const data = await getDashboard(id)
+            const data = await getModel(id)
             setData(data)
         }
         updateData()
@@ -34,9 +34,7 @@ function Dashboard(props) {
     return <div className='body'>
         <SideBar />
         <MainContent>
-            { data ? selectDash(id, data) : <div>Buscando os dados...</div> }
+            { data ? selectModel(id, data) : <div>Buscando os dados...</div> }
         </MainContent>
     </div>
 }
-
-export default Dashboard;
