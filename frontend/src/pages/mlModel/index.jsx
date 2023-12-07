@@ -17,7 +17,7 @@ function selectModel(id, data) {
 }
 
 async function getModel(id) {
-    const response = await api.get(`/dashboards/${id}`)
+    const response = await api.get(`/models/${id}`)
     return response.data
 }
 
@@ -38,3 +38,5 @@ function Model(props) {
         </MainContent>
     </div>
 }
+
+export default Model;
