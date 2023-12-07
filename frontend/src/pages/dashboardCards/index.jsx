@@ -2,14 +2,15 @@ import AppBar from "../../components/appBar"
 
 import SideBar from '../../components/sideBar';
 import MainContent from '../../components/mainContent';
+import DashCardContainer from "./dashCardContainer";
 
 function DashboardCards(props) {
   return <div className='body'>
     <SideBar />
     <MainContent>
-      <ProfileData />
+      <DashCardContainer />
     </MainContent>
   </div>
 }
 
-export default DashboardCards
+export default DashboardCards;
