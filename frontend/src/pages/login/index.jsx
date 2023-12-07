@@ -2,18 +2,18 @@ import { redirect, useParams, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useSnackbar } from 'notistack';
 
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-
 import { set_token, set_email, set_username } from "../../services/auth";
 import api from "../../services/api";
 
 function Login(props) {
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
   const { enqueueSnackbar } = useSnackbar()
+
   const navigate = useNavigate()
+
   function validateEmail() {
     let message = ""
     if (email.length > 10) message = "Email bigger"
@@ -41,7 +41,9 @@ function Login(props) {
     enqueueSnackbar(message, {variant: "success"})
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event) {
+    event.preventDefault();
+
     // const response = await api.post("/login", {
     //   email: email, password: password
     // })
@@ -68,14 +70,6 @@ function Login(props) {
     } else {
       messageError("Falha ao realizar login.")
     }
-    /*{
-        status: true,
-        message: "",
-          data: {
-            token,
-            username
-          }
-      }*/
   }
 
   const errors = getErrors()
@@ -83,31 +77,49 @@ function Login(props) {
   const hasErrors = errors.some((item) => item !== "")
 
   return (
-    <>
-      <Paper elevation={3} sx={{display: "flex", flexDirection: "column", gap: "10px", padding: "10px", width: "50%"}}>
-        <TextField 
-          id="outlined-basic" 
-          label="E-mail" 
-          variant="outlined" 
-          value={email} 
-          onChange = {(e) => setEmail(e.target.value)}
-          helperText={errors[0]}
-          error={errors[0] !== ""}
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange = {(e) => setPassword(e.target.value)}
-          helperText={errors[1]}
-          error={errors[1] !== ""}
-        />
-        <Button variant="outlined" disabled = {hasErrors} onClick = {handleSubmit}>Login</Button>
-      </Paper>
-    </>
+    <form className="login-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="E-mail"
+        value={email || ""}
+        onChange={(e) => setEmail(e.target.value)}
+      ></input>
+
+      <input
+        type="password"
+        placeholder="Senha"
+        value={password || ""}
+        onChange={(e) => setPassword(e.target.value)}
+      ></input>
+
+      <button type="submit" disabled={hasErrors}>
+        Login
+      </button>
+    </form>
   )
 }
 
-export default Login
+export default Login;
+
+// <Paper elevation={3} sx={{display: "flex", flexDirection: "column", gap: "10px", padding: "10px", width: "50%"}}>
+//   <TextField 
+//     id="outlined-basic" 
+//     label="E-mail" 
+//     variant="outlined" 
+//     value={email} 
+//     onChange = {(e) => setEmail(e.target.value)}
+//     helperText={errors[0]}
+//     error={errors[0] !== ""}
+//   />
+//   <TextField
+//     id="outlined-password-input"
+//     label="Password"
+//     type="password"
+//     autoComplete="current-password"
+//     value={password}
+//     onChange = {(e) => setPassword(e.target.value)}
+//     helperText={errors[1]}
+//     error={errors[1] !== ""}
+//   />
+//   <Button variant="outlined" disabled = {hasErrors} onClick = {handleSubmit}>Login</Button>
+// </Paper>
