@@ -1,5 +1,5 @@
-import { redirect, useParams, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { redirect, useParams, useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 import { set_token, set_email, set_username } from "../../services/auth";
@@ -14,15 +14,27 @@ function Login(props) {
 
   const navigate = useNavigate()
 
+  function isValidEmailFormat(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   function validateEmail() {
-    let message = ""
-    if (email.length > 10) message = "Email bigger"
-    return message
+    let message = "";
+
+    const emailValue = email.trim();
+
+    if (!emailValue) {
+      message = "Email é requerido!";
+    } else if (!isValidEmailFormat(emailValue)) {
+      message = "Email inválido!";
+    }
+    return message;
   }
 
   function validatePassword() {
     let message = ""
-    if (password.length < 5) message = "Password smaller"
+    if (password.length < 6) message = "Senha curta!"
     return message
   }
 
@@ -77,8 +89,12 @@ function Login(props) {
   const hasErrors = errors.some((item) => item !== "")
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
+    <div className="login-page">
+      <form className="login-form" onSubmit={handleSubmit}>
+      <h2>Login</h2>
+      
       <input
+        className="login-input"
         type="text"
         placeholder="E-mail"
         value={email || ""}
@@ -86,40 +102,24 @@ function Login(props) {
       ></input>
 
       <input
+        className="login-input"
         type="password"
         placeholder="Senha"
         value={password || ""}
         onChange={(e) => setPassword(e.target.value)}
       ></input>
 
-      <button type="submit" disabled={hasErrors}>
+      <button
+        className="login-button"
+        type="submit" 
+        disabled={hasErrors}>
         Login
       </button>
+
+      <div>Ainda não tem uma conta? <Link to="/register">Registre-se</Link></div>
     </form>
+    </div>
   )
 }
 
 export default Login;
-
-// <Paper elevation={3} sx={{display: "flex", flexDirection: "column", gap: "10px", padding: "10px", width: "50%"}}>
-//   <TextField 
-//     id="outlined-basic" 
-//     label="E-mail" 
-//     variant="outlined" 
-//     value={email} 
-//     onChange = {(e) => setEmail(e.target.value)}
-//     helperText={errors[0]}
-//     error={errors[0] !== ""}
-//   />
-//   <TextField
-//     id="outlined-password-input"
-//     label="Password"
-//     type="password"
-//     autoComplete="current-password"
-//     value={password}
-//     onChange = {(e) => setPassword(e.target.value)}
-//     helperText={errors[1]}
-//     error={errors[1] !== ""}
-//   />
-//   <Button variant="outlined" disabled = {hasErrors} onClick = {handleSubmit}>Login</Button>
-// </Paper>

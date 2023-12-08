@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import LandingPage from "./pages/landingPage";
 import Login from "./pages/login";
+import Register from "./pages/register";
 import Home from "./pages/home";
 import Profile from "./pages/profile";
 import DashboardCards from "./pages/dashboardCards";
@@ -23,6 +24,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    loader: async () => {
+      if (isAuthenticated()) throw new redirect("/home");
+      return {}
+    }
+  },
+  {
+    path: "/register",
+    element: <Register />,
     loader: async () => {
       if (isAuthenticated()) throw new redirect("/home");
       return {}

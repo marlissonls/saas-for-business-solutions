@@ -8,6 +8,7 @@
   --fonte-principal: 'Open Sans', sans-serif;
   --largura-sidebar: 15%;
   --page-height: 100vh;
+  --main-color: midnightblue
 }
 
 .body {
@@ -18,8 +19,7 @@
 .side-bar {
   display: flex;
   flex-direction: column;
-
-  background-color: midnightblue;
+  background-color: var(--main-color);
   color: #fff;
   width: var(--largura-sidebar);
   min-width: 230px;
@@ -57,7 +57,52 @@
 
 
 /* LOGIN PAGE */
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  background-color: var(--main-color);
+}
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 30%;
+  min-height: 50vh;
+  padding: 30px;
+  font-family: var(--fonte-principal);
+  background-color: #fff;
+}
+
+.login-form h2 {
+  text-align: center;
+}
+
+.login-input {
+  font-size: 17px;
+  font-weight: bold;
+  padding: 15px 10px;
+  border: 1px solid #ccc;
+  border-bottom: 3px solid #ccc;
+  border-left: 3px solid #ccc;
+  outline: none;
+}
+
+.login-input::placeholder {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.login-button {
+  padding: 7px;
+  background-color: var(--main-color);
+  color: #fff;
+  font-size: 17px;
+  font-weight: bold;
+}
 
 
 /* HOME PAGE */
