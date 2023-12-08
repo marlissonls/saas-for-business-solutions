@@ -18,11 +18,13 @@ from fastapi.exceptions import HTTPException
 import jwt
 
 from app.router import user_routes
+from app.router import company_routes
 from app.config import jwt_configs
 
 router = APIRouter()
 
 router.include_router(user_routes.router)
+router.include_router(company_routes.router)
 
 @router.get('/', status_code=status.HTTP_200_OK)
 def root(authorization_token: str | None = Header(default=None)):

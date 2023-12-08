@@ -1,8 +1,6 @@
 from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm, ResLogin
 from abc import ABC, abstractmethod
 
-# .repository.user.models.user_models
-
 class IUserController(ABC):
 
     @abstractmethod
