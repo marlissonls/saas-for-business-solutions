@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { redirect, useParams, useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
+import { validateEmail, validatePassword } from "../../services/validateFields";
 import { set_token, set_email, set_username } from "../../services/auth";
 import api from "../../services/api";
 
@@ -13,30 +14,6 @@ function Login(props) {
   const { enqueueSnackbar } = useSnackbar()
 
   const navigate = useNavigate()
-
-  function isValidEmailFormat(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  function validateEmail() {
-    let message = "";
-
-    const emailValue = email.trim();
-
-    if (!emailValue) {
-      message = "Email é requerido!";
-    } else if (!isValidEmailFormat(emailValue)) {
-      message = "Email inválido!";
-    }
-    return message;
-  }
-
-  function validatePassword() {
-    let message = ""
-    if (password.length < 6) message = "Senha curta!"
-    return message
-  }
 
   function getErrors() {
     const errors = []
@@ -56,7 +33,7 @@ function Login(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // const response = await api.post("/login", {
+    // const response = await api.post("http://172.0.0.1:8000/user/login", {
     //   email: email, password: password
     // })
 
