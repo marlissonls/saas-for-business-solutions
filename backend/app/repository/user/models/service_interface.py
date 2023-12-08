@@ -1,7 +1,6 @@
 from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm
 from abc import ABC, abstractmethod
 
-
 class IUserService(ABC):
 
     @abstractmethod

@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session
 from fastapi import UploadFile
 import logging
 
-# app.repository.user.models.service_interface
-
 logger = logging.getLogger(__name__)
 
 
