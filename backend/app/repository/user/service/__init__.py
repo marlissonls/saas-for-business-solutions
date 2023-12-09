@@ -1,5 +1,5 @@
-from app.repository.user.exceptions import UserNotFoundError, InvalidPasswordError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import PostUser, GetUser, GetUserId, LoginRequest, LoginResponse, CredentialInfo
+from app.repository.user.exceptions import UserNotFoundError, InternalServerError, FileTypeNotSupportedError
+from app.repository.user.models.user_models import PostUser, GetUserId, GetUser, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
@@ -63,7 +63,7 @@ class UserService(IUserService):
         password: str,
         profile_image: UploadFile,
         session: Session
-    ) -> GetUserId:
+    ) -> RegisterResponse:
         try:
             new_user_id = str(uuid1())
 
@@ -84,11 +84,19 @@ class UserService(IUserService):
 
             session.commit()
 
-            return GetUserId(id=new_user.id)
+            return RegisterResponse(
+                status=True,
+                message=f"Usuário {name} cadastrado com sucesso.",
+                data=GetUserId(id=new_user.id)
+            )
 
         except SQLAlchemyError as error:
             session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
+            return RegisterResponse(
+                status=False,
+                message=f"Erro ao cadastrar este usuário.",
+                data=None
+            )
         except FileTypeNotSupportedError as error:
             session.rollback()
             raise
@@ -99,7 +107,11 @@ class UserService(IUserService):
             user = self._repository.get_user_by_email_repository(form.email, session)
 
             if not user:
-                raise UserNotFoundError(email=form.email)
+                return LoginResponse(
+                    status=False,
+                    message="Falha ao realizar login, verifique suas credenciais.",
+                    data=None
+                )
 
             if Hasher.verify_password(form.password, user.password):
                 return LoginResponse(
@@ -112,12 +124,18 @@ class UserService(IUserService):
                             jwt_configs["hash_key"],
                             algorithm=jwt_configs['algorithm']
                         ),
-                        username=user.name
+                        email=user.email,
+                        username=user.name,
+                        role=user.role
                     )
                 )
 
             else:
-                raise InvalidPasswordError(email=form.email)
+                return LoginResponse(
+                    status=False,
+                    message="Senha inválida.",
+                    data=None
+                )
         except SQLAlchemyError as error:
             session.rollback()
             raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error

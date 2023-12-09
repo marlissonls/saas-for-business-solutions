@@ -13,14 +13,21 @@ class PostUser(UserBase):
 class GetUser(GetUserId, UserBase):
     pass
 
+class RegisterResponse(BaseModel):
+    status: bool
+    message: str
+    data: GetUserId | None
+
 class CredentialInfo(BaseModel):
     token: str
+    email: str
     username: str
+    role: str
 
 class LoginResponse(BaseModel):
     status: bool
     message: str 
-    data: CredentialInfo
+    data: CredentialInfo | None
 
 class LoginRequest(BaseModel):
     email: str

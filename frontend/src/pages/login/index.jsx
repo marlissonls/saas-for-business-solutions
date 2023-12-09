@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { redirect, useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 import { validateEmail, validatePassword } from "../../services/validateFields";
@@ -33,22 +33,23 @@ function Login(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // const response = await api.post("http://172.0.0.1:8000/user/login", {
-    //   email: email, password: password
-    // })
+    const response = await api.post("http://127.0.0.1:8000/user/login", {
+      email: email, password: password
+    })
 
-    //isso deve morrer depois
-    const response = {
-      data: {
-        status: true,
-        message: "Sucessamente",
-        data: {
-          token: "token",
-          email: email,
-          username: "nome_teste"
-        }
-      }
-    }
+    // //isso deve morrer depois
+    // const response = {
+    //   data: {
+    //     status: true,
+    //     message: "Sucessamente",
+    //     data: {
+    //       token: "token",
+    //       email: email,
+    //       username: "nome_teste",
+    //       role: "client"
+    //     }
+    //   }
+    // }
 
     if (response.data.status) {
       set_token(response.data.data.token)
@@ -57,7 +58,7 @@ function Login(props) {
       messageSuccess(response.data.message)
       navigate("/home")
     } else {
-      messageError("Falha ao realizar login.")
+      messageError(response.data.message)
     }
   }
 

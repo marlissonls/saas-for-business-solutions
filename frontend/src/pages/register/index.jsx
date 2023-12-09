@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 import { validateName, validateEmail, validatePassword } from "../../services/validateFields";
@@ -45,31 +45,17 @@ function Register(props) {
     formData.append('password', password)
     formData.append('profile_image', profileImage);
 
-    const response = await api.post("http://172.0.0.1:8000/user/register", formData, {
+    const response = await api.post("http://127.0.0.1:8000/user/register", formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-
-    //isso deve morrer depois
-    // const response = {
-    //   data: {
-    //     status: true,
-    //     message: "Sucessamente",
-    //     data: {
-    //       token: "token",
-    //       email: email,
-    //       username: "nome_teste"
-    //     }
-    //   }
-    // }
-
     if (response.data.status) {
       messageSuccess(response.data.message)
       navigate("/login")
     } else {
-      messageError("Falha ao cadastrar usuário.")
+      messageError(response.data.message)
     }
   }
 
@@ -106,7 +92,17 @@ function Register(props) {
             onChange={(e) => setPassword(e.target.value)}
         />
 
-        <input type="file" onChange={handleFileChange} />
+        <input
+          type="file"
+          id="profile-input"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+
+        <label htmlFor="profile-input" className="profile-image">
+          Escolher arquivo
+        </label>
 
         <button
             className="login-button"

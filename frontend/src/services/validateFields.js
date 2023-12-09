@@ -5,8 +5,13 @@ function isValidNameFormat(name) {
 
 function validateName(name) {
   let message = "";
+  let nameValue;
 
-  const nameValue = name.trim();
+  if (name) {
+    nameValue = name.trim();
+  } else {
+    return message;
+  }
 
   if (!nameValue) {
     message = 'Nome é requerido!';
@@ -24,9 +29,14 @@ function isValidEmailFormat(email) {
 
 function validateEmail(email) {
   let message = "";
+  let emailValue;
 
-  const emailValue = email.trim();
-
+  if (email) {
+    emailValue = email.trim();
+  } else {
+    return message;
+  }
+  
   if (!emailValue) {
     message = "Email é requerido!";
   } else if (!isValidEmailFormat(emailValue)) {
@@ -38,7 +48,7 @@ function validateEmail(email) {
 
 function validatePassword(password) {
   let message = ""
-  if (password.length < 6) message = "Senha curta!"
+  if (password && password.length < 6) message = "Senha curta!"
   return message
 }
 

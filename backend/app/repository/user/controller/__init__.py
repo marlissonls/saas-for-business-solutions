@@ -1,5 +1,5 @@
-from app.repository.user.exceptions import UserNotFoundError, InvalidPasswordError, UserControllerException, FileTypeNotSupportedError
-from app.repository.user.models.user_models import GetUserId, GetUser, PostUser, LoginRequest, LoginResponse
+from app.repository.user.exceptions import UserNotFoundError, UserControllerException, FileTypeNotSupportedError
+from app.repository.user.models.user_models import GetUserId, GetUser, PostUser, LoginRequest, LoginResponse, RegisterResponse
 from app.repository.user.models.controller_interface import IUserController
 from app.repository.user.models.service_interface import IUserService
 from sqlalchemy.orm import Session
@@ -40,7 +40,7 @@ class UserController(IUserController):
         password: str,
         profile_image: UploadFile,
         session: Session
-    ) -> GetUserId:
+    ) -> RegisterResponse:
         try:
             return self._service.create_user_service(
                 name,
@@ -60,15 +60,9 @@ class UserController(IUserController):
     def login(self, form: LoginRequest, session: Session) -> LoginResponse:
         try:
             return self._service.login(form, session)
-        except UserNotFoundError as error:
-            logger.error("User not found: %s", error)
-            raise
-        except InvalidPasswordError as error:
-            logger.error("Invalid password: %s", error)
-            raise
         except Exception as error:
             logger.error("An error occurred: %s", error)
-            raise UserControllerException("Failed to fetch user by email.") from error
+            raise UserControllerException("Failed to fetch user.") from error
 
 
     def update_user_controller(self, user_id: str, user: PostUser, session: Session) -> GetUser:

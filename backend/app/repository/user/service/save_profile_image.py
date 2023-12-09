@@ -26,4 +26,7 @@ def save_profile_image(profile_image_name: str, profile_image: UploadFile) -> No
 
     profile_image_file = pillow_read_image(BytesIO(profile_image.file.read()))
 
+    if profile_image_file.mode != 'RGB':
+        profile_image_file = profile_image_file.convert('RGB')
+
     profile_image_file.save(profile_image_path, format='jpeg')
