@@ -12,7 +12,9 @@ from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
 from app.repository.user.service.hashing import Hasher
 from app.db.schema import User
-from app import config
+from app.config import jwt_configs
+
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import UploadFile
@@ -27,7 +29,7 @@ class UserService(IUserService):
 
     def get_user_by_id_service(self, user_id: str, session: Session) -> UserOut:
         try:
-            user = self._repository.get_user_by_id_repository(session, user_id)
+            user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
                 raise UserNotFoundError(id=user_id)
@@ -79,7 +81,8 @@ class UserService(IUserService):
                 name=name,
                 email=email,
                 password=Hasher.get_password_hash(password),
-                profile_image=profile_image_name
+                profile_image=profile_image_name,
+                role='client'
             )
 
             self._repository.create_user_repository(new_user, session)
@@ -111,9 +114,10 @@ class UserService(IUserService):
                     message="Login realizado com sucesso",
                     data=Data(
                         token=jwt.encode(
-                            {"email": user.email, "type": "admin"},
-                            config.jwt_configs["hash_key"],
-                            algorithm=config.jwt_configs['algorithm']
+                            {"sub": {"id": user.id, "name": user.name, "email": user.email, "role": user.role},
+                             "exp": datetime.utcnow() + timedelta(days=10)},
+                            jwt_configs["hash_key"],
+                            algorithm=jwt_configs['algorithm']
                         ),
                         username=user.name
                     )
