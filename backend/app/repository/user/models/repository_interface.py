@@ -1,10 +1,9 @@
 from app.db.schema import User
-from app.repository.user.models.user_models import UserIn
+from app.repository.user.models.user_models import PostUser
 from sqlalchemy.orm import Session as SQLAlchemySession
 from abc import ABC, abstractmethod
 from typing import Any, List
 
-# repository.user.models.user_models
 
 class IUserRepository(ABC):
 
@@ -21,7 +20,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def create_user_repository(self, client: SQLAlchemySession, user: UserIn) -> None:
+    def create_user_repository(self, client: SQLAlchemySession, user: PostUser) -> None:
         pass
 
     @abstractmethod

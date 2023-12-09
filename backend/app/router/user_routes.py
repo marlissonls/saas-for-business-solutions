@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Form, File, UploadFile, status, Depends, Request
-from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm, ResLogin
+from app.repository.user.models.user_models import GetUserId, GetUser, PostUser, LoginRequest, LoginResponse
 from app.repository.user.sqlalchemy import UserRepository
 from app.repository.user.controller import UserController
 from app.repository.user.service import UserService
@@ -20,17 +20,17 @@ def get_db(request: Request):
     return request.state.db
 
 #### Essas rotas migrarão para permissões de administrador
-@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=UserOut)
+@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUser)
 def get_user_by_id(user_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.get_user_by_id_controller(user_id, session)
 
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=list[UserOut])
+@router.get('/', status_code=status.HTTP_200_OK, response_model=list[GetUser])
 def get_users(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.get_users_controller(session)
 ####
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=UserId)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=GetUserId)
 def create_user(
     name: Annotated[str, Form()],
     email: Annotated[str, Form()],
@@ -47,13 +47,13 @@ def create_user(
     )
 
 
-@router.post('/login', status_code=status.HTTP_201_CREATED, response_model=ResLogin)
-def login(form: UserForm, session: Session = Depends(get_db)) -> Any:
+@router.post('/login', status_code=status.HTTP_201_CREATED, response_model=LoginResponse)
+def login(form: LoginRequest, session: Session = Depends(get_db)) -> Any:
     return controller.login(form, session)
 
 
-@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=UserOut)
-def update_user(user_id: str, user: UserIn, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
+@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUser)
+def update_user(user_id: str, user: PostUser, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.update_user_controller(user_id, user, session)
 
 

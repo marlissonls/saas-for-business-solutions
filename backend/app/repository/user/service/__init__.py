@@ -1,12 +1,5 @@
-# Funcionamento da lógica de negócios para os dashboards e modelos:
-# No front-end, haverá cards dos dashboards e modelos,
-# eles deverão ter uma propriedade com um id específico do dash ou model.
-# Ao clicar no card, será disparada uma requisição com o parâmetro id.
-# Esse id deverá ser checado quanto ao status do dash/model da requisição.
-# Caso o produto esteja pronto, o serviço encontrar o diretório com mesmo nome de id do produto
-# e deve retornar os dados do dash ou fazar a previsão com o modelo e devolver o resultado.
 from app.repository.user.exceptions import UserNotFoundError, InvalidPasswordError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm, ResLogin, Data
+from app.repository.user.models.user_models import PostUser, GetUser, GetUserId, LoginRequest, LoginResponse, CredentialInfo
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
@@ -27,14 +20,14 @@ class UserService(IUserService):
     def __init__(self, repository: IUserRepository):
         self._repository = repository
 
-    def get_user_by_id_service(self, user_id: str, session: Session) -> UserOut:
+    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUser:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
                 raise UserNotFoundError(id=user_id)
             
-            return UserOut(
+            return GetUser(
                 id=user.id,
                 name=user.name,
                 email=user.email
@@ -47,14 +40,14 @@ class UserService(IUserService):
             raise InternalServerError(f"Internal Server Error: {str(error)}") from error
 
 
-    def get_users_service(self, session: Session) -> list[UserOut] | list:
+    def get_users_service(self, session: Session) -> list[GetUser] | list:
         try:
             users = self._repository.get_users_repository(session)
 
             if not users:
                 return []
             
-            return [UserOut(id=user.id, name=user.name, email=user.email) for user in users]
+            return [GetUser(id=user.id, name=user.name, email=user.email) for user in users]
 
         except SQLAlchemyError as error:
             session.rollback()
@@ -70,7 +63,7 @@ class UserService(IUserService):
         password: str,
         profile_image: UploadFile,
         session: Session
-    ) -> UserId:
+    ) -> GetUserId:
         try:
             new_user_id = str(uuid1())
 
@@ -91,7 +84,7 @@ class UserService(IUserService):
 
             session.commit()
 
-            return UserId(id=new_user.id)
+            return GetUserId(id=new_user.id)
 
         except SQLAlchemyError as error:
             session.rollback()
@@ -101,7 +94,7 @@ class UserService(IUserService):
             raise
 
 
-    def login(self, form: UserForm, session: Session) -> ResLogin:
+    def login(self, form: LoginRequest, session: Session) -> LoginResponse:
         try:
             user = self._repository.get_user_by_email_repository(form.email, session)
 
@@ -109,10 +102,10 @@ class UserService(IUserService):
                 raise UserNotFoundError(email=form.email)
 
             if Hasher.verify_password(form.password, user.password):
-                return ResLogin(
+                return LoginResponse(
                     status=True,
                     message="Login realizado com sucesso",
-                    data=Data(
+                    data=CredentialInfo(
                         token=jwt.encode(
                             {"sub": {"id": user.id, "name": user.name, "email": user.email, "role": user.role},
                              "exp": datetime.utcnow() + timedelta(days=10)},
@@ -130,7 +123,7 @@ class UserService(IUserService):
             raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
 
 
-    def update_user_service(self, user_id: str, user_updated: UserIn, session: Session) -> UserOut:
+    def update_user_service(self, user_id: str, user_updated: PostUser, session: Session) -> GetUser:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
@@ -145,7 +138,7 @@ class UserService(IUserService):
 
             session.commit()
 
-            return UserOut(
+            return GetUser(
                 id=user.id,
                 name=user.name,
                 email=user.email
