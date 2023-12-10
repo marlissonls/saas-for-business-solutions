@@ -1,8 +1,5 @@
 from pydantic import BaseModel
 
-class HomePage(BaseModel):
-    get_companies: str
-
 class CompanyBase(BaseModel):
     name: str
     description : str

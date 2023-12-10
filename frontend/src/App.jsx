@@ -8,8 +8,9 @@ import DashboardCards from "./pages/dashboardCards";
 import Dashboard from "./pages/dashboard";
 import MlModelCards from "./pages/mlModelCards";
 import MlModel from "./pages/mlModel";
+import Panel from "./pages/panel";
 import { SnackbarProvider } from 'notistack';
-import { isAuthenticated } from "./services/auth";
+import { isAdmin, isAuthenticated } from "./services/auth";
 import './App.css'
 
 const router = createBrowserRouter([
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <LandingPage />,
     loader: async () => {
-      if (isAuthenticated()) throw new redirect("/home");
+      if (isAuthenticated() && !isAdmin()) throw new redirect("/home");
+      if (isAuthenticated() && isAdmin()) throw new redirect("/panel");
       return {}
     }
   },
@@ -25,7 +27,8 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
     loader: async () => {
-      if (isAuthenticated()) throw new redirect("/home");
+      if (isAuthenticated() && !isAdmin()) throw new redirect("/home");
+      if (isAuthenticated() && isAdmin()) throw new redirect("/panel");
       return {}
     }
   },
@@ -33,7 +36,8 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
     loader: async () => {
-      if (isAuthenticated()) throw new redirect("/home");
+      if (isAuthenticated() && !isAdmin()) throw new redirect("/home");
+      if (isAuthenticated() && isAdmin()) throw new redirect("/panel");
       return {}
     }
   },
@@ -42,6 +46,7 @@ const router = createBrowserRouter([
     element: <Home />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
+      if (isAdmin()) throw new redirect("/panel");
       return {}
     }
   },
@@ -82,6 +87,15 @@ const router = createBrowserRouter([
     element: <MlModel />,
     loader: async () => {
       if (!isAuthenticated()) throw new redirect("/login");
+      return {}
+    }
+  },
+  {
+    path: "/panel",
+    element: <Panel />,
+    loader: async () => {
+      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAdmin()) throw new redirect("/home");
       return {}
     }
   },

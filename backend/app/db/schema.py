@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -19,9 +19,10 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(String, primary_key=True)
     name = Column(String(255), nullable=False)
-    email = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
     profile_image = Column(String, nullable=False)
+    role = Column(String(20), nullable=False)
     company_id = Column(String, ForeignKey('companies.id'))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime, default=None)

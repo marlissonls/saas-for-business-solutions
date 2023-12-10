@@ -1,18 +1,13 @@
-# Funcionamento da lógica de negócios para os dashboards e modelos:
-# No front-end, haverá cards dos dashboards e modelos,
-# eles deverão ter uma propriedade com um id específico do dash ou model.
-# Ao clicar no card, será disparada uma requisição com o parâmetro id.
-# Esse id deverá ser checado quanto ao status do dash/model da requisição.
-# Caso o produto esteja pronto, o serviço encontrar o diretório com mesmo nome de id do produto
-# e deve retornar os dados do dash ou fazar a previsão com o modelo e devolver o resultado.
-from app.repository.user.exceptions import UserNotFoundError, InvalidPasswordError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import UserIn, UserOut, UserId, UserForm, ResLogin, Data
+from app.repository.user.exceptions import UserNotFoundError, InternalServerError, FileTypeNotSupportedError
+from app.repository.user.models.user_models import PostUser, GetUserId, GetUser, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.save_profile_image import save_profile_image
 from app.repository.user.service.hashing import Hasher
 from app.db.schema import User
-from app import config
+from app.config import jwt_configs
+
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import UploadFile
@@ -25,14 +20,14 @@ class UserService(IUserService):
     def __init__(self, repository: IUserRepository):
         self._repository = repository
 
-    def get_user_by_id_service(self, user_id: str, session: Session) -> UserOut:
+    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUser:
         try:
-            user = self._repository.get_user_by_id_repository(session, user_id)
+            user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
                 raise UserNotFoundError(id=user_id)
             
-            return UserOut(
+            return GetUser(
                 id=user.id,
                 name=user.name,
                 email=user.email
@@ -45,14 +40,14 @@ class UserService(IUserService):
             raise InternalServerError(f"Internal Server Error: {str(error)}") from error
 
 
-    def get_users_service(self, session: Session) -> list[UserOut] | list:
+    def get_users_service(self, session: Session) -> list[GetUser] | list:
         try:
             users = self._repository.get_users_repository(session)
 
             if not users:
                 return []
             
-            return [UserOut(id=user.id, name=user.name, email=user.email) for user in users]
+            return [GetUser(id=user.id, name=user.name, email=user.email) for user in users]
 
         except SQLAlchemyError as error:
             session.rollback()
@@ -68,7 +63,7 @@ class UserService(IUserService):
         password: str,
         profile_image: UploadFile,
         session: Session
-    ) -> UserId:
+    ) -> RegisterResponse:
         try:
             new_user_id = str(uuid1())
 
@@ -79,7 +74,8 @@ class UserService(IUserService):
                 name=name,
                 email=email,
                 password=Hasher.get_password_hash(password),
-                profile_image=profile_image_name
+                profile_image=profile_image_name,
+                role='client'
             )
 
             self._repository.create_user_repository(new_user, session)
@@ -88,45 +84,65 @@ class UserService(IUserService):
 
             session.commit()
 
-            return UserId(id=new_user.id)
+            return RegisterResponse(
+                status=True,
+                message=f"Usuário {name} cadastrado com sucesso.",
+                data=GetUserId(id=new_user.id)
+            )
 
         except SQLAlchemyError as error:
             session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
+            return RegisterResponse(
+                status=False,
+                message=f"Erro ao cadastrar este usuário.",
+                data=None
+            )
         except FileTypeNotSupportedError as error:
             session.rollback()
             raise
 
 
-    def login(self, form: UserForm, session: Session) -> ResLogin:
+    def login(self, form: LoginRequest, session: Session) -> LoginResponse:
         try:
             user = self._repository.get_user_by_email_repository(form.email, session)
 
             if not user:
-                raise UserNotFoundError(email=form.email)
+                return LoginResponse(
+                    status=False,
+                    message="Falha ao realizar login, verifique suas credenciais.",
+                    data=None
+                )
 
             if Hasher.verify_password(form.password, user.password):
-                return ResLogin(
+                return LoginResponse(
                     status=True,
                     message="Login realizado com sucesso",
-                    data=Data(
+                    data=CredentialInfo(
                         token=jwt.encode(
-                            {"email": user.email, "type": "admin"},
-                            config.jwt_configs["hash_key"],
-                            algorithm=config.jwt_configs['algorithm']
+                            {"sub": {"id": user.id, "name": user.name, "email": user.email, "role": user.role},
+                             "exp": datetime.utcnow() + timedelta(days=10)},
+                            jwt_configs["hash_key"],
+                            algorithm=jwt_configs['algorithm']
                         ),
-                        username=user.name
+                        id=user.id,
+                        username=user.name,
+                        email=user.email,
+                        role=user.role
                     )
                 )
 
             else:
-                raise InvalidPasswordError(email=form.email)
+                return LoginResponse(
+                    status=False,
+                    message="Senha inválida.",
+                    data=None
+                )
         except SQLAlchemyError as error:
             session.rollback()
             raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
 
 
-    def update_user_service(self, user_id: str, user_updated: UserIn, session: Session) -> UserOut:
+    def update_user_service(self, user_id: str, user_updated: PostUser, session: Session) -> GetUser:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
@@ -141,7 +157,7 @@ class UserService(IUserService):
 
             session.commit()
 
-            return UserOut(
+            return GetUser(
                 id=user.id,
                 name=user.name,
                 email=user.email
