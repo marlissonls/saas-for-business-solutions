@@ -22,12 +22,20 @@ def get_db(request: Request):
 
 @router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUser)
 def get_user_by_id(user_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    return controller.get_user_by_id_controller(user_id, session)
+    if current_user['role'] == 'admin':
+        return controller.get_user_by_id_controller(user_id, session)
+    else:
+        # retorno de erro
+        pass
 
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=list[GetUser])
 def get_users(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    return controller.get_users_controller(session)
+    if current_user['role'] == 'admin':
+        return controller.get_users_controller(session)
+    else:
+        # retorno de erro
+        pass
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED, response_model=RegisterResponse)

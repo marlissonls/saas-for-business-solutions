@@ -8,32 +8,34 @@ import api from "../../services/api";
 function Register(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState('');
 
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setProfileImage(file);
+    setSelectedFileName(file ? file.name : '');
   };
 
   function getErrors() {
-    const errors = []
-    errors[0] = validateName(name)
-    errors[1] = validateEmail(email)
-    errors[2] = validatePassword(password)
-    return errors
+    const errors = [];
+    errors[0] = validateName(name);
+    errors[1] = validateEmail(email);
+    errors[2] = validatePassword(password);
+    return errors;
   }
 
   function messageError(message) {
-    enqueueSnackbar(message, {variant: "error"})
+    enqueueSnackbar(message, { variant: "error" });
   }
 
   function messageSuccess(message) {
-    enqueueSnackbar(message, {variant: "success"})
+    enqueueSnackbar(message, { variant: "success" });
   }
 
   async function handleSubmit(event) {
@@ -42,7 +44,7 @@ function Register(props) {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
-    formData.append('password', password)
+    formData.append('password', password);
     formData.append('profile_image', profileImage);
 
     const response = await api.post("http://127.0.0.1:8000/user/register", formData, {
@@ -52,16 +54,15 @@ function Register(props) {
     });
 
     if (response.data.status) {
-      messageSuccess(response.data.message)
-      navigate("/login")
+      messageSuccess(response.data.message);
+      navigate("/login");
     } else {
-      messageError(response.data.message)
+      messageError(response.data.message);
     }
   }
 
-  const errors = getErrors()
-
-  const hasErrors = errors.some((item) => item !== "")
+  const errors = getErrors();
+  const hasErrors = errors.some((item) => item !== '');
 
   return (
     <div className="login-page">
@@ -69,28 +70,31 @@ function Register(props) {
         <h2>Cadastrar</h2>
 
         <input
-            className="login-input"
-            type="text"
-            placeholder="Nome"
-            value={name || ""}
-            onChange={(e) => setName(e.target.value)}
+          className="login-input"
+          type="text"
+          placeholder="Nome"
+          value={name || ""}
+          onChange={(e) => setName(e.target.value)}
         />
+        {errors[0] && <div className="error-message">{errors[0]}</div>}
 
         <input
-            className="login-input"
-            type="text"
-            placeholder="E-mail"
-            value={email || ""}
-            onChange={(e) => setEmail(e.target.value)}
+          className="login-input"
+          type="text"
+          placeholder="E-mail"
+          value={email || ""}
+          onChange={(e) => setEmail(e.target.value)}
         />
+        {errors[1] && <div className="error-message">{errors[1]}</div>}
 
         <input
-            className="login-input"
-            type="password"
-            placeholder="Senha"
-            value={password || ""}
-            onChange={(e) => setPassword(e.target.value)}
+          className="login-input"
+          type="password"
+          placeholder="Senha"
+          value={password || ""}
+          onChange={(e) => setPassword(e.target.value)}
         />
+        {errors[2] && <div className="error-message">{errors[2]}</div>}
 
         <input
           type="file"
@@ -100,21 +104,22 @@ function Register(props) {
           style={{ display: 'none' }}
         />
 
-        <label htmlFor="profile-input" className="profile-image">
-          Escolher arquivo
+        <label htmlFor="profile-input" className="input-image">
+          {selectedFileName.substring(0,22) || 'Escolher arquivo'}
         </label>
 
         <button
-            className="login-button"
-            type="submit" 
-            disabled={hasErrors}>
-            Cadastre-se
+          className="login-button"
+          type="submit"
+          disabled={hasErrors}
+        >
+          Cadastre-se
         </button>
 
         <div>Já tem uma conta? <Link to="/login">Faça Login</Link></div>
       </form>
     </div>
-  )
+  );
 }
 
 export default Register;

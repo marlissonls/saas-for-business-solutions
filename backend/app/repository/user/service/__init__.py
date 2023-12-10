@@ -124,8 +124,9 @@ class UserService(IUserService):
                             jwt_configs["hash_key"],
                             algorithm=jwt_configs['algorithm']
                         ),
-                        email=user.email,
+                        id=user.id,
                         username=user.name,
+                        email=user.email,
                         role=user.role
                     )
                 )

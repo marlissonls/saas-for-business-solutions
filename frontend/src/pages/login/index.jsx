@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 import { validateEmail, validatePassword } from "../../services/validateFields";
-import { set_token, set_email, set_username } from "../../services/auth";
+import { set_token, set_id, set_email, set_username, set_role } from "../../services/auth";
 import api from "../../services/api";
 
 function Login(props) {
@@ -37,26 +37,18 @@ function Login(props) {
       email: email, password: password
     })
 
-    // //isso deve morrer depois
-    // const response = {
-    //   data: {
-    //     status: true,
-    //     message: "Sucessamente",
-    //     data: {
-    //       token: "token",
-    //       email: email,
-    //       username: "nome_teste",
-    //       role: "client"
-    //     }
-    //   }
-    // }
-
     if (response.data.status) {
       set_token(response.data.data.token)
-      set_email(response.data.data.email)
+      set_id(response.data.data.id)
       set_username(response.data.data.username)
+      set_email(response.data.data.email)
+      set_role(response.data.data.role)
       messageSuccess(response.data.message)
-      navigate("/home")
+      if (response.data.data.role === 'client') {
+        navigate('/home')
+      } else if (response.data.data.role === 'admin') {
+        navigate('/panel')
+      }
     } else {
       messageError(response.data.message)
     }

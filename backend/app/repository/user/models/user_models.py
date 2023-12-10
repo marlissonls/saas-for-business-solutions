@@ -20,8 +20,9 @@ class RegisterResponse(BaseModel):
 
 class CredentialInfo(BaseModel):
     token: str
-    email: str
+    id: str
     username: str
+    email: str
     role: str
 
 class LoginResponse(BaseModel):

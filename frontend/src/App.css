@@ -104,5 +104,20 @@
   font-weight: bold;
 }
 
+.input-image {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.input-image:hover {
+  background-color: #45a049;
+}
+
 
 /* HOME PAGE */
