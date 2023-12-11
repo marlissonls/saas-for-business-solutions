@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import UploadFile
 from uuid import uuid1
+from datetime import datetime, timedelta
 
 class CompanyService(ICompanyService):
 
@@ -50,7 +51,9 @@ class CompanyService(ICompanyService):
     def create_company_service(
         self, 
         name: str,
-        description : str,
+        area: str,
+        description: str,
+        localization: str,
         session: Session
     ) -> CompanyId:
         try:
@@ -59,9 +62,11 @@ class CompanyService(ICompanyService):
             new_company = Company(
                 id=new_company_id,
                 name=name,
-                description =description 
+                area=area,
+                description=description,
+                localization=localization,
             )
-
+            datetime, timedelta
             self._repository.create_company_repository(new_company, session)
 
             session.commit()
@@ -89,7 +94,7 @@ class CompanyService(ICompanyService):
             return CompanyOut(
                 id=company.id,
                 name=company.name,
-                description =company.description 
+                description=company.description
             )
         except SQLAlchemyError as error:
             session.rollback()

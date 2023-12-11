@@ -30,3 +30,11 @@ def save_profile_image(profile_image_name: str, profile_image: UploadFile) -> No
         profile_image_file = profile_image_file.convert('RGB')
 
     profile_image_file.save(profile_image_path, format='jpeg')
+
+
+
+def get_profile_image(im_name: str) -> bytes:
+    with open(f'{PROFILE_IMAGES_PATH}/{im_name}.jpeg', "rb") as image_file:
+        image_bytes = image_file.read()
+
+    return image_bytes

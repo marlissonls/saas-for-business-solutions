@@ -1,8 +1,8 @@
 from app.repository.user.exceptions import UserNotFoundError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import PostUser, GetUserId, GetUser, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse
+from app.repository.user.models.user_models import PutUser, GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
-from app.repository.user.service.save_profile_image import save_profile_image
+from app.repository.user.service.handle_profile_image import save_profile_image, get_profile_image
 from app.repository.user.service.hashing import Hasher
 from app.db.schema import User
 from app.config import jwt_configs
@@ -20,34 +20,49 @@ class UserService(IUserService):
     def __init__(self, repository: IUserRepository):
         self._repository = repository
 
-    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUser:
+    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUserData:
+        error = None
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
-                raise UserNotFoundError(id=user_id)
+                return GetUserResponse(
+                    status=False,
+                    message='Não foi possível encontrar este usuário.',
+                    data=None
+                )
             
-            return GetUser(
-                id=user.id,
-                name=user.name,
-                email=user.email
+            return GetUserResponse(
+                status=True,
+                message='Usuário encontrado com sucesso.',
+                data=GetUserData(
+                    id=user.id,
+                    name=user.name,
+                    email=user.email,
+                    company_id=user.company_id
+                )
             )
 
-        except SQLAlchemyError as error:
-            session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
         except Exception as error:
-            raise InternalServerError(f"Internal Server Error: {str(error)}") from error
+            session.rollback()
+            return GetUserResponse(
+                status=False,
+                message=f'Erro interno no servidor',
+                data=None
+            )
+        finally:
+            if error:
+                raise error
 
 
-    def get_users_service(self, session: Session) -> list[GetUser] | list:
+    def get_users_service(self, session: Session) -> list[GetUserData] | list:
         try:
             users = self._repository.get_users_repository(session)
 
             if not users:
                 return []
             
-            return [GetUser(id=user.id, name=user.name, email=user.email) for user in users]
+            return [GetUserData(id=user.id, name=user.name, email=user.email) for user in users]
 
         except SQLAlchemyError as error:
             session.rollback()
@@ -127,7 +142,8 @@ class UserService(IUserService):
                         id=user.id,
                         username=user.name,
                         email=user.email,
-                        role=user.role
+                        role=user.role,
+                        profile=get_profile_image(user.id)
                     )
                 )
 
@@ -139,25 +155,33 @@ class UserService(IUserService):
                 )
         except SQLAlchemyError as error:
             session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
+            return LoginResponse(
+                    status=False,
+                    message="Erro interno no servidor.",
+                    data=None
+                )
 
 
-    def update_user_service(self, user_id: str, user_updated: PostUser, session: Session) -> GetUser:
+    def update_user_service(self, user_id: str, user_updated: PutUser, session: Session) -> GetUserData:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
                 raise UserNotFoundError(id=user_id)
+            
+            for key, value in user_updated.model_dump(exclude_unset=True).items():
+                if key == 'password' and value is not None:
+                    setattr(user, key, Hasher.get_password_hash(value))
+                else:
+                    setattr(user, key, value)
 
-            user.name = user_updated.name
-            user.email = user_updated.email
-            user.password = Hasher.get_password_hash(user_updated.password)
+            user.updated_at = datetime.utcnow()+timedelta(hours=-3)
 
             self._repository.update_user_repository(user, session)
 
             session.commit()
 
-            return GetUser(
+            return GetUserData(
                 id=user.id,
                 name=user.name,
                 email=user.email
@@ -173,6 +197,8 @@ class UserService(IUserService):
 
             if not user:
                 raise UserNotFoundError(id=user_id)
+            
+            user.deleted_at = datetime.utcnow()+timedelta(hours=-3)
 
             self._repository.delete_user_repository(user, session)
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Form, File, UploadFile, status, Depends, Request
-from app.repository.user.models.user_models import GetUser, PostUser, LoginRequest, LoginResponse, RegisterResponse
+from app.repository.user.models.user_models import GetUserData, GetUserResponse, PutUser, LoginRequest, LoginResponse, RegisterResponse
 from app.repository.user.sqlalchemy import UserRepository
 from app.repository.user.controller import UserController
 from app.repository.user.service import UserService
@@ -20,7 +20,7 @@ def get_db(request: Request):
     return request.state.db
 
 
-@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUser)
+@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUserResponse)
 def get_user_by_id(user_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     if current_user['role'] == 'admin':
         return controller.get_user_by_id_controller(user_id, session)
@@ -29,7 +29,7 @@ def get_user_by_id(user_id: str, current_user: dict = Depends(get_authenticated_
         pass
 
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=list[GetUser])
+@router.get('/', status_code=status.HTTP_200_OK, response_model=list[GetUserData])
 def get_users(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     if current_user['role'] == 'admin':
         return controller.get_users_controller(session)
@@ -60,8 +60,8 @@ def login(form: LoginRequest, session: Session = Depends(get_db)) -> Any:
     return controller.login(form, session)
 
 
-@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUser)
-def update_user(user_id: str, user: PostUser, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
+@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUserData)
+def update_user(user_id: str, user: PutUser, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.update_user_controller(user_id, user, session)
 
 

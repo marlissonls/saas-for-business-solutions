@@ -1,17 +1,30 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
-class UserBase(BaseModel):
-    name: str
-    email: EmailStr
 
 class GetUserId(BaseModel):
     id: str
 
-class PostUser(UserBase):
+class PostUser(BaseModel):
+    name: str
+    email: EmailStr
     password: str
 
-class GetUser(GetUserId, UserBase):
-    pass
+class GetUserData(BaseModel):
+    id: str
+    name: str
+    email: EmailStr
+    company_id: str | None
+
+class GetUserResponse(BaseModel):
+    status: bool
+    message: str
+    data: GetUserData | None
+
+class PutUser(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
 
 class RegisterResponse(BaseModel):
     status: bool
@@ -24,6 +37,7 @@ class CredentialInfo(BaseModel):
     username: str
     email: str
     role: str
+    profile: bytes
 
 class LoginResponse(BaseModel):
     status: bool

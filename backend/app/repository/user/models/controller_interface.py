@@ -1,14 +1,14 @@
-from app.repository.user.models.user_models import PostUser, GetUser, GetUserId, LoginRequest, LoginResponse
+from app.repository.user.models.user_models import PostUser, GetUserData, GetUserId, LoginRequest, LoginResponse
 from abc import ABC, abstractmethod
 
 class IUserController(ABC):
 
     @abstractmethod
-    def get_user_by_id_controller(self, user_id: str) -> GetUser:
+    def get_user_by_id_controller(self, user_id: str) -> GetUserData:
         pass
 
     @abstractmethod
-    def get_users_controller(self) -> list[GetUser]:
+    def get_users_controller(self) -> list[GetUserData]:
         pass
 
     @abstractmethod
@@ -20,7 +20,7 @@ class IUserController(ABC):
         pass
 
     @abstractmethod
-    def update_user_controller(self, user_id: str, user: PostUser) -> GetUser:
+    def update_user_controller(self, user_id: str, user: PostUser) -> GetUserData:
         pass
 
     @abstractmethod
