@@ -1,15 +1,12 @@
-from app.repository.user.exceptions import UserNotFoundError, InternalServerError, FileTypeNotSupportedError
-from app.repository.user.models.user_models import PutUser, GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse
+from app.repository.user.models.user_models import PutUser, GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse, GetProfileImage, ImageUrl
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
-from app.repository.user.service.handle_profile_image import save_profile_image, get_profile_image
+from app.repository.user.service.handle_profile_image import FileTypeNotSupportedError, save_profile_image
 from app.repository.user.service.hashing import Hasher
 from app.db.schema import User
 from app.config import jwt_configs
-
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
 from fastapi import UploadFile
 from uuid import uuid1
 import jwt
@@ -20,8 +17,7 @@ class UserService(IUserService):
     def __init__(self, repository: IUserRepository):
         self._repository = repository
 
-    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUserData:
-        error = None
+    def get_user_by_id_service(self, user_id: str, session: Session) -> GetUserResponse:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
@@ -50,25 +46,43 @@ class UserService(IUserService):
                 message=f'Erro interno no servidor',
                 data=None
             )
-        finally:
-            if error:
-                raise error
 
 
-    def get_users_service(self, session: Session) -> list[GetUserData] | list:
+    def get_profile_image(self, user_id: str) -> GetProfileImage:
+        return GetProfileImage(
+            status=True,
+            message='OK',
+            data=ImageUrl(
+                image_url=f"/profile-photo/{user_id}.jpeg"
+            )
+        )
+
+
+    def get_users_service(self, session: Session) -> GetUserResponse:
         try:
             users = self._repository.get_users_repository(session)
 
             if not users:
-                return []
+                return GetUserResponse(
+                    status=True,
+                    message='Nenhum usuário encontrado nesta pesquisa.',
+                    data=[]
+                )
             
-            return [GetUserData(id=user.id, name=user.name, email=user.email) for user in users]
+            users_data_list = [GetUserData(id=user.id, name=user.name, email=user.email, company_id=user.company_id) for user in users]
+            return GetUserResponse(
+                status=True,
+                message='Usuários encontrados com sucesso.',
+                data=users_data_list
+            )
 
-        except SQLAlchemyError as error:
-            session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
         except Exception as error:
-            raise InternalServerError(f"Internal Server Error: {str(error)}") from error
+            session.rollback()
+            return GetUserResponse(
+                status=False,
+                message='Erro interno no servidor.',
+                data=None
+            )
 
 
     def create_user_service(
@@ -82,20 +96,21 @@ class UserService(IUserService):
         try:
             new_user_id = str(uuid1())
 
-            profile_image_name = f'{new_user_id}.jpeg'
+            profile_photo_name = f'{new_user_id}.jpeg'
+            profile_photo_url = f'/profile-photo/{profile_photo_name}'
 
             new_user = User(
                 id=new_user_id,
                 name=name,
                 email=email,
                 password=Hasher.get_password_hash(password),
-                profile_image=profile_image_name,
+                profile_image=profile_photo_url,
                 role='client'
             )
 
             self._repository.create_user_repository(new_user, session)
 
-            save_profile_image(profile_image_name, profile_image)
+            save_profile_image(profile_photo_name, profile_image)
 
             session.commit()
 
@@ -105,16 +120,20 @@ class UserService(IUserService):
                 data=GetUserId(id=new_user.id)
             )
 
-        except SQLAlchemyError as error:
+        except FileTypeNotSupportedError:
+            session.rollback()
+            return RegisterResponse(
+                status=False,
+                message=f"Arquivo não suportado.",
+                data=None
+            )
+        except Exception as error:
             session.rollback()
             return RegisterResponse(
                 status=False,
                 message=f"Erro ao cadastrar este usuário.",
                 data=None
             )
-        except FileTypeNotSupportedError as error:
-            session.rollback()
-            raise
 
 
     def login(self, form: LoginRequest, session: Session) -> LoginResponse:
@@ -128,32 +147,32 @@ class UserService(IUserService):
                     data=None
                 )
 
-            if Hasher.verify_password(form.password, user.password):
-                return LoginResponse(
-                    status=True,
-                    message="Login realizado com sucesso",
-                    data=CredentialInfo(
-                        token=jwt.encode(
-                            {"sub": {"id": user.id, "name": user.name, "email": user.email, "role": user.role},
-                             "exp": datetime.utcnow() + timedelta(days=10)},
-                            jwt_configs["hash_key"],
-                            algorithm=jwt_configs['algorithm']
-                        ),
-                        id=user.id,
-                        username=user.name,
-                        email=user.email,
-                        role=user.role,
-                        profile=get_profile_image(user.id)
-                    )
-                )
-
-            else:
+            if not Hasher.verify_password(form.password, user.password):
                 return LoginResponse(
                     status=False,
                     message="Senha inválida.",
                     data=None
                 )
-        except SQLAlchemyError as error:
+
+            return LoginResponse(
+                status=True,
+                message="Login realizado com sucesso",
+                data=CredentialInfo(
+                    token=jwt.encode(
+                        {"sub": {"id": user.id, "name": user.name, "email": user.email, "role": user.role},
+                            "exp": datetime.utcnow() + timedelta(days=10)},
+                        jwt_configs["hash_key"],
+                        algorithm=jwt_configs['algorithm']
+                    ),
+                    id=user.id,
+                    username=user.name,
+                    email=user.email,
+                    role=user.role,
+                    image_url=user.profile_image
+                )
+            )
+
+        except Exception as error:
             session.rollback()
             return LoginResponse(
                     status=False,
@@ -162,12 +181,16 @@ class UserService(IUserService):
                 )
 
 
-    def update_user_service(self, user_id: str, user_updated: PutUser, session: Session) -> GetUserData:
+    def update_user_service(self, user_id: str, user_updated: PutUser, session: Session) -> GetUserResponse:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
-                raise UserNotFoundError(id=user_id)
+                return GetUserResponse(
+                    status=False,
+                    message='Não foi possível encontrar este usuário.',
+                    data=None
+                )
             
             for key, value in user_updated.model_dump(exclude_unset=True).items():
                 if key == 'password' and value is not None:
@@ -181,22 +204,35 @@ class UserService(IUserService):
 
             session.commit()
 
-            return GetUserData(
-                id=user.id,
-                name=user.name,
-                email=user.email
+            return GetUserResponse(
+                status=True,
+                message='Dados atualizados.',
+                data=GetUserData(
+                    id=user.id,
+                    name=user.name,
+                    email=user.email,
+                    company_id=user.company_id
+                )
             )
-        except SQLAlchemyError as error:
+        except Exception as error:
             session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
+            return GetUserResponse(
+                status=False,
+                message='Erro interno no servidor.',
+                data=None
+            )
 
 
-    def delete_user_service(self, user_id: str, session: Session) -> None:
+    def delete_user_service(self, user_id: str, session: Session) -> GetUserResponse:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
             if not user:
-                raise UserNotFoundError(id=user_id)
+                return GetUserResponse(
+                    status=False,
+                    message='Não foi possível encontrar este usuário.',
+                    data=None
+                )
             
             user.deleted_at = datetime.utcnow()+timedelta(hours=-3)
 
@@ -204,6 +240,16 @@ class UserService(IUserService):
 
             session.commit()
 
-        except SQLAlchemyError as error:
+            return GetUserResponse(
+                status=True,
+                message='Usuário deletado.',
+                data=None
+            )
+
+        except Exception as error:
             session.rollback()
-            raise InternalServerError(f"SQLAlchemyError: {str(error)}") from error
+            return GetUserResponse(
+                status=False,
+                message='Erro interno no servidor.',
+                data=None
+            )

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from fastapi.responses import StreamingResponse
+from typing import Optional, List, Union
 
 
 class GetUserId(BaseModel):
@@ -19,7 +20,7 @@ class GetUserData(BaseModel):
 class GetUserResponse(BaseModel):
     status: bool
     message: str
-    data: GetUserData | None
+    data: Union[GetUserData, List[GetUserData], None] = None
 
 class PutUser(BaseModel):
     name: Optional[str] = None
@@ -37,7 +38,7 @@ class CredentialInfo(BaseModel):
     username: str
     email: str
     role: str
-    profile: bytes
+    image_url: str | None
 
 class LoginResponse(BaseModel):
     status: bool
@@ -47,3 +48,11 @@ class LoginResponse(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+class ImageUrl(BaseModel):
+    image_url: str
+
+class GetProfileImage(BaseModel):
+    status: bool
+    message: str
+    data: ImageUrl
