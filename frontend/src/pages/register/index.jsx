@@ -116,7 +116,7 @@ function Register(props) {
           Cadastre-se
         </button>
 
-        <div>Já tem uma conta? <Link to="/login">Faça Login</Link></div>
+        <div>Já fez o seu cadastro? <Link to="/login">Entre</Link></div>
       </form>
     </div>
   );

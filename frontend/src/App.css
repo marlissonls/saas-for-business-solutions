@@ -4,9 +4,11 @@
   box-sizing: border-box;
 }
 /* GENERAL STYLES */
+
+
 :root {
   --fonte-principal: 'Open Sans', sans-serif;
-  --largura-sidebar: 15%;
+  --largura-sidebar: 280px;
   --page-height: 100vh;
   --main-color: midnightblue
 }
@@ -16,11 +18,17 @@
   display: flex;
 }
 
+.main-content {
+  width: calc(100% - var(--largura-sidebar));
+  height: var(--page-height);
+  padding: 15px;
+}
+
+/* SIDEBAR */
+
 .side-bar {
   display: flex;
-  flex-direction: column;
-  background-color: var(--main-color);
-  color: #fff;
+  flex-direction: column;  
   width: var(--largura-sidebar);
   min-width: 230px;
   height: var(--page-height);
@@ -32,10 +40,21 @@
 .side-bar-display {
   font-size: 17px;
   font-weight: bold;
-  color: #fff;
+  color: #000;
   text-decoration: none;
   display: flex;
   cursor: pointer;
+  padding: 10px 0;
+  padding-left: 30px;
+}
+
+.active-link {
+  background-color: #26bc6a;
+  color: #fff
+}
+
+.side-bar .logout {
+  margin-top: auto;
 }
 
 .sidebar-icon-box {
@@ -43,10 +62,37 @@
   text-align: center;
 }
 
-.main-content {
-  width: calc(100% - var(--largura-sidebar));
-  height: var(--page-height);
-  padding: 15px;
+.profile-container-sidebar {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-name-sidebar {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-name-sidebar p:first-child {
+  font-weight: bold;
+}
+
+.profile-name-sidebar p:last-child {
+  font-size: 15px;
+}
+
+.photo-container-sidebar {
+  width: 62px;
+  height: 62px;
+}
+
+.profile-photo-sidebar {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
 }
 
 /* LANDING PAGE */
@@ -70,7 +116,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  width: 30%;
+  width: 400px;
   min-height: 50vh;
   padding: 30px;
   font-family: var(--fonte-principal);
@@ -121,3 +167,18 @@
 
 
 /* HOME PAGE */
+
+
+/* PROFILE PAGE */
+.profile-container {
+  width: 150px;
+  height: 150px;
+  border: 1px solid red;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
