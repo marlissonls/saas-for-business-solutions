@@ -2,7 +2,8 @@ const TOKEN = "@TOKEN";
 const ID = "@ID";
 const USERNAME = "@USERNAME";
 const EMAIL = "@EMAIL";
-const ROLE = "@ROLE"
+const ROLE = "@ROLE";
+const PROFILE = "@PROFILE";
 
 function get_token() {
     return localStorage.getItem(TOKEN)
@@ -44,6 +45,14 @@ function set_role(rl) {
     localStorage.setItem(ROLE, rl)
 }
 
+function get_profile_url() {
+    return localStorage.getItem(PROFILE)
+}
+
+function set_profile_url(pf) {
+    localStorage.setItem(PROFILE, pf)
+}
+
 function isAuthenticated() {
     if (get_token()) return true;
     return false;
@@ -60,6 +69,7 @@ function logout() {
     localStorage.removeItem(USERNAME)
     localStorage.removeItem(ID)
     localStorage.removeItem(ROLE)
+    localStorage.removeItem(PROFILE)
 }
 
 export {
@@ -73,6 +83,8 @@ export {
     set_id,
     get_role,
     set_role,
+    get_profile_url,
+    set_profile_url,
     isAuthenticated,
     isAdmin,
     logout,

@@ -19,8 +19,8 @@ def handle_token_exception(exception: Exception) -> None:
 async def get_authenticated_user(token: str = Depends(oauth2_scheme)) -> dict:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        subject: dict = payload.get("sub")
-        if subject is None:
+        user: dict = payload.get("sub")
+        if user is None:
             handle_token_exception(HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Não foi possível validar as credenciais. Verifique o token ou faça login novamente.",
@@ -31,5 +31,5 @@ async def get_authenticated_user(token: str = Depends(oauth2_scheme)) -> dict:
     except jwt.InvalidTokenError as e:
         handle_token_exception(e)
 
-    return {"user": subject}
+    return user
 

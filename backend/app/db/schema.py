@@ -10,8 +10,10 @@ class Company(Base):
     __tablename__ = 'companies'
     id = Column(String, primary_key=True)
     name = Column(String(255), nullable=False)
-    description = Column(Text)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    area = Column(String(255), nullable=False)
+    description = Column(Text, nullable=False)
+    localization = Column(String(255), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(timezone='UTC-3'))
     updated_at = Column(DateTime, default=None)
     deleted_at = Column(DateTime, default=None)
 

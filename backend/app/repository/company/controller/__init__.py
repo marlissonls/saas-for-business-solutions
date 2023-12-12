@@ -32,13 +32,17 @@ class CompanyController(ICompanyController):
     def create_company_controller(
         self, 
         name: str,
-        description : str,
+        area: str,
+        description: str,
+        localization: str,
         session: Session
     ) -> CompanyId:
         try:
             return self._service.create_company_service(
                 name,
-                description ,
+                area,
+                description,
+                localization,
                 session
             )
         except Exception as error:
