@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SideBar from '../../components/sideBar';
-import MainContent from '../../components/mainContent';
+import MainContent from '../../containers/mainContent';
 import ProfileData from './profileData';
 
 function Profile(props) {

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import api from "../../services/api";
 import SideBar from "../../components/sideBar";
-import MainContent from "../../components/mainContent";
+import MainContent from "../../containers/mainContent";
 
 import Dash1 from "./dashInterfaces/dash1";
 import Dash2 from "./dashInterfaces/dash2";

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import api from "../../services/api";
 import SideBar from "../../components/sideBar";
-import MainContent from "../../components/mainContent";
+import MainContent from "../../containers/mainContent";
 
 import Model1 from "./modelInterfaces/model1";
 import Model2 from "./modelInterfaces/model2";
