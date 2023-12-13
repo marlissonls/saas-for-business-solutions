@@ -10,15 +10,16 @@ import Dash2 from "./dashInterfaces/dash2";
 
 function selectDash(id, data) {
     switch (id) {
-        case 1: return <Dash1 data={ data }/>
-        case 2: return <Dash2 data={ data }/>
+        case 'a23e4567-e89b-12d3-a456-426614174001': return <Dash1 data={ data }/>
+        case '2': return <Dash2 data={ data }/>
         default: return null
     }
 }
 
 async function getDashboard(id) {
-    const response = await api.get(`/dashboards/${id}`)
-    return response.data
+    // const response = await api.get(`/dashboards/${id}`)
+    // return response.data
+    return 'teste'
 }
 
 function Dashboard(props) {

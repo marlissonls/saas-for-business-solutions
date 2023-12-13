@@ -21,7 +21,8 @@ function SideBar(props) {
   }, []);
 
   useEffect(() => {
-    setActiveLink(location.pathname);
+    const cleanedPathname = location.pathname.replace(/\/[a-f0-9-]+$/, '');
+    setActiveLink(cleanedPathname);
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -37,7 +38,7 @@ function SideBar(props) {
   ];
 
   return (
-    <div className='side-bar'>
+    <div className='sidebar'>
       <div className='profile-container-sidebar'>
         <div className='profile-name-sidebar'>
           <p>{`Olá, ${userName.split(' ')[0]}`}</p>
@@ -51,7 +52,7 @@ function SideBar(props) {
         <Link
           key={index}
           to={link.to}
-          className={`side-bar-display ${activeLink === link.to ? 'active-link' : ''}`}
+          className={`sidebar-display ${activeLink === link.to ? 'active-link' : ''}`}
         >
           <div className='sidebar-icon-box'>
             <FontAwesomeIcon icon={link.icon} size='lg' />
@@ -59,7 +60,7 @@ function SideBar(props) {
           {link.text}
         </Link>
       ))}
-      <div className='side-bar-display logout' onClick={handleLogout}>
+      <div className='sidebar-display logout' onClick={handleLogout}>
         <div className='sidebar-icon-box'>
           <FontAwesomeIcon icon={faSignOut} size='lg' />
         </div>

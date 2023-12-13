@@ -6,7 +6,7 @@ import CompanyData from './company';
 
 function Home(props) {
   const data = { 
-    'companyName': 'Mercado Top',
+    'companyName': 'Americanas',
     'area': 'Supermercado',
     'localization': 'Rue de Paradise'
   }
