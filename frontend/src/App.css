@@ -29,6 +29,9 @@
   width: calc(100% - var(--largura-sidebar));
   min-height: var(--page-height);
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* SIDEBAR */
@@ -217,12 +220,6 @@
 }
 
 /* CARDS */
-
-.card-page {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
 
 .card-container {
   display: flex;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import SideBar from '../../components/sideBar';
 import MainContent from '../../components/mainContent';
-import DashCardContainer from "./dashCardContainer";
+import CardContainer from "../../containers/cardContainer";
 
 const dashboardCards = [
   { id: 'A', name: 'Dashboard Estatístico', description: 'Em linguística, a noção de texto é ampla e ainda aberta a uma definição mais precisa. Grosso modo, pode ser entendido como manifestação linguística das ideias de um autor, que serão interpretadas pelo leitor de acordo com seus conhecimentos linguísticos e culturais. Seu tamanho é variável.' },
@@ -14,14 +14,13 @@ const dashboardCards = [
 ];
 
 function DashboardCards(props) {
-  return (
-    <div className='body'>
-      <SideBar />
-      <MainContent>
-          <DashCardContainer cards={dashboardCards} />
-      </MainContent>
-    </div>
-  );
+  return <div className='body'>
+    <SideBar />
+    <MainContent>
+      <h2 className='page-title'>Dashboards</h2>
+      <CardContainer route='dashboards' cards={dashboardCards} />
+    </MainContent>
+  </div>
 }
 
 export default DashboardCards;
