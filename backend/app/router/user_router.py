@@ -72,11 +72,11 @@ def login(form: LoginRequest, session: Session = Depends(get_db)) -> Any:
     return controller.login(form, session)
 
 
-@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUserData)
+@router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUserResponse)
 def update_user(user_id: str, user: PutUser, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.update_user_controller(user_id, user, session)
 
 
-@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUserResponse)
 def delete_user(user_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
     controller.delete_user_controller(user_id, session)

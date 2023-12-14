@@ -17,6 +17,7 @@
   --border-color: #ccc;
   --card-width: 600px;
   --border-radius: 15px;
+  --border-test: 1px solid red;
 }
 
 .body {
@@ -34,6 +35,10 @@
   gap: 30px;
 }
 
+.page-title {
+  color: var(--text-color);
+}
+
 /* SIDEBAR */
 
 .sidebar {
@@ -43,7 +48,7 @@
   width: var(--largura-sidebar);
   height: var(--page-height);
   background-color: #fff;
-  box-shadow: 3px 0 7px #000a;
+  box-shadow: 0 0 5px #000a;
   padding: 30px 20px;
 
   display: flex;
@@ -126,10 +131,7 @@
   border-radius: 50%;
   width: 60px;
   height: 60px;
-}
-
-.page-title {
-  color: var(--text-color);
+  box-shadow: 0 0 5px #000000;
 }
 
 /* LANDING PAGE */
@@ -207,16 +209,63 @@
 
 
 /* PROFILE PAGE */
+
 .profile-container {
-  width: 150px;
-  height: 150px;
-  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 60px;
+  width: fit-content;
+  padding: 20px 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 7px #000a;
+}
+
+.profile-container div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px
 }
 
 .profile-photo {
   border-radius: 50%;
-  width: 150px;
-  height: 150px;
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 0 8px #000000;
+}
+
+.profile-username {
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.profile-position {
+  font-size: 20px;
+  color: var(--text-color);
+}
+
+.update-profile-modal {
+  position: fixed;
+
+  align-self: center;
+  width: 400px;
+  height: 500px;
+  background-color: #fff;
+  border: var(--border-test);
+}
+
+.update-profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-button-container {
+  display: flex;
+  width: 200px;
+  height: 50px;
+  background-color: #fff;
+  border: var(--border-test);
 }
 
 /* CARDS */
