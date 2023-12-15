@@ -31,6 +31,7 @@ class User(Base):
     deleted_at = Column(DateTime, default=None)
     company = relationship('Company', back_populates='users') 
 
+#position = Column(String(255))
 class Dashboard(Base):
     __tablename__ = 'dashboards'
     id = Column(String, primary_key=True)

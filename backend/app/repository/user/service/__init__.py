@@ -1,4 +1,4 @@
-from app.repository.user.models.user_models import PutUser, GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse, GetProfileImage, ImageUrl
+from app.repository.user.models.user_models import GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse, GetProfileImage, ImageUrl
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
 from app.repository.user.service.handle_profile_image import FileTypeNotSupportedError, save_profile_image
@@ -181,7 +181,15 @@ class UserService(IUserService):
                 )
 
 
-    def update_user_service(self, user_id: str, user_updated: PutUser, session: Session) -> GetUserResponse:
+    def update_user_service(
+        self,
+        user_id: str,
+        name: str,
+        email: str,
+        password: str,
+        profile_image: UploadFile,
+        session: Session
+    ) -> GetUserResponse:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
@@ -191,16 +199,17 @@ class UserService(IUserService):
                     message='Não foi possível encontrar este usuário.',
                     data=None
                 )
-            
-            for key, value in user_updated.model_dump(exclude_unset=True).items():
-                if key == 'password' and value is not None:
-                    setattr(user, key, Hasher.get_password_hash(value))
-                else:
-                    setattr(user, key, value)
 
-            user.updated_at = datetime.utcnow()+timedelta(hours=-3)
+            if name: user.name = name
+            if email: user.email = email
+            if password: user.password = Hasher.get_password_hash(password)
+            user.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_user_repository(user, session)
+
+            if profile_image:
+                profile_photo_name = f'{user_id}.jpeg'
+                save_profile_image(profile_photo_name, profile_image)
 
             session.commit()
 

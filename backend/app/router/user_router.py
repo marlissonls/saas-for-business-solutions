@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Form, File, UploadFile, status, Depends, Request
-from fastapi.responses import StreamingResponse
-from app.repository.user.models.user_models import GetUserData, GetUserResponse, PutUser, LoginRequest, LoginResponse, RegisterResponse, GetProfileImage
+from app.repository.user.models.user_models import GetUserResponse, LoginRequest, LoginResponse, RegisterResponse, GetProfileImage
 from app.repository.user.sqlalchemy import UserRepository
 from app.repository.user.controller import UserController
 from app.repository.user.service import UserService
 from app.utils.auth import get_authenticated_user
-from typing import Any, Annotated
+from typing import Any, Annotated, Optional, Union
 from sqlalchemy.orm import Session
 
 
@@ -33,7 +32,7 @@ def get_user_by_id(user_id: str, current_user: dict = Depends(get_authenticated_
         )
 
 
-@router.get('/profile-image/{user_id}', status_code=status.HTTP_200_OK, response_model=GetProfileImage)
+@router.get('/profile-photo/{user_id}', status_code=status.HTTP_200_OK, response_model=GetProfileImage)
 def get_profile_image(user_id: str, current_user: dict = Depends(get_authenticated_user)):
     return controller.get_profile_image(user_id)
 
@@ -73,8 +72,23 @@ def login(form: LoginRequest, session: Session = Depends(get_db)) -> Any:
 
 
 @router.put('/{user_id}', tags=['custom'], status_code=status.HTTP_200_OK, response_model=GetUserResponse)
-def update_user(user_id: str, user: PutUser, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    return controller.update_user_controller(user_id, user, session)
+def update_user(
+    user_id: str,
+    name: Optional[str] = Form(None),
+    email: Optional[str] = Form(None),
+    password: Optional[str] = Form(None),
+    profile_image: Union[UploadFile, str] = File(None),
+    current_user: dict = Depends(get_authenticated_user),
+    session: Session = Depends(get_db)
+) -> Any:
+    return controller.update_user_controller(
+        user_id,
+        name,
+        email,
+        password,
+        profile_image,
+        session
+    )
 
 
 @router.delete('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUserResponse)

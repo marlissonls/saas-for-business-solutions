@@ -52,7 +52,7 @@ function SideBar(props) {
         <Link
           key={index}
           to={link.to}
-          className={`sidebar-display ${activeLink === link.to ? 'active-link' : ''}`}
+          className={`sidebar-link ${activeLink === link.to ? 'active-link' : ''}`}
         >
           <div className='sidebar-icon-box'>
             <FontAwesomeIcon icon={link.icon} size='lg' />
@@ -60,7 +60,7 @@ function SideBar(props) {
           {link.text}
         </Link>
       ))}
-      <div className='sidebar-display logout' onClick={handleLogout}>
+      <div className='sidebar-link logout' onClick={handleLogout}>
         <div className='sidebar-icon-box'>
           <FontAwesomeIcon icon={faSignOut} size='lg' />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
@@ -65,7 +65,7 @@ function Login(props) {
       <h2>Login</h2>
       
       <input
-        className="login-input"
+        className="input"
         type="text"
         placeholder="E-mail"
         value={email || ""}
@@ -73,7 +73,7 @@ function Login(props) {
       ></input>
 
       <input
-        className="login-input"
+        className="input"
         type="password"
         placeholder="Senha"
         value={password || ""}

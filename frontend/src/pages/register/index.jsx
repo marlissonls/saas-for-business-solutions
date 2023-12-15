@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
@@ -70,7 +70,7 @@ function Register(props) {
         <h2>Cadastrar</h2>
 
         <input
-          className="login-input"
+          className="input"
           type="text"
           placeholder="Nome"
           value={name || ""}
@@ -79,7 +79,7 @@ function Register(props) {
         {errors[0] && <div className="error-message">{errors[0]}</div>}
 
         <input
-          className="login-input"
+          className="input"
           type="text"
           placeholder="E-mail"
           value={email || ""}
@@ -88,7 +88,7 @@ function Register(props) {
         {errors[1] && <div className="error-message">{errors[1]}</div>}
 
         <input
-          className="login-input"
+          className="input"
           type="password"
           placeholder="Senha"
           value={password || ""}
@@ -104,8 +104,8 @@ function Register(props) {
           style={{ display: 'none' }}
         />
 
-        <label htmlFor="profile-input" className="input-image">
-          {selectedFileName.substring(0,22) || 'Escolher arquivo'}
+        <label className="button select-file-btn" htmlFor="profile-input">
+          {selectedFileName.substring(0,30) || 'Escolher foto de perfil'}
         </label>
 
         <button

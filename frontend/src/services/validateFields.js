@@ -16,7 +16,7 @@ function validateName(name) {
   if (!nameValue) {
     message = 'Nome é requerido!';
   } else if (!isValidNameFormat(nameValue)) {
-    message = 'Nome inválido! Remova caracteres especiais e/ou números.'
+    message = 'Nome inválido.'
   }
   return message;
 }
