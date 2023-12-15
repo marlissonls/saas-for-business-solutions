@@ -76,6 +76,7 @@ def update_user(
     user_id: str,
     name: Optional[str] = Form(None),
     email: Optional[str] = Form(None),
+    position: Optional[str] = Form(None),
     password: Optional[str] = Form(None),
     profile_image: Union[UploadFile, str] = File(None),
     current_user: dict = Depends(get_authenticated_user),
@@ -85,6 +86,7 @@ def update_user(
         user_id,
         name,
         email,
+        position,
         password,
         profile_image,
         session
@@ -93,4 +95,4 @@ def update_user(
 
 @router.delete('/{user_id}', status_code=status.HTTP_200_OK, response_model=GetUserResponse)
 def delete_user(user_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
-    controller.delete_user_controller(user_id, session)
+    return controller.delete_user_controller(user_id, session)
