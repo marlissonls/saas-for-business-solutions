@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useSnackbar } from 'notistack';
 import api from "../../services/api";
-import { get_id, set_username, set_email } from "../../services/auth";
-import { validateName, validateEmail, validatePassword } from "../../services/validateFields";
+import { get_id, set_username, set_email, set_position } from "../../services/auth";
+import { validateName, validateEmail, validatePosition, validatePassword } from "../../services/validateFields";
 //import AreYouSureModal from "../../components/areYouSureModal";
 
 function UpdateUserForm(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [position, setPosition] = useState('');
   const [password, setPassword] = useState('');
   const [profileImage, setProfileImage] = useState(undefined);
   const [selectedFileName, setSelectedFileName] = useState('');
@@ -25,7 +26,8 @@ function UpdateUserForm(props) {
     const errors = [];
     errors[0] = validateName(name);
     errors[1] = validateEmail(email);
-    errors[2] = validatePassword(password);
+    errors[2] = validatePosition(position)
+    errors[3] = validatePassword(password);
     return errors;
   }
 
@@ -43,6 +45,7 @@ function UpdateUserForm(props) {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
+    formData.append('position', position);
     formData.append('password', password);
     formData.append('profile_image', profileImage !== undefined ? profileImage : '');
 
@@ -55,6 +58,7 @@ function UpdateUserForm(props) {
     if (response.data.status) {
       set_username(response.data.data.name)
       set_email(response.data.data.email)
+      set_position(response.data.data.position)
       messageSuccess(response.data.message);
     } else {
       messageError(response.data.message);
@@ -82,6 +86,14 @@ function UpdateUserForm(props) {
         onChange={(e) => setEmail(e.target.value)}
       />
       
+      <input
+        className="input"
+        type="text"
+        placeholder="Cargo"
+        value={position || ""}
+        onChange={(e) => setPosition(e.target.value)}
+      />
+
       <input
         className="input"
         type="password"
@@ -114,7 +126,8 @@ function UpdateUserForm(props) {
       
       {errors[0] && <div className="error-message">{errors[0]}</div> || 
       errors[1] && <div className="error-message">{errors[1]}</div> ||
-      errors[2] && <div className="error-message">{errors[2]}</div>}
+      errors[2] && <div className="error-message">{errors[2]}</div> ||
+      errors[3] && <div className="error-message">{errors[3]}</div>}
     </form>
   </>
 }

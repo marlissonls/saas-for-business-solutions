@@ -16,7 +16,7 @@ function validateName(name) {
   if (!nameValue) {
     message = 'Nome é requerido!';
   } else if (!isValidNameFormat(nameValue)) {
-    message = 'Nome inválido.'
+    message = 'Nome inválido.';
   }
   return message;
 }
@@ -45,6 +45,23 @@ function validateEmail(email) {
   return message;
 }
 
+function validatePosition(name) {
+  let message = "";
+  let nameValue;
+
+  if (name) {
+    nameValue = name.trim();
+  } else {
+    return message;
+  }
+
+  if (!nameValue) {
+    message = 'Cargo inválido';
+  } else if (!isValidNameFormat(nameValue)) {
+    message = 'Cargo inválido.';
+  }
+  return message;
+}
 
 function validatePassword(password) {
   let message = ""
@@ -55,5 +72,6 @@ function validatePassword(password) {
 export {
   validateName,
   validateEmail,
+  validatePosition,
   validatePassword
 }
