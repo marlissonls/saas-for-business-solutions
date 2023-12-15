@@ -1,4 +1,4 @@
-from app.repository.user.models.user_models import GetUserResponse, PutUser, LoginRequest, LoginResponse, RegisterResponse, GetProfileImage
+from app.repository.user.models.user_models import GetUserResponse, LoginRequest, LoginResponse, RegisterResponse, GetProfileImage
 from app.repository.user.models.controller_interface import IUserController
 from app.repository.user.models.service_interface import IUserService
 from sqlalchemy.orm import Session
@@ -61,15 +61,32 @@ class UserController(IUserController):
             logger.error("An error occurred: %s", error)
 
 
-    def update_user_controller(self, user_id: str, user: PutUser, session: Session) -> GetUserResponse:
+    def update_user_controller(
+        self,
+        user_id: str,
+        name: str,
+        email: str,
+        position: str,
+        password: str,
+        profile_image: UploadFile,
+        session: Session
+    ) -> GetUserResponse:
         try:
-            return self._service.update_user_service(user_id, user, session)
+            return self._service.update_user_service(
+                user_id,
+                name,
+                email,
+                position,
+                password,
+                profile_image,
+                session
+            )
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
 
     def delete_user_controller(self, user_id: str, session: Session) -> GetUserResponse:
         try:
-            self._service.delete_user_service(user_id, session)
+            return self._service.delete_user_service(user_id, session)
         except Exception as error:
             logger.error("An error occurred: %s", error)

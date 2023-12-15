@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 import { validateEmail, validatePassword } from "../../services/validateFields";
-import { set_token, set_id, set_email, set_username, set_role, set_profile_url } from "../../services/auth";
+import { set_token, set_id, set_email, set_username, set_position, set_company, set_role, set_profile_url } from "../../services/auth";
 import api from "../../services/api";
 
 function Login(props) {
@@ -42,6 +42,8 @@ function Login(props) {
       set_id(response.data.data.id)
       set_username(response.data.data.username)
       set_email(response.data.data.email)
+      set_position(response.data.data.position)
+      set_company(response.data.data.company_name)
       set_role(response.data.data.role)
       set_profile_url(response.data.data.image_url)
       messageSuccess(response.data.message)
@@ -65,7 +67,7 @@ function Login(props) {
       <h2>Login</h2>
       
       <input
-        className="login-input"
+        className="input"
         type="text"
         placeholder="E-mail"
         value={email || ""}
@@ -73,7 +75,7 @@ function Login(props) {
       ></input>
 
       <input
-        className="login-input"
+        className="input"
         type="password"
         placeholder="Senha"
         value={password || ""}

@@ -2,7 +2,7 @@ from PIL.Image import open as pillow_read_image
 from fastapi import UploadFile
 from fastapi import HTTPException
 from os.path import dirname, exists
-from os import makedirs
+from os import makedirs, remove
 from io import BytesIO
 
 class FileTypeNotSupportedError(HTTPException):
@@ -16,7 +16,7 @@ if not exists(PROFILE_IMAGES_PATH):
     makedirs(PROFILE_IMAGES_PATH)
 
 
-def save_profile_image(profile_image_name: str, profile_image: UploadFile) -> None:
+def save_profile_photo(profile_image_name: str, profile_image: UploadFile) -> None:
     
     image_type = profile_image.filename.split('.')[-1]
 
@@ -33,3 +33,11 @@ def save_profile_image(profile_image_name: str, profile_image: UploadFile) -> No
         profile_image_file = profile_image_file.convert('RGB')
 
     profile_image_file.save(profile_image_path, format='jpeg')
+
+
+
+def delete_profile_photo(profile_photo_name: str) -> None:
+
+    profile_photo_path = f'{PROFILE_IMAGES_PATH}\{profile_photo_name}.jpeg'
+
+    remove(profile_photo_path)

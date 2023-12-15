@@ -1,12 +1,13 @@
-from app.repository.user.models.user_models import PutUser, GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse, GetProfileImage, ImageUrl
+from app.repository.user.models.user_models import GetUserId, GetUserData, GetUserResponse, LoginRequest, LoginResponse, CredentialInfo, RegisterResponse, GetProfileImage, ImageUrl
 from app.repository.user.models.repository_interface import IUserRepository
 from app.repository.user.models.service_interface import IUserService
-from app.repository.user.service.handle_profile_image import FileTypeNotSupportedError, save_profile_image
+from app.repository.user.service.handle_profile_image import FileTypeNotSupportedError, save_profile_photo, delete_profile_photo
 from app.repository.user.service.hashing import Hasher
 from app.db.schema import User
 from app.config import jwt_configs
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
+from sqlalchemy import Column
 from fastapi import UploadFile
 from uuid import uuid1
 import jwt
@@ -111,7 +112,7 @@ class UserService(IUserService):
 
             self._repository.create_user_repository(new_user, session)
 
-            save_profile_image(profile_photo_name, profile_image)
+            save_profile_photo(profile_photo_name, profile_image)
 
             session.commit()
 
@@ -147,6 +148,11 @@ class UserService(IUserService):
                     message="Falha ao realizar login, verifique suas credenciais.",
                     data=None
                 )
+            
+            user_company: Column[str] | None = None
+            
+            if user.company_id:
+                user_company = self._repository.get_user_company_name(user.company_id, session)
 
             if not Hasher.verify_password(form.password, user.password):
                 return LoginResponse(
@@ -168,6 +174,8 @@ class UserService(IUserService):
                     id=user.id,
                     username=user.name,
                     email=user.email,
+                    position=user.position,
+                    company_name=user_company,
                     role=user.role,
                     image_url=user.profile_image
                 )
@@ -182,7 +190,16 @@ class UserService(IUserService):
                 )
 
 
-    def update_user_service(self, user_id: str, user_updated: PutUser, session: Session) -> GetUserResponse:
+    def update_user_service(
+        self,
+        user_id: str,
+        name: str,
+        email: str,
+        position: str,
+        password: str,
+        profile_image: UploadFile,
+        session: Session
+    ) -> GetUserResponse:
         try:
             user = self._repository.get_user_by_id_repository(user_id, session)
 
@@ -192,16 +209,18 @@ class UserService(IUserService):
                     message='Não foi possível encontrar este usuário.',
                     data=None
                 )
-            
-            for key, value in user_updated.model_dump(exclude_unset=True).items():
-                if key == 'password' and value is not None:
-                    setattr(user, key, Hasher.get_password_hash(value))
-                else:
-                    setattr(user, key, value)
 
-            user.updated_at = datetime.utcnow()+timedelta(hours=-3)
+            if name: user.name = name
+            if email: user.email = email
+            if position: user.position = position
+            if password: user.password = Hasher.get_password_hash(password)
+            user.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_user_repository(user, session)
+
+            if profile_image:
+                profile_photo_name = f'{user_id}.jpeg'
+                save_profile_photo(profile_photo_name, profile_image)
 
             session.commit()
 
@@ -212,6 +231,7 @@ class UserService(IUserService):
                     id=user.id,
                     name=user.name,
                     email=user.email,
+                    position=user.position,
                     company_id=user.company_id
                 )
             )
@@ -238,6 +258,8 @@ class UserService(IUserService):
             user.deleted_at = datetime.utcnow()+timedelta(hours=-3)
 
             self._repository.delete_user_repository(user, session)
+
+            delete_profile_photo(user_id)
 
             session.commit()
 

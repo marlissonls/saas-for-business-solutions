@@ -1,8 +1,7 @@
 from app.db.schema import User
-from app.repository.user.models.user_models import PostUser
+from sqlalchemy import Column
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
-from typing import Any, List
 
 
 class IUserRepository(ABC):
@@ -17,6 +16,10 @@ class IUserRepository(ABC):
     
     @abstractmethod
     def get_user_by_email_repository(self, email: str, session: Session) -> User | None:
+        pass
+    
+    @abstractmethod
+    def get_user_company_name(self, company_id: str, session: Session) -> Column[str] | None:
         pass
 
     @abstractmethod

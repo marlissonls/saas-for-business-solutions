@@ -15,6 +15,7 @@ class GetUserData(BaseModel):
     id: str
     name: str
     email: EmailStr
+    position: str | None
     company_id: str | None
 
 class GetUserResponse(BaseModel):
@@ -37,6 +38,8 @@ class CredentialInfo(BaseModel):
     id: str
     username: str
     email: str
+    position: str | None
+    company_name: str | None
     role: str
     image_url: str | None
 

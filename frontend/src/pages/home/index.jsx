@@ -1,12 +1,12 @@
 import React from "react";
 
 import SideBar from '../../components/sideBar';
-import MainContent from '../../components/mainContent';
+import MainContent from '../../containers/mainContent';
 import CompanyData from './company';
 
 function Home(props) {
   const data = { 
-    'companyName': 'Mercado Top',
+    'companyName': 'Americanas',
     'area': 'Supermercado',
     'localization': 'Rue de Paradise'
   }
