@@ -1,11 +1,10 @@
 from PIL.Image import open as pillow_read_image
 from fastapi import UploadFile
-from fastapi import HTTPException
 from os.path import dirname, exists
 from os import makedirs, remove
 from io import BytesIO
 
-class FileTypeNotSupportedError(HTTPException):
+class FileTypeNotSupportedError(Exception):
     pass
 
 APP_SOURCE = f'{dirname(dirname(dirname(dirname(dirname(__file__)))))}'

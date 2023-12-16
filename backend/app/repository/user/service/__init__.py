@@ -36,6 +36,7 @@ class UserService(IUserService):
                     id=user.id,
                     name=user.name,
                     email=user.email,
+                    position=user.position,
                     company_id=user.company_id
                 )
             )
@@ -149,17 +150,17 @@ class UserService(IUserService):
                     data=None
                 )
             
-            user_company: Column[str] | None = None
-            
-            if user.company_id:
-                user_company = self._repository.get_user_company_name(user.company_id, session)
-
             if not Hasher.verify_password(form.password, user.password):
                 return LoginResponse(
                     status=False,
                     message="Senha inválida.",
                     data=None
                 )
+            
+            user_company: Column[str] | None = None
+            
+            if user.company_id:
+                user_company = self._repository.get_user_company_name(user.company_id, session)
 
             return LoginResponse(
                 status=True,
@@ -198,6 +199,7 @@ class UserService(IUserService):
         position: str,
         password: str,
         profile_image: UploadFile,
+        company_id: str,
         session: Session
     ) -> GetUserResponse:
         try:
@@ -213,6 +215,7 @@ class UserService(IUserService):
             if name: user.name = name
             if email: user.email = email
             if position: user.position = position
+            if company_id: user.company_id = company_id
             if password: user.password = Hasher.get_password_hash(password)
             user.updated_at = datetime.utcnow() + timedelta(hours=-3)
 

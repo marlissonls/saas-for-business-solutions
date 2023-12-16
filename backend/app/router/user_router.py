@@ -79,6 +79,7 @@ def update_user(
     position: Optional[str] = Form(None),
     password: Optional[str] = Form(None),
     profile_image: Union[UploadFile, str] = File(None),
+    company_id: Optional[str] = Form(None),
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
@@ -89,6 +90,7 @@ def update_user(
         position,
         password,
         profile_image,
+        company_id,
         session
     )
 
