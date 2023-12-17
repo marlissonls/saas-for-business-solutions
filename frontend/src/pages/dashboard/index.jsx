@@ -1,7 +1,8 @@
-import React, { useState, useEffect }from "react";
+import { useState, useEffect }from "react";
 import { useParams } from "react-router-dom";
 
 import api from "../../services/api";
+import TopBar from "../../components/topBar";
 import SideBar from "../../components/sideBar";
 import MainContent from "../../containers/mainContent";
 
@@ -23,21 +24,24 @@ async function getDashboard(id) {
 }
 
 function Dashboard(props) {
-    const { id } = useParams();
-    const [data, setData] = useState(null)
-    useEffect(() => {
-        async function updateData() {
-            const data = await getDashboard(id)
-            setData(data)
-        }
-        updateData()
-    }, [id])
-    return <div className='body'>
-        <SideBar />
-        <MainContent>
-            { data ? selectDash(id, data) : <div>Buscando os dados...</div> }
-        </MainContent>
+  const { id } = useParams();
+  const [data, setData] = useState(null)
+  useEffect(() => {
+      async function updateData() {
+          const data = await getDashboard(id)
+          setData(data)
+      }
+      updateData()
+  }, [id])
+  return <div className='body'>
+    <TopBar />
+    <div className='display-flex'>
+      <SideBar />
+      <MainContent>
+        { data ? selectDash(id, data) : <div>Buscando os dados...</div> }
+      </MainContent>
     </div>
+  </div>
 }
 
 export default Dashboard;

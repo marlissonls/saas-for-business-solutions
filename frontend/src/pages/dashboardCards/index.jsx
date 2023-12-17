@@ -1,5 +1,4 @@
-import React from 'react';
-
+import TopBar from '../../components/topBar';
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
 import CardContainer from "../../containers/cardContainer";
@@ -15,11 +14,14 @@ const dashboardCards = [
 
 function DashboardCards(props) {
   return <div className='body'>
+    <TopBar />
+    <div className='display-flex'>
     <SideBar />
     <MainContent>
       <h2 className='page-title'>Dashboards</h2>
       <CardContainer route='dashboards' cards={dashboardCards} />
     </MainContent>
+    </div>
   </div>
 }
 
