@@ -1,25 +1,25 @@
-from app.repository.mlmodels.models.model_repository_interface import IModelRepository
-from app.db.schema import Model
+from app.repository.dashboard.dashboard_repository_interface import IDashboardRepository
+from app.db.schema import Dashboard
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from typing import List
 
 
-class ModelRepository(IModelRepository):
+class DashboardRepository(IDashboardRepository):
 
-    def get_model_by_id_repository(self, model_id: str, session: Session) -> Model | None:
-        return session.query(Model).filter(and_(Model.id == model_id, Model.deleted_at == None)).first()
+    def get_dashboard_by_id_repository(self, dashboard_id: str, session: Session) -> Dashboard | None:
+        return session.query(Dashboard).filter(and_(Dashboard.id == dashboard_id, Dashboard.deleted_at == None)).first()
 
-    def get_models_repository(self, session: Session) -> List[Model] | List:
-        return session.query(Model).filter(Model.deleted_at == None).all()
+    def get_dashboards_repository(self, session: Session) -> List[Dashboard] | List:
+        return session.query(Dashboard).filter(Dashboard.deleted_at == None).all()
 
-    def create_model_repository(self, model: Model, session: Session) -> None:
-        session.add(model)
+    def create_dashboard_repository(self, dashboard: Dashboard, session: Session) -> None:
+        session.add(dashboard)
 
-    def update_model_repository(self, model: Model, session: Session) -> None:
-        session.merge(model)
+    def update_dashboard_repository(self, dashboard: Dashboard, session: Session) -> None:
+        session.merge(dashboard)
 
-    def delete_model_repository(self, model: Model, session: Session) -> None:
-        session.merge(model)
+    def delete_dashboard_repository(self, dashboard: Dashboard, session: Session) -> None:
+        session.merge(dashboard)
 
 
