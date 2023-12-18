@@ -1,8 +1,8 @@
 from fastapi import Depends
 from app.utils.auth import get_authenticated_user
 from app.repository.mlmodels.models.model_models import PutModel, RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
-from app.repository.mlmodels.models.controller_interface import IModelController
-from app.repository.mlmodels.models.service_interface import IModelService
+from app.repository.mlmodels.models.model_controller_interface import IModelController
+from app.repository.mlmodels.models.model_service_interface import IModelService
 from sqlalchemy.orm import Session
 import logging
 
@@ -29,20 +29,33 @@ class ModelController(IModelController):
         self,
         name: str,
         description: str,
+        company_id: str ,
         session: Session
     ) -> RegisterModelResponse:
         try:
             return self._service.create_model_service(
                 name,
                 description,
+                company_id,
                 session
             )
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
-    def update_model_controller(self, model_id: str, model: PutModel, session: Session, current_user: dict = Depends(get_authenticated_user)) -> GetModelResponse:
+    def update_model_controller(
+        self, 
+        model_id: str, 
+        name: str,
+        description: str,
+        session: Session,
+    ) -> GetModelResponse:
         try:
-            return self._service.update_model_service(model_id, model, session)
+            return self._service.update_model_service(
+                model_id, 
+                name,
+                description,
+                session
+                )
         except Exception as error:
             logger.error("An error occurred: %s", error)
 

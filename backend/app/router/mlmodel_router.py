@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, status, Depends, UploadFile
+from fastapi import APIRouter, Form, status, Depends, UploadFile, Request
 from app.repository.mlmodels.models.model_models import PutModel, GetModelResponse, RegisterModelResponse
 from app.repository.mlmodels.sqlalchemy import ModelRepository
 from app.repository.mlmodels.controller import ModelController
@@ -18,35 +18,24 @@ def get_db(request: Request):
 
 @router.get('/{model_id}', status_code=status.HTTP_200_OK, response_model=GetModelResponse)
 def get_model_by_id(model_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    if current_user['role'] == 'admin':
         return controller.get_model_by_id_controller(model_id, session)
-    else:
-        return GetModelResponse(
-            status=False,
-            message='Acesso negado.',
-            data=None,
-        )
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=GetModelResponse)
 def get_models(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    if current_user['role'] == 'admin':
-        return controller.get_models_controller(session)
-    else:
-        return GetModelResponse(
-            status=False,
-            message='Acesso negado.',
-            data=None,
-        )
+    return controller.get_models_controller(session)
 
 @router.post('/register', status_code=status.HTTP_201_CREATED, response_model=RegisterModelResponse)
 def create_model(
     name: Annotated[str, Form()],
     description: Annotated[str, Form()],
+    company_id: Annotated[str, Form()],
+    current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
     return controller.create_model_controller(
         name,
         description,
+        company_id,
         session
     )
 
@@ -58,9 +47,20 @@ def update_model(
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
-    model_data = PutModel(name=name, description=description)
-    return controller.update_model_controller(model_id, model_data, session)
+    return controller.update_model_controller(
+        model_id, 
+        name,
+        description,
+        session
+        )
 
-@router.delete('/{model_id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{model_id}', status_code=status.HTTP_200_OK)
 def delete_model(model_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
-    controller.delete_model_controller(model_id, session)
+    if current_user['role'] == 'admin':
+        return controller.delete_model_controller(model_id, session)
+    else:
+        return GetModelResponse(
+            status=False,
+            message='Acesso negado.',
+            data=None,
+        )

@@ -12,6 +12,7 @@ class GetModelData(BaseModel):
     id: str
     name: str
     description: str
+    company_id: str
 
 class GetModelResponse(BaseModel):
     status: bool

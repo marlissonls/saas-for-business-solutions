@@ -1,4 +1,4 @@
-from app.repository.mlmodels.model.model_models import GetModelResponse, RegisterModelResponse, PutModel
+from app.repository.mlmodels.models.model_models import GetModelResponse, RegisterModelResponse, PutModel
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
 

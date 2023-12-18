@@ -1,4 +1,4 @@
-from app.repository.mlmodels.models.repository_interface import IModelRepository
+from app.repository.mlmodels.models.model_repository_interface import IModelRepository
 from app.db.schema import Model
 from sqlalchemy.orm import Session
 from sqlalchemy import and_

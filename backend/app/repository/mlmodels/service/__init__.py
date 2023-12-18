@@ -1,6 +1,6 @@
 from app.repository.mlmodels.models.model_models import PutModel, RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
-from app.repository.mlmodels.models.repository_interface import IModelRepository
-from app.repository.mlmodels.models.service_interface import IModelService
+from app.repository.mlmodels.models.model_repository_interface import IModelRepository
+from app.repository.mlmodels.models.model_service_interface import IModelService
 from app.db.schema import Model
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
@@ -30,7 +30,8 @@ class ModelService(IModelService):
                 data=GetModelData(
                     id=model.id,
                     name=model.name,
-                    description=model.description
+                    description=model.description,
+                    company_id=model.company_id
                 )
             )
 
@@ -53,7 +54,7 @@ class ModelService(IModelService):
                     data=[]
                 )
 
-            models_data_list = [GetModelData(id=model.id, name=model.name, description=model.description) for model in models]
+            models_data_list = [GetModelData(id=model.id, name=model.name, description=model.description, company_id=model.company_id) for model in models]
             return GetModelResponse(
                 status=True,
                 message='Modelos encontrados com sucesso.',
@@ -72,6 +73,7 @@ class ModelService(IModelService):
         self, 
         name: str,
         description: str,
+        company_id: str,
         session: Session
     ) -> RegisterModelResponse:
         try:
@@ -80,7 +82,8 @@ class ModelService(IModelService):
             new_model = Model(
                 id=new_model_id,
                 name=name,
-                description=description
+                description=description,
+                company_id=company_id
             )
 
             self._repository.create_model_repository(new_model, session)
@@ -94,7 +97,6 @@ class ModelService(IModelService):
             )
 
         except Exception as error:
-            print(f"Caught exception of type {type(error).__name__}: {error}")
             session.rollback()
             return RegisterModelResponse(
                 status=False,
@@ -102,7 +104,13 @@ class ModelService(IModelService):
                 data=None
             )
 
-    def update_model_service(self, model_id: str, model_updated: PutModel, session: Session) -> GetModelResponse:
+    def update_model_service(
+        self, 
+        model_id: str, 
+        name: str,
+        description: str,
+        session: Session,
+    ) -> GetModelResponse:
         try:
             model = self._repository.get_model_by_id_repository(model_id, session)
 
@@ -113,9 +121,8 @@ class ModelService(IModelService):
                     data=None
                 )
 
-            for key, value in model_updated.dict(exclude_none=True).items():
-                setattr(model, key, value)
-
+            if name: model.name=name
+            if description: model.description=description
             model.updated_at = datetime.utcnow()
 
             self._repository.update_model_repository(model, session)
@@ -128,10 +135,12 @@ class ModelService(IModelService):
                 data=GetModelData(
                     id=model.id,
                     name=model.name,
-                    description=model.description
+                    description=model.description,
+                    company_id=model.company_id
                 )
             )
         except Exception as error:
+            print(error)
             session.rollback()
             return GetModelResponse(
                 status=False,
