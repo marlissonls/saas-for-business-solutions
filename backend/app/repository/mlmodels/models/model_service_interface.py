@@ -1,31 +1,30 @@
-from app.repository.mlmodels.models.model_models import PutModel, GetModelResponse, GetModelId, RegisterModelResponse
+from app.repository.dashboard.dashboard_model import PutDashboard, GetDashboardResponse, GetDashboardId, RegisterDashboardResponse
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
-from typing import List
 
-class IModelService(ABC):
+class IDashboardService(ABC):
 
     @abstractmethod
-    def get_model_by_id_service(self, model_id: str) -> GetModelResponse:
+    def get_dashboard_by_id_service(self, dashboard_id: str) -> GetDashboardResponse:
         pass
 
     @abstractmethod
-    def get_models_service(self) -> GetModelResponse:
+    def get_dashboards_service(self) -> GetDashboardResponse:
         pass
 
     @abstractmethod
-    def create_model_service(
+    def create_dashboard_service(
         self, 
         name: str,
         description: str,
         session: Session
-    ) -> RegisterModelResponse:
+    ) -> RegisterDashboardResponse:
         pass
 
     @abstractmethod
-    def update_model_service(self, model_id: str, model_updated: PutModel) -> GetModelResponse:
+    def update_dashboard_service(self, dashboard_id: str, dashboard_updated: PutDashboard) -> GetDashboardResponse:
         pass
 
     @abstractmethod
-    def delete_model_service(self, model_id: str) -> None:
+    def delete_dashboard_service(self, dashboard_id: str) -> None:
         pass
