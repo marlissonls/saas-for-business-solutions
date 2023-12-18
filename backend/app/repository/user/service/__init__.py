@@ -78,7 +78,6 @@ class UserService(IUserService):
             )
 
         except Exception as error:
-            print(str(error))
             session.rollback()
             return GetUserResponse(
                 status=False,
