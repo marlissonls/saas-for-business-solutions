@@ -1,4 +1,4 @@
-from app.repository.dashboard.dashboard_model import GetDashboardResponse, RegisterDashboardResponse, PutDashboard
+from app.repository.dashboards.models.dashboard_model import GetDashboardResponse, RegisterDashboardResponse, PutDashboard
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
 

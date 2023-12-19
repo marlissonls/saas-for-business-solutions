@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Form, status, UploadFile
-from app.repository.dashboard.dashboard_model import PutDashboard, GetDashboardResponse, RegisterDashboardResponse
-from app.repository.dashboard.dashboard_sqlalchemy import DashboardRepository
-from app.repository.dashboard.dashboard_controller import DashboardController
-from app.repository.dashboard.dashboard_service import DashboardService
+from fastapi import APIRouter, Depends, Form, status, UploadFile, Request
+from app.repository.dashboards.models.dashboard_model import PutDashboard, GetDashboardResponse, RegisterDashboardResponse
+from app.repository.dashboards.sqlalchemy import DashboardRepository
+from app.repository.dashboards.controller import DashboardController
+from app.repository.dashboards.service import DashboardService
 from app.utils.auth import get_authenticated_user
 from sqlalchemy.orm import Session
 from typing import Any, Annotated, Optional

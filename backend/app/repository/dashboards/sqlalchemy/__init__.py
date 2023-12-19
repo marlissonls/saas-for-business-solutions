@@ -1,4 +1,4 @@
-from app.repository.dashboard.dashboard_repository_interface import IDashboardRepository
+from app.repository.dashboards.models.dashboard_repository_interface import IDashboardRepository
 from app.db.schema import Dashboard
 from sqlalchemy.orm import Session
 from sqlalchemy import and_

@@ -1,5 +1,5 @@
 from app.db.schema import Dashboard
-from app.repository.dashboard.dashboard_model import PutDashboard
+from app.repository.dashboards.models.dashboard_model import PutDashboard
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
 from typing import List

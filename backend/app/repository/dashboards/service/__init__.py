@@ -1,9 +1,10 @@
-from app.repository.dashboard.dashboard_model import PutDashboard, RegisterDashboardResponse, GetDashboardId, GetDashboardData, GetDashboardResponse
-from app.repository.dashboard.dashboard_repository_interface import IDashboardRepository
-from app.repository.dashboard.dashboard_service_interface import IDashboardService
+from app.repository.dashboards.models.dashboard_model import PutDashboard, RegisterDashboardResponse, GetDashboardId, GetDashboardData, GetDashboardResponse
+from app.repository.dashboards.models.dashboard_repository_interface import IDashboardRepository
+from app.repository.dashboards.models.dashboard_service_interface import IDashboardService
 from app.db.schema import Dashboard
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from uuid import uuid1
 from datetime import datetime
 
 class DashboardService(IDashboardService):
@@ -75,7 +76,10 @@ class DashboardService(IDashboardService):
         session: Session
     ) -> RegisterDashboardResponse:
         try:
+            new_dashboard_id = str(uuid1())
+
             new_dashboard = Dashboard(
+                id=new_dashboard_id,
                 name=name,
                 description=description,
                 company_id=company_id
@@ -145,9 +149,11 @@ class DashboardService(IDashboardService):
 
     def delete_dashboard_service(self, dashboard_id: str, session: Session) -> GetDashboardResponse:
         try:
+            print(f"Executing SELECT query with ID: {dashboard_id}")
             dashboard = self._repository.get_dashboard_by_id_repository(dashboard_id, session)
 
             if not dashboard:
+                print(f'Dashboard with ID {dashboard_id} not found.')
                 return GetDashboardResponse(
                     status=False,
                     message='Não foi possível encontrar este dashboard.',
@@ -167,6 +173,7 @@ class DashboardService(IDashboardService):
             )
 
         except Exception as error:
+            print('Error no delete_dashboard_service:', error)
             session.rollback()
             return GetDashboardResponse(
                 status=False,
