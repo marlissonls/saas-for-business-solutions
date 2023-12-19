@@ -19,7 +19,7 @@ class CompanyService(ICompanyService):
             if not company:
                 return GetCompanyResponse(
                     status=False,
-                    message='Não foi possível encontrar esta empresa.',
+                    message='Empresa não encontrada.',
                     data=None
                 )
 
@@ -39,7 +39,7 @@ class CompanyService(ICompanyService):
             session.rollback()
             return GetCompanyResponse(
                 status=False,
-                message=f'Erro interno no servidor',
+                message=f'500: Erro interno no servidor',
                 data=None
             )
 
@@ -65,7 +65,7 @@ class CompanyService(ICompanyService):
             session.rollback()
             return GetCompanyResponse(
                 status=False,
-                message='Erro interno no servidor.',
+                message='500: Erro interno no servidor',
                 data=None
             )
 
@@ -102,7 +102,7 @@ class CompanyService(ICompanyService):
             session.rollback()
             return RegisterCompanyResponse(
                 status=False,
-                message=f"Erro ao cadastrar esta empresa.",
+                message=f"500: Erro interno no servidor.",
                 data=None
             )
 
@@ -119,7 +119,7 @@ class CompanyService(ICompanyService):
             if not company:
                 return GetCompanyResponse(
                     status=False,
-                    message='Não foi possível encontrar esta empresa.',
+                    message='Empresa não encontrada.',
                     data=None
                 )
 
@@ -148,7 +148,7 @@ class CompanyService(ICompanyService):
             session.rollback()
             return GetCompanyResponse(
                 status=False,
-                message='Erro interno no servidor.',
+                message='500: Erro interno no servidor',
                 data=None
             )
 
@@ -159,7 +159,7 @@ class CompanyService(ICompanyService):
             if not company:
                 return GetCompanyResponse(
                     status=False,
-                    message='Não foi possível encontrar esta empresa.',
+                    message='Empresa não encontrada.',
                     data=None
                 )
             
@@ -171,7 +171,7 @@ class CompanyService(ICompanyService):
 
             return GetCompanyResponse(
                 status=True,
-                message='Empresa deletada.',
+                message='Empresa desativada com sucesso.',
                 data=None
             )
 
@@ -179,6 +179,6 @@ class CompanyService(ICompanyService):
             session.rollback()
             return GetCompanyResponse(
                 status=False,
-                message='Erro interno no servidor.',
+                message='500: Erro interno no servidor',
                 data=None
             )

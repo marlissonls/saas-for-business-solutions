@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Form, status, Depends, UploadFile, Request
-from app.repository.mlmodels.models.model_models import PutModel, GetModelResponse, RegisterModelResponse
+from fastapi import APIRouter, status, Request, Depends, Form
+from app.repository.mlmodels.models.model_models import GetModelResponse, RegisterModelResponse
 from app.repository.mlmodels.sqlalchemy import ModelRepository
 from app.repository.mlmodels.controller import ModelController
 from app.repository.mlmodels.service import ModelService
@@ -24,7 +24,7 @@ def get_model_by_id(model_id: str, current_user: dict = Depends(get_authenticate
 def get_models(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.get_models_controller(session)
 
-@router.post('/register', status_code=status.HTTP_201_CREATED, response_model=RegisterModelResponse)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=RegisterModelResponse)
 def create_model(
     name: Annotated[str, Form()],
     description: Annotated[str, Form()],
@@ -54,8 +54,8 @@ def update_model(
         session
         )
 
-@router.delete('/{model_id}', status_code=status.HTTP_200_OK)
-def delete_model(model_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
+@router.delete('/{model_id}', status_code=status.HTTP_200_OK, response_model=GetModelResponse)
+def delete_model(model_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     if current_user['role'] == 'admin':
         return controller.delete_model_controller(model_id, session)
     else:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form, status, UploadFile, Request
+from fastapi import APIRouter, status, Request, Depends, Form
 from app.repository.dashboards.models.dashboard_model import PutDashboard, GetDashboardResponse, RegisterDashboardResponse
 from app.repository.dashboards.sqlalchemy import DashboardRepository
 from app.repository.dashboards.controller import DashboardController
@@ -24,7 +24,7 @@ def get_dashboard_by_id(dashboard_id: str, current_user: dict = Depends(get_auth
 def get_dashboards(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     return controller.get_dashboards_controller(session)
 
-@router.post('/register', status_code=status.HTTP_201_CREATED, response_model=RegisterDashboardResponse)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=RegisterDashboardResponse)
 def create_dashboard(
     name: Annotated[str, Form()],
     description: Annotated[str, Form()],
@@ -54,8 +54,8 @@ def update_dashboard(
         session
     )
 
-@router.delete('/{dashboard_id}', status_code=status.HTTP_200_OK)
-def delete_dashboard(dashboard_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
+@router.delete('/{dashboard_id}', status_code=status.HTTP_200_OK, response_model=GetDashboardResponse)
+def delete_dashboard(dashboard_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     if current_user['role'] == 'admin':
         return controller.delete_dashboard_controller(dashboard_id, session)
     else:

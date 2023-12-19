@@ -1,6 +1,4 @@
-from fastapi import Depends
-from app.utils.auth import get_authenticated_user
-from app.repository.mlmodels.models.model_models import PutModel, RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
+from app.repository.mlmodels.models.model_models import RegisterModelResponse, GetModelResponse
 from app.repository.mlmodels.models.model_controller_interface import IModelController
 from app.repository.mlmodels.models.model_service_interface import IModelService
 from sqlalchemy.orm import Session
@@ -61,6 +59,6 @@ class ModelController(IModelController):
 
     def delete_model_controller(self, model_id: str, session: Session) -> GetModelResponse:
         try:
-            self._service.delete_model_service(model_id, session)
+            return self._service.delete_model_service(model_id, session)
         except Exception as error:
             logger.error("An error occurred: %s", error)

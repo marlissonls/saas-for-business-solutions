@@ -1,6 +1,4 @@
-from fastapi import Depends
-from app.utils.auth import get_authenticated_user
-from app.repository.dashboards.models.dashboard_model import PutDashboard, RegisterDashboardResponse, GetDashboardId, GetDashboardData, GetDashboardResponse
+from app.repository.dashboards.models.dashboard_model import RegisterDashboardResponse, GetDashboardResponse
 from app.repository.dashboards.models.dashboard_controller_interface import IDashboardController
 from app.repository.dashboards.models.dashboard_service_interface import IDashboardService
 from sqlalchemy.orm import Session
@@ -61,7 +59,7 @@ class DashboardController(IDashboardController):
 
     def delete_dashboard_controller(self, dashboard_id: str, session: Session) -> GetDashboardResponse:
         try:
-            self._service.delete_dashboard_service(dashboard_id, session)
+            return self._service.delete_dashboard_service(dashboard_id, session)
         except Exception as error:
             print('aqui esta',error)
             logger.error("An error occurred: %s", error)

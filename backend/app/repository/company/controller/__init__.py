@@ -1,5 +1,3 @@
-from fastapi import Depends
-from app.utils.auth import get_authenticated_user
 from app.repository.company.models.company_models import RegisterCompanyResponse, GetCompanyResponse
 from app.repository.company.models.controller_interface import ICompanyController
 from app.repository.company.models.service_interface import ICompanyService
@@ -67,6 +65,6 @@ class CompanyController(ICompanyController):
 
     def delete_company_controller(self, company_id: str, session: Session) -> GetCompanyResponse:
         try:
-            self._service.delete_company_service(company_id, session)
+            return self._service.delete_company_service(company_id, session)
         except Exception as error:
             logger.error("An error occurred: %s", error)

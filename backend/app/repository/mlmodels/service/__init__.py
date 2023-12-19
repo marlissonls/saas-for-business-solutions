@@ -1,10 +1,8 @@
-from app.repository.mlmodels.models.model_models import PutModel, RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
+from app.repository.mlmodels.models.model_models import RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
 from app.repository.mlmodels.models.model_repository_interface import IModelRepository
 from app.repository.mlmodels.models.model_service_interface import IModelService
 from app.db.schema import Model
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi import UploadFile
 from uuid import uuid1
 from datetime import datetime, timedelta
 
@@ -123,7 +121,7 @@ class ModelService(IModelService):
 
             if name: model.name=name
             if description: model.description=description
-            model.updated_at = datetime.utcnow()
+            model.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_model_repository(model, session)
 
@@ -166,7 +164,7 @@ class ModelService(IModelService):
 
             return GetModelResponse(
                 status=True,
-                message='Modelo deletado.',
+                message='Modelo desativado com sucesso.',
                 data=None
             )
 
