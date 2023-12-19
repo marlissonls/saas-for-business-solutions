@@ -140,7 +140,6 @@ class ModelService(IModelService):
                 )
             )
         except Exception as error:
-            print(error)
             session.rollback()
             return GetModelResponse(
                 status=False,
