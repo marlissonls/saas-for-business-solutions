@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faUser, faChartColumn, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faChartColumn, faCogs } from '@fortawesome/free-solid-svg-icons';
 
 function SideBar(props) {
   

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSignOut, faTrash} from '@fortawesome/free-solid-svg-icons';
-import { get_profile_url, get_id, get_username, get_email, get_company, get_position, logout, 
+import { get_photo_url, get_id, get_username, get_email, get_company, get_position, logout, 
   set_username, set_email, set_position } from '../services/auth';
 import { validateName, validateEmail, validatePosition, validatePassword } from "../services/validateFields";
 import api from "../services/api";
@@ -64,18 +64,18 @@ function TopBar(props) {
   /////////////////////////////
   // SHOW PROFILE DATA
   
-  const [profileImage, setProfileImage] = useState('');
-  const [userName, setUserName] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [company, setCompany] = useState('');
   const [position, setPosition] = useState('');
+  const [company, setCompany] = useState('');
 
   useEffect(() => {
-    setProfileImage(`http://127.0.0.1:8000${get_profile_url()}`);
-    setUserName(get_username());
+    setPhoto(`http://127.0.0.1:8000${get_photo_url()}`);
+    setUsername(get_username());
     setEmail(get_email());
-    setCompany(get_company());
     setPosition(get_position());
+    setCompany(get_company());
   }, []);
 
   const navigate = useNavigate();
@@ -162,7 +162,7 @@ function TopBar(props) {
     </div>
 
     <img
-      src={profileImage}
+      src={photo}
       className='photo-topbar'
       alt='Profile'
       onClick={handleProfileModal}
@@ -171,7 +171,7 @@ function TopBar(props) {
     {isProfileCardVisible && <div className='profile-container-topbar'>
 
       {isProfileDataVisible && <div className='profile-data-topbar'>
-        <p className='username-topbar'>{`Olá, ${userName.split(' ')[0]}`}</p>
+        <p className='username-topbar'>{`Olá, ${username.split(' ')[0]}`}</p>
         <p className='email-topbar'>{email}</p>
         <p className='position-topbar'>{position !== 'null' ? position : 'Cargo a definir'}</p>
         <p className='company-topbar'>{company !== 'null' ? company : 'Empresa a definir'}</p>
