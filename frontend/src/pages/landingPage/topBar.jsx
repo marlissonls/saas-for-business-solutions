@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser} from '@fortawesome/free-solid-svg-icons';
-import { set_token, set_id, set_company, set_role, set_profile_url, set_username, set_email, set_position } from '../../services/auth';
+import { set_token, set_id, set_company, set_company_id, set_role, set_photo_url, set_username, set_email, set_position } from '../../services/auth';
 import { validateName, validateEmail, validatePassword } from "../../services/validateFields";
 import api from "../../services/api";
 
@@ -83,8 +83,9 @@ function TopBar(props) {
       set_email(response.data.data.email)
       set_position(response.data.data.position)
       set_company(response.data.data.company_name)
+      set_company_id(response.data.data.company_id)
       set_role(response.data.data.role)
-      set_profile_url(response.data.data.image_url)
+      set_photo_url(response.data.data.image_url)
       messageSuccess(response.data.message)
       if (response.data.data.role == 'client') {
         navigate('/home')
