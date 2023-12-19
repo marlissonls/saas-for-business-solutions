@@ -99,7 +99,6 @@ class CompanyService(ICompanyService):
             )
 
         except Exception as error:
-            print(f"Caught exception of type {type(error).__name__}: {error}")
             session.rollback()
             return RegisterCompanyResponse(
                 status=False,
