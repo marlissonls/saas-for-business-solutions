@@ -3,9 +3,10 @@ const ID = "@ID";
 const USERNAME = "@USERNAME";
 const EMAIL = "@EMAIL";
 const ROLE = "@ROLE";
-const PROFILE = "@PROFILE";
+const PHOTO = "@PHOTO";
 const POSITION = "@POSITION";
 const COMPANY = "@COMPANY";
+const COMPANYID = "@COMPANYID";
 
 function get_token() {
     return localStorage.getItem(TOKEN)
@@ -42,11 +43,11 @@ function set_role(rl) {
     localStorage.setItem(ROLE, rl)
 }
 
-function get_profile_url() {
-    return localStorage.getItem(PROFILE)
+function get_photo_url() {
+    return localStorage.getItem(PHOTO)
 }
-function set_profile_url(pf) {
-    localStorage.setItem(PROFILE, pf)
+function set_photo_url(pf) {
+    localStorage.setItem(PHOTO, pf)
 }
 
 function get_position() {
@@ -61,6 +62,13 @@ function get_company() {
 }
 function set_company(cp) {
     localStorage.setItem(COMPANY, cp)
+}
+
+function get_company_id() {
+    return localStorage.getItem(COMPANYID)
+}
+function set_company_id(cpid) {
+    localStorage.setItem(COMPANYID, cpid)
 }
 
 function isAuthenticated() {
@@ -79,9 +87,10 @@ function logout() {
     localStorage.removeItem(USERNAME)
     localStorage.removeItem(ID)
     localStorage.removeItem(ROLE)
-    localStorage.removeItem(PROFILE)
+    localStorage.removeItem(PHOTO)
     localStorage.removeItem(POSITION)
     localStorage.removeItem(COMPANY)
+    localStorage.removeItem(COMPANYID)
 }
 
 export {
@@ -95,12 +104,14 @@ export {
     set_id,
     get_role,
     set_role,
-    get_profile_url,
-    set_profile_url,
+    get_photo_url,
+    set_photo_url,
     get_position,
     set_position,
     get_company,
     set_company,
+    get_company_id,
+    set_company_id,
     isAuthenticated,
     isAdmin,
     logout,
