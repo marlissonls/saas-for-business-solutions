@@ -38,6 +38,7 @@ class CredentialInfo(BaseModel):
     username: str
     email: str
     position: Optional[str] = None
+    company_id: Optional[str] = None
     company_name: Optional[str] = None
     role: str
     image_url: str

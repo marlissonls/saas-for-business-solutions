@@ -176,6 +176,7 @@ class UserService(IUserService):
                     username=user.name,
                     email=user.email,
                     position=user.position,
+                    company_id=user.company_id,
                     company_name=user_company,
                     role=user.role,
                     image_url=user.profile_image
