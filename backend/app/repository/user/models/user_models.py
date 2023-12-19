@@ -1,5 +1,4 @@
 from pydantic import BaseModel, EmailStr
-from fastapi.responses import StreamingResponse
 from typing import Optional, List, Union
 
 
@@ -15,8 +14,8 @@ class GetUserData(BaseModel):
     id: str
     name: str
     email: EmailStr
-    position: str | None
-    company_id: str | None
+    position: Optional[str] = None
+    company_id: Optional[str] = None
 
 class GetUserResponse(BaseModel):
     status: bool
@@ -31,22 +30,23 @@ class PutUser(BaseModel):
 class RegisterResponse(BaseModel):
     status: bool
     message: str
-    data: GetUserId | None
+    data: Optional[GetUserId] = None
 
 class CredentialInfo(BaseModel):
     token: str
     id: str
     username: str
     email: str
-    position: str | None
-    company_name: str | None
+    position: Optional[str] = None
+    company_id: Optional[str] = None
+    company_name: Optional[str] = None
     role: str
-    image_url: str | None
+    image_url: str
 
 class LoginResponse(BaseModel):
     status: bool
     message: str 
-    data: CredentialInfo | None
+    data: Optional[CredentialInfo] = None
 
 class LoginRequest(BaseModel):
     email: str

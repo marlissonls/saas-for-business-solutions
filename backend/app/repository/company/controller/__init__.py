@@ -1,6 +1,6 @@
 from fastapi import Depends
 from app.utils.auth import get_authenticated_user
-from app.repository.company.models.company_models import PutCompany, RegisterCompanyResponse , GetCompanyId, GetCompanyData, GetCompanyResponse
+from app.repository.company.models.company_models import RegisterCompanyResponse, GetCompanyResponse
 from app.repository.company.models.controller_interface import ICompanyController
 from app.repository.company.models.service_interface import ICompanyService
 from sqlalchemy.orm import Session
@@ -44,9 +44,24 @@ class CompanyController(ICompanyController):
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
-    def update_company_controller(self, company_id: str, company: PutCompany, session: Session, current_user: dict = Depends(get_authenticated_user)) -> GetCompanyResponse:
+    def update_company_controller(
+        self,
+        company_id: str,
+        name: str,
+        area: str,
+        description: str,
+        localization: str,
+        session: Session, 
+    ) -> GetCompanyResponse:
         try:
-            return self._service.update_company_service(company_id, company, session)
+            return self._service.update_company_service(
+                company_id,
+                name,
+                area,
+                description,
+                localization,
+                session
+            )
         except Exception as error:
             logger.error("An error occurred: %s", error)
 

@@ -1,10 +1,8 @@
-from app.repository.company.models.company_models import PutCompany, RegisterCompanyResponse, GetCompanyResponse, GetCompanyId, GetCompanyData
+from app.repository.company.models.company_models import RegisterCompanyResponse, GetCompanyResponse, GetCompanyId, GetCompanyData
 from app.repository.company.models.repository_interface import ICompanyRepository
 from app.repository.company.models.service_interface import ICompanyService
 from app.db.schema import Company
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi import UploadFile
 from uuid import uuid1
 from datetime import datetime, timedelta
 
@@ -55,9 +53,6 @@ class CompanyService(ICompanyService):
                     message='Nenhuma empresa encontrada nesta pesquisa.',
                     data=[]
                 )
-
-            for key, value in company_updated.dict(exclude_none=True).items():
-                setattr(company, key, value)
             
             companies_data_list = [GetCompanyData(id=company.id, name=company.name, area=company.area, description=company.description, localization=company.localization) for company in companies]
             return GetCompanyResponse(
@@ -111,7 +106,13 @@ class CompanyService(ICompanyService):
                 data=None
             )
 
-    def update_company_service(self, company_id: str, company_updated: PutCompany, session: Session) -> GetCompanyResponse:
+    def update_company_service(
+        self, company_id: str, 
+        name: str,
+        area: str,
+        description: str,
+        localization: str,
+        session: Session) -> GetCompanyResponse:
         try:
             company = self._repository.get_company_by_id_repository(company_id, session)
 
@@ -122,9 +123,10 @@ class CompanyService(ICompanyService):
                     data=None
                 )
 
-            for key, value in company_updated.dict(exclude_none=True).items():
-                setattr(company, key, value)
-
+            if name: company.name = name
+            if area: company.area = area
+            if description: company.description = description
+            if localization: company.localization = localization
             company.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_company_repository(company, session)

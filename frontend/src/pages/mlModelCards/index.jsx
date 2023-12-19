@@ -1,5 +1,4 @@
-import React from "react";
-
+import TopBar from '../../components/topBar';
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
 import CardContainer from "../../containers/cardContainer";
@@ -15,11 +14,14 @@ const mlModelCards = [
 
 function MlModelCards(props) {
   return <div className='body'>
-    <SideBar />
-    <MainContent>
-      <h2 className='page-title'>Modelos de Machine Learning</h2>
-      <CardContainer route='models' cards={mlModelCards}/>
-    </MainContent>
+    <TopBar />
+    <div className='display-flex'>
+      <SideBar />
+      <MainContent>
+        <h2 className='page-title'>Modelos de Machine Learning</h2>
+        <CardContainer route='models' cards={mlModelCards}/>
+      </MainContent>
+    </div>
   </div>
 }
 
