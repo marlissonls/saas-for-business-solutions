@@ -17,9 +17,9 @@ class DashboardController(IDashboardController):
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
-    def get_dashboards_controller(self, session: Session) -> GetDashboardResponse:
+    def get_dashboards_controller(self, company_id: str, session: Session) -> GetDashboardResponse:
         try:
-            return self._service.get_dashboards_service(session)
+            return self._service.get_dashboards_service(company_id, session)
         except Exception as error:
             logger.error("An error occurred: %s", error)
 

@@ -11,6 +11,7 @@ class PostDashboard(BaseModel):
 class GetDashboardData(BaseModel):
     id: str
     name: str
+    date: str
     description: str
     company_id: str
 

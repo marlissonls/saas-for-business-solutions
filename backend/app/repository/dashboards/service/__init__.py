@@ -41,9 +41,9 @@ class DashboardService(IDashboardService):
                 data=None
             )
 
-    def get_dashboards_service(self, session: Session) -> GetDashboardResponse:
+    def get_dashboards_service(self, company_id: str, session: Session) -> GetDashboardResponse:
         try:
-            dashboards = self._repository.get_dashboards_repository(session)
+            dashboards = self._repository.get_dashboards_repository(company_id, session)
 
             if not dashboards:
                 return GetDashboardResponse(
@@ -52,7 +52,16 @@ class DashboardService(IDashboardService):
                     data=[]
                 )
 
-            dashboards_data_list = [GetDashboardData(id=dashboard.id, name=dashboard.name, description=dashboard.description, company_id=dashboard.company_id) for dashboard in dashboards]
+            dashboards_data_list = [
+                GetDashboardData(
+                    id=dashboard.id,
+                    name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
+                    description=dashboard.description,
+                    company_id=dashboard.company_id
+                )
+                for dashboard in dashboards
+            ]
             return GetDashboardResponse(
                 status=True,
                 message='Dashboards encontrados com sucesso.',

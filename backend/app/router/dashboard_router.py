@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Request, Depends, Form
-from app.repository.dashboards.models.dashboard_model import PutDashboard, GetDashboardResponse, RegisterDashboardResponse
+from app.repository.dashboards.models.dashboard_model import GetDashboardResponse, RegisterDashboardResponse
 from app.repository.dashboards.sqlalchemy import DashboardRepository
 from app.repository.dashboards.controller import DashboardController
 from app.repository.dashboards.service import DashboardService
@@ -21,8 +21,8 @@ def get_dashboard_by_id(dashboard_id: str, current_user: dict = Depends(get_auth
     return controller.get_dashboard_by_id_controller(dashboard_id, session)
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=GetDashboardResponse)
-def get_dashboards(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    return controller.get_dashboards_controller(session)
+def get_dashboards(company_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
+    return controller.get_dashboards_controller(company_id, session)
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=RegisterDashboardResponse)
 def create_dashboard(
