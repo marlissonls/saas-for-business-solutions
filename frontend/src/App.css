@@ -20,7 +20,7 @@
   --dark-yellow: #ecd60b;
   --light-yellow: #edec9e;
   --border-color: #ccc;
-  --card-width: 600px;
+  --card-width: 800px;
   --border-radius: 5px;
   --border-test: 1px solid red;
 }
@@ -48,7 +48,7 @@
 }
 
 .input-card {
-  width: 500px;
+  width: 800px;
 }
 
 .input::placeholder {
@@ -57,7 +57,7 @@
 }
 
 .textarea {
-  width: 500px;
+  width: 800px;
   min-height: 150px;
   resize: none;
   outline: none;
@@ -126,7 +126,8 @@
   height: fit-content;
 }
 
-.user-form div:first-of-type {
+.user-form div:first-of-type,
+.card-form div:first-of-type {
   display: flex;
   justify-content: center;
   gap: 30%;
@@ -185,8 +186,7 @@
   font-size: 17px;
   font-weight: bold;
   color: #fff;
-  min-width: var(--card-width);
-  max-width: calc(var(--card-width) + 200px);
+  width: var(--card-width);
   padding: 10px 15px;
   background-color: #353b40;
   border-top-left-radius: var(--border-radius);
@@ -207,7 +207,8 @@
 .card-description {
   color: var(--text-color);
   width: var(--card-width);
-  min-height: 100px;
+  height: 300px;
+  overflow-y: auto;
   background-color: #eee;
   padding: 10px 15px;
   border-top: none;
@@ -215,32 +216,37 @@
   border-bottom-right-radius: var(--border-radius);
 }
 
-/* TABLES */
-
-.table-add-new {
-  color: #fff;
-  cursor: pointer;
-  width: 70px;
-  height: 55px;
-  background-color: #1673fa;
-  border-radius: var(--border-radius);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
+.card-description::-webkit-scrollbar {
+  width: 12px;
 }
 
+.card-description::-webkit-scrollbar-track {
+background-color: #cde;
+border-radius: 6px;
+}
+
+.card-description::-webkit-scrollbar-thumb {
+background-color: #353b40;
+border-radius: 6px;
+}
+
+/* TABLES */
+
 .table {
-  width: 90%;
+
   align-self: center;
   border-collapse: collapse;
 }
 
 .th,
 .td {
-  padding: 10px 0;
+  padding: 5px;
   border: 2px solid var(--border-color);
+}
+
+.td {
   text-align: center;
+  vertical-align: middle;
 }
 
 .table-title-row {
@@ -248,19 +254,19 @@
 }
 
 .table-title-col-id {
-  width: 20%;
-}
-
-.table-title-col-name {
-  width: 45%;
-}
-
-.table-title-col-data {
   width: 15%;
 }
 
+.table-title-col-name {
+  width: 60%;
+}
+
+.table-title-col-data {
+  width: 10%;
+}
+
 .table-title-col-action {
-  width: 20%;
+  width: 15%;
 }
 
 .even-row {
@@ -449,7 +455,24 @@
   background-color: #cde;
   padding: 10px 30px;
   border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.button-add-new {
+  color: #fff;
+  cursor: pointer;
+  width: 130px;
+  height: 35px;
+  background-color: #1673fa;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
 
 /* SIDEBAR */
 

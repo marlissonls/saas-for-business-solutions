@@ -69,9 +69,26 @@ function validatePassword(password) {
   return message
 }
 
+function validateCardInputs(text) {
+  let message = "";
+  let textValue;
+
+  if (text) {
+    textValue = text.trim();
+  } else {
+    return message;
+  }
+
+  if (!textValue) {
+    message = 'O valor digitado é inválido.';
+  }
+  return message;
+}
+
 export {
   validateName,
   validateEmail,
   validatePosition,
-  validatePassword
+  validatePassword,
+  validateCardInputs,
 }

@@ -1,11 +1,10 @@
-from app.repository.dashboards.models.dashboard_model import PutDashboard, RegisterDashboardResponse, GetDashboardId, GetDashboardData, GetDashboardResponse
+from app.repository.dashboards.models.dashboard_model import RegisterDashboardResponse, GetDashboardId, GetDashboardData, GetDashboardResponse
 from app.repository.dashboards.models.dashboard_repository_interface import IDashboardRepository
 from app.repository.dashboards.models.dashboard_service_interface import IDashboardService
 from app.db.schema import Dashboard
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
 from uuid import uuid1
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class DashboardService(IDashboardService):
 
@@ -29,6 +28,7 @@ class DashboardService(IDashboardService):
                 data=GetDashboardData(
                     id=dashboard.id,
                     name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
                     description=dashboard.description,
                     company_id=dashboard.company_id
                 )
@@ -38,13 +38,13 @@ class DashboardService(IDashboardService):
             session.rollback()
             return GetDashboardResponse(
                 status=False,
-                message=f'Erro interno no servidor: {error}',
+                message=f'500: Erro interno no servidor',
                 data=None
             )
 
-    def get_dashboards_service(self, session: Session) -> GetDashboardResponse:
+    def get_dashboards_service(self, company_id: str, session: Session) -> GetDashboardResponse:
         try:
-            dashboards = self._repository.get_dashboards_repository(session)
+            dashboards = self._repository.get_dashboards_repository(company_id, session)
 
             if not dashboards:
                 return GetDashboardResponse(
@@ -53,7 +53,17 @@ class DashboardService(IDashboardService):
                     data=[]
                 )
 
-            dashboards_data_list = [GetDashboardData(id=dashboard.id, name=dashboard.name, description=dashboard.description, company_id=dashboard.company_id) for dashboard in dashboards]
+            dashboards_data_list = [
+                GetDashboardData(
+                    id=dashboard.id,
+                    name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
+                    description=dashboard.description,
+                    company_id=dashboard.company_id
+                )
+                for dashboard in dashboards
+            ]
+            
             return GetDashboardResponse(
                 status=True,
                 message='Dashboards encontrados com sucesso.',
@@ -64,7 +74,7 @@ class DashboardService(IDashboardService):
             session.rollback()
             return GetDashboardResponse(
                 status=False,
-                message=f'Erro interno no servidor: {error}',
+                message=f'500: Erro interno no servidor',
                 data=None
             )
 
@@ -122,7 +132,7 @@ class DashboardService(IDashboardService):
 
             if name: dashboard.name=name
             if description: dashboard.description=description
-            dashboard.updated_at = datetime.utcnow()
+            dashboard.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_dashboard_repository(dashboard, session)
 
@@ -134,6 +144,7 @@ class DashboardService(IDashboardService):
                 data=GetDashboardData(
                     id=dashboard.id,
                     name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
                     description=dashboard.description,
                     company_id=dashboard.company_id
                 )
@@ -143,17 +154,15 @@ class DashboardService(IDashboardService):
             session.rollback()
             return GetDashboardResponse(
                 status=False,
-                message=f'Erro interno no servidor: {error}',
+                message=f'500: Erro interno no servidor',
                 data=None
             )
 
     def delete_dashboard_service(self, dashboard_id: str, session: Session) -> GetDashboardResponse:
         try:
-            print(f"Executing SELECT query with ID: {dashboard_id}")
             dashboard = self._repository.get_dashboard_by_id_repository(dashboard_id, session)
 
             if not dashboard:
-                print(f'Dashboard with ID {dashboard_id} not found.')
                 return GetDashboardResponse(
                     status=False,
                     message='Não foi possível encontrar este dashboard.',
@@ -168,15 +177,14 @@ class DashboardService(IDashboardService):
 
             return GetDashboardResponse(
                 status=True,
-                message='Dashboard deletado.',
+                message='Dashboard desativado.',
                 data=None
             )
 
         except Exception as error:
-            print('Error no delete_dashboard_service:', error)
             session.rollback()
             return GetDashboardResponse(
                 status=False,
-                message=f'Erro interno no servidor: {error}',
+                message=f'500: Erro interno no servidor',
                 data=None
             )

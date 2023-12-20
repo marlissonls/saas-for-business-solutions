@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     path: "/home",
     element: <Home />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       if (isAdmin()) throw new redirect("/panel");
       return {}
     }
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     path: "/dashboards",
     element: <DashboardCards />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       return {}
     }
   },
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
     path: "/dashboards/:id",
     element: <Dashboard />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       return {}
     }
   },
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     path: "/models",
     element: <MlModelCards />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       return {}
     }
   },
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
     path: "/models/:id",
     element: <MlModel />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       return {}
     }
   },
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
     path: "/panel",
     element: <Panel />,
     loader: async () => {
-      if (!isAuthenticated()) throw new redirect("/login");
+      if (!isAuthenticated()) throw new redirect("/");
       if (!isAdmin()) throw new redirect("/home");
       return {}
     }

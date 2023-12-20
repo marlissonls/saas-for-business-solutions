@@ -12,7 +12,7 @@ class IDashboardRepository(ABC):
         pass
 
     @abstractmethod
-    def get_dashboards_repository(self, session: Session) -> List[Dashboard] | list:
+    def get_dashboards_repository(self, session: Session) -> List[Dashboard] | List:
         pass
     
     @abstractmethod

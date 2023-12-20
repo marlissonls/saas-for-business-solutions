@@ -33,7 +33,7 @@ def get_companies(current_user: dict = Depends(get_authenticated_user), session:
         )
 
 
-@router.post('/register', status_code=status.HTTP_201_CREATED, response_model=RegisterCompanyResponse)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=RegisterCompanyResponse)
 def create_company(
     name: Annotated[str, Form()],
     area: Annotated[str, Form()],
@@ -84,7 +84,7 @@ def update_company(
         )
 
 @router.delete('/{company_id}', status_code=status.HTTP_200_OK, response_model=GetCompanyResponse)
-def delete_company(company_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> None:
+def delete_company(company_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
     if current_user['role'] == 'admin':
         return controller.delete_company_controller(company_id, session)
     else:

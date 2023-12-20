@@ -10,8 +10,8 @@ class DashboardRepository(IDashboardRepository):
     def get_dashboard_by_id_repository(self, dashboard_id: str, session: Session) -> Dashboard | None:
         return session.query(Dashboard).filter(and_(Dashboard.id == dashboard_id, Dashboard.deleted_at == None)).first()
 
-    def get_dashboards_repository(self, session: Session) -> List[Dashboard] | List:
-        return session.query(Dashboard).filter(Dashboard.deleted_at == None).all()
+    def get_dashboards_repository(self, company_id: str, session: Session) -> List[Dashboard] | List:
+        return session.query(Dashboard).filter(and_(Dashboard.company_id == company_id, Dashboard.deleted_at == None)).all()
 
     def create_dashboard_repository(self, dashboard: Dashboard, session: Session) -> None:
         session.add(dashboard)
