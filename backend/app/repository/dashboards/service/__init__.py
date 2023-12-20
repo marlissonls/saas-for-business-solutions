@@ -28,6 +28,7 @@ class DashboardService(IDashboardService):
                 data=GetDashboardData(
                     id=dashboard.id,
                     name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
                     description=dashboard.description,
                     company_id=dashboard.company_id
                 )
@@ -62,6 +63,7 @@ class DashboardService(IDashboardService):
                 )
                 for dashboard in dashboards
             ]
+            
             return GetDashboardResponse(
                 status=True,
                 message='Dashboards encontrados com sucesso.',
@@ -142,6 +144,7 @@ class DashboardService(IDashboardService):
                 data=GetDashboardData(
                     id=dashboard.id,
                     name=dashboard.name,
+                    date=dashboard.updated_at.strftime("%d/%m/%Y") if dashboard.updated_at else dashboard.created_at.strftime("%d/%m/%Y"),
                     description=dashboard.description,
                     company_id=dashboard.company_id
                 )

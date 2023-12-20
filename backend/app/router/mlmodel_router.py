@@ -21,8 +21,8 @@ def get_model_by_id(model_id: str, current_user: dict = Depends(get_authenticate
         return controller.get_model_by_id_controller(model_id, session)
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=GetModelResponse)
-def get_models(current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
-    return controller.get_models_controller(session)
+def get_models(company_id: str, current_user: dict = Depends(get_authenticated_user), session: Session = Depends(get_db)) -> Any:
+    return controller.get_models_controller(company_id, session)
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=RegisterModelResponse)
 def create_model(

@@ -28,6 +28,7 @@ class ModelService(IModelService):
                 data=GetModelData(
                     id=model.id,
                     name=model.name,
+                    date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
                     description=model.description,
                     company_id=model.company_id
                 )
@@ -41,9 +42,9 @@ class ModelService(IModelService):
                 data=None
             )
 
-    def get_models_service(self, session: Session) -> GetModelResponse:
+    def get_models_service(self, company_id: str, session: Session) -> GetModelResponse:
         try:
-            models = self._repository.get_models_repository(session)
+            models = self._repository.get_models_repository(company_id, session)
 
             if not models:
                 return GetModelResponse(
@@ -52,7 +53,17 @@ class ModelService(IModelService):
                     data=[]
                 )
 
-            models_data_list = [GetModelData(id=model.id, name=model.name, description=model.description, company_id=model.company_id) for model in models]
+            models_data_list = [
+                GetModelData(
+                    id=model.id,
+                    name=model.name,
+                    date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
+                    description=model.description,
+                    company_id=model.company_id
+                )
+                for model in models
+            ]
+
             return GetModelResponse(
                 status=True,
                 message='Modelos encontrados com sucesso.',
@@ -60,6 +71,7 @@ class ModelService(IModelService):
             )
 
         except Exception as error:
+            print(error)
             session.rollback()
             return GetModelResponse(
                 status=False,
@@ -133,10 +145,12 @@ class ModelService(IModelService):
                 data=GetModelData(
                     id=model.id,
                     name=model.name,
+                    date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
                     description=model.description,
                     company_id=model.company_id
                 )
             )
+        
         except Exception as error:
             session.rollback()
             return GetModelResponse(

@@ -11,6 +11,7 @@ class PostModel(BaseModel):
 class GetModelData(BaseModel):
     id: str
     name: str
+    date: str
     description: str
     company_id: str
 

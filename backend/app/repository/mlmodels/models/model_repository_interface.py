@@ -12,7 +12,7 @@ class IModelRepository(ABC):
         pass
 
     @abstractmethod
-    def get_models_repository(self, session: Session) -> List[Model] | list:
+    def get_models_repository(self, session: Session) -> List[Model] | List:
         pass
     
     @abstractmethod

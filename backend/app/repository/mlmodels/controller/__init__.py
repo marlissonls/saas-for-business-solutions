@@ -17,9 +17,9 @@ class ModelController(IModelController):
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
-    def get_models_controller(self, session: Session) -> GetModelResponse:
+    def get_models_controller(self, company_id: str, session: Session) -> GetModelResponse:
         try:
-            return self._service.get_models_service(session)
+            return self._service.get_models_service(company_id, session)
         except Exception as error:
             logger.error("An error occurred: %s", error)
 
