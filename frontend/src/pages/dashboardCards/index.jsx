@@ -119,15 +119,19 @@ function DashboardCards(props) {
     formData.append('name', updateCardTitle);
     formData.append('description', updateCardDescription);
 
-    const response = await api.put(`http://127.0.0.1:8000/dashboards/${updatingCardId}`, formData, {
+    const response = await api.put(`http://127.0.0.1:8000/dashboard/${updatingCardId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
 
     if (response.data.status) {
-      console.log('ok')
+      messageSuccess(response.data.message)
+    } else {
+      messageError(response.data.message)
     }
+
+    setIsEditFormVisible(false)
   }
 
   return <div className='body'>
@@ -266,10 +270,10 @@ function DashboardCards(props) {
           </button>
         </div>
         <p className='card-description'>{cardDescription.split('\r\n').map((line, index) => (
-          <fragment key={index}>
+          <span key={index}>
             {line}
             <br />
-          </fragment>
+          </span>
         ))}</p>
       </div>}
 

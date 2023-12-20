@@ -80,9 +80,7 @@ function validateCardInputs(text) {
   }
 
   if (!textValue) {
-    message = 'Cargo inválido';
-  } else if (!isValidNameFormat(textValue)) {
-    message = 'Cargo inválido.';
+    message = 'O valor digitado é inválido.';
   }
   return message;
 }
