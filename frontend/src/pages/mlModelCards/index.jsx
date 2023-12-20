@@ -1,7 +1,6 @@
 import TopBar from '../../components/topBar';
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
-import CardContainer from "../../containers/cardContainer";
 
 const mlModelCards = [
   { id: 'A', name: 'Modelo Estatístico', description: 'Em linguística, a noção de texto é ampla e ainda aberta a uma definição mais precisa. Grosso modo, pode ser entendido como manifestação linguística das ideias de um autor, que serão interpretadas pelo leitor de acordo com seus conhecimentos linguísticos e culturais. Seu tamanho é variável.' },
@@ -19,7 +18,7 @@ function MlModelCards(props) {
       <SideBar />
       <MainContent>
         <h2 className='page-title'>Modelos de Machine Learning</h2>
-        <CardContainer route='models' cards={mlModelCards}/>
+
       </MainContent>
     </div>
   </div>

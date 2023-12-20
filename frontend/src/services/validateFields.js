@@ -69,9 +69,28 @@ function validatePassword(password) {
   return message
 }
 
+function validateCardInputs(text) {
+  let message = "";
+  let textValue;
+
+  if (text) {
+    textValue = text.trim();
+  } else {
+    return message;
+  }
+
+  if (!textValue) {
+    message = 'Cargo inválido';
+  } else if (!isValidNameFormat(textValue)) {
+    message = 'Cargo inválido.';
+  }
+  return message;
+}
+
 export {
   validateName,
   validateEmail,
   validatePosition,
-  validatePassword
+  validatePassword,
+  validateCardInputs,
 }

@@ -1,55 +1,68 @@
 import { useState, useEffect } from 'react'
+import { useSnackbar } from "notistack";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faChartColumn, faEye, faEdit, faX} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import TopBar from '../../components/topBar';
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
+import { get_company_id } from '../../services/auth';
+import { validateCardInputs } from "../../services/validateFields";
 import api from '../../services/api';
 
 
+async function getDashboardsData(id) {
+  const response = await api.get(`http://127.0.0.1:8000/dashboard?company_id=${id}`)
+  return response.data.data
+}
+
 function DashboardCards(props) {
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  function messageError(message) {
+    enqueueSnackbar(message, { variant: "error" });
+  }
+
+  function messageSuccess(message) {
+    enqueueSnackbar(message, { variant: "success" });
+  }
+
+
+  function getCardInputErrors(cardTitle, cardDescription) {
+    const errors = []
+    errors[0] = validateCardInputs(cardTitle)
+    errors[1] = validateCardInputs(cardDescription)
+    return errors
+  }
+
+  ////////////////////////////////
+  // HANDLE MODAL CHANGING
+
   const [isCreateCardVisible, setIsCreateCardVisible] = useState(false)
   const [isCardVisible, setIsCardVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
 
   ////////////////////////////////
-  // 
-  // const company_id = get_company_id();
-  // const [data, setData] = useState(null);
+  // GET THE COMPANY DASHBOARDS
 
-  // useEffect(() => {
-  //   async function fetchCompanyData() {
-  //     try {
-  //       const companyData = await getCompanyData(company_id);
-  //       setData(companyData);
-  //     } catch (error) {
-  //       console.error('Error fetching company data:', error);
-  //     }
-  //   }
-
-  //   if (company_id) {
-  //     fetchCompanyData();
-  //   }
-  // }, [company_id]);
-
+  const company_id = get_company_id();
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = [
-        { id: 1, name: 'Item 1', date: '10/10/2010', description: 'Descrição do Item 1' },
-        { id: 2, name: 'Item 2', date: '10/10/2010', description: 'Descrição do Item 2' },
-        { id: 3, name: 'Item 3', date: '10/10/2010', description: 'Descrição do Item 3' },
-        { id: 4, name: 'Item 4', date: '10/10/2010', description: 'Descrição do Item 1' },
-        { id: 5, name: 'Item 5', date: '10/10/2010', description: 'Descrição do Item 2' },
-        { id: 6, name: 'Item 6', date: '10/10/2010', description: 'Descrição do Item 3' },
-      ];
-      setData(data);
-    };
+    async function fetchDashboardsData() {
+      try {
+        const dashboardsData = await getDashboardsData(company_id);
+        setData(dashboardsData);
+      } catch (error) {
+        console.error('Error fetching dashboards data:', error);
+      }
+    }
 
-    fetchData();
-  }, []);
+    if (company_id) {
+      fetchDashboardsData();
+    }
+  }, [company_id]);
 
   /////////////////////////////////
   // SHOW CREATE CARD MODAL
@@ -57,22 +70,30 @@ function DashboardCards(props) {
   const [createCardTitle, setCreateCardTitle] = useState('');
   const [createCardDescription, setCreateCardDescription] = useState('');
 
+  const createCardErrors = getCardInputErrors(createCardTitle, createCardDescription)
+  const hasCreateCardErrors = createCardErrors.some((item) => item !== "")
+
   async function handleCreateCard(e) {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('name', updateCardTitle);
-    formData.append('description', updateCardDescription);
+    formData.append('name', createCardTitle);
+    formData.append('description', createCardDescription);
+    formData.append('company_id', company_id);
 
-    const response = await api.post(`http://127.0.0.1:8000/dashboards`, formData, {
+    const response = await api.post(`http://127.0.0.1:8000/dashboard`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
 
     if (response.data.status) {
-      console.log('ok')
+      messageSuccess(response.data.message)
+    } else {
+      messageError(response.data.message)
     }
+
+    setIsCreateCardVisible(false)
   }
 
   /////////////////////////////////
@@ -87,6 +108,9 @@ function DashboardCards(props) {
   const [updatingCardId, setUpdatingCardId] = useState('');
   const [updateCardTitle, setUpdateCardTitle] = useState('');
   const [updateCardDescription, setUpdateCardDescription] = useState('');
+
+  const updateCardErrors = getCardInputErrors(updateCardTitle, updateCardDescription)
+  const hasUpdateCardErrors = updateCardErrors.some((item) => item !== "")
 
   async function handleUpdateCard(e) {
     e.preventDefault();
@@ -111,23 +135,25 @@ function DashboardCards(props) {
     <div className='display-flex'>
     <SideBar />
     <MainContent>
-      <h2 className='page-title'>Dashboards</h2>
-      <button
-        className='table-add-new'
+      <h2 className='page-title'>
+        Dashboards
+        <button
+        className='button-add-new'
         onClick={() => {
           setIsCardVisible(false);
           setIsEditFormVisible(false);
           setIsCreateCardVisible(true);
         }}
       >
-        <FontAwesomeIcon icon={faPlus}  size='3x' />
+        <FontAwesomeIcon icon={faPlus}  size='2x' />
       </button>
+      </h2>
       <table className='table'>
         <thead>
           <tr className='table-title-row'>
             <th className='th table-title-col-id'>ID</th>
             <th className='th table-title-col-name'>Título</th>
-            <th className='th table-title-col-data'>Data de criação</th>
+            <th className='th table-title-col-data'>Criado / Atualizado</th>
             <th className='th table-title-col-action'>Ação</th>
           </tr>
         </thead>
@@ -137,35 +163,39 @@ function DashboardCards(props) {
               <td className='td'>{card.id}</td>
               <td className='td'>{card.name}</td>
               <td className='td'>{card.date}</td>
-              <td className='td table-action-container'>
-                <Link to={`/dashboards/${card.id}`}>
-                  <div className='table-action-icon arrow'>
-                    <FontAwesomeIcon icon={faChartColumn} size='1x' />
-                  </div>
-                </Link>
-                <button
-                  className='table-action-icon eye'
-                  onClick={() => {
-                    setIsCreateCardVisible(false);
-                    setIsEditFormVisible(false);
-                    setIsCardVisible(true);
-                    setCardTitle(card.name);
-                    setCardDescription(card.description);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faEye} size='1x' />
-                </button>
-                <button
-                  className='table-action-icon edit'
-                  onClick={() => {
-                    setIsCreateCardVisible(false);
-                    setIsCardVisible(false)
-                    setIsEditFormVisible(true);
-                    setUpdatingCardId(card.id);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faEdit} size='1x' />
-                </button>
+              <td className='td'>
+                <div className='table-action-container'>
+                  <Link to={`/dashboards/${card.id}`}>
+                    <div className='table-action-icon arrow'>
+                      <FontAwesomeIcon icon={faChartColumn} size='1x' />
+                    </div>
+                  </Link>
+                  <button
+                    className='table-action-icon eye'
+                    onClick={() => {
+                      setIsCreateCardVisible(false);
+                      setIsEditFormVisible(false);
+                      setIsCardVisible(true);
+                      setCardTitle(card.name);
+                      setCardDescription(card.description);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEye} size='1x' />
+                  </button>
+                  <button
+                    className='table-action-icon edit'
+                    onClick={() => {
+                      setIsCreateCardVisible(false);
+                      setIsCardVisible(false)
+                      setIsEditFormVisible(true);
+                      setUpdatingCardId(card.id);
+                      setUpdateCardTitle(card.name);
+                      setUpdateCardDescription(card.description);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEdit} size='1x' />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -197,8 +227,7 @@ function DashboardCards(props) {
           <button 
             className='button submit-button' 
             type='submit'
-            disabled={(updateCardTitle === '' && updateCardDescription === '')}
-            // disabled={hasErrors || (updateTitle === '' && updateDescription === '')}
+            disabled={hasCreateCardErrors || (createCardTitle === '' || createCardDescription === '')}
           >
             Criar
           </button>
@@ -214,6 +243,10 @@ function DashboardCards(props) {
             Cancelar
           </button>
         </div>
+
+        {hasCreateCardErrors[0] && <div className="error-message">{hasCreateCardErrors[0]}</div> || 
+        hasCreateCardErrors[1] && <div className="error-message">{hasCreateCardErrors[1]}</div> ||
+        (createCardTitle === '' || createCardDescription === '') && <div className="error-message">Há campos vazios</div>}
       </form>}
 
       {/* JUST SHOW CARD DESCRIPTION */}
@@ -232,7 +265,12 @@ function DashboardCards(props) {
             <FontAwesomeIcon icon={faX} />
           </button>
         </div>
-        <p className='card-description'>{cardDescription}</p>
+        <p className='card-description'>{cardDescription.split('\r\n').map((line, index) => (
+          <fragment key={index}>
+            {line}
+            <br />
+          </fragment>
+        ))}</p>
       </div>}
 
       {/* SHOW UPDATE CARD MODAL */}
@@ -260,8 +298,7 @@ function DashboardCards(props) {
           <button 
             className='button submit-button' 
             type='submit'
-            disabled={(updateCardTitle === '' && updateCardDescription === '')}
-            // disabled={hasErrors || (updateTitle === '' && updateDescription === '')}
+            disabled={hasUpdateCardErrors || (updateCardTitle === '' && updateCardDescription === '')}
           >
             Atualizar
           </button>
@@ -277,6 +314,10 @@ function DashboardCards(props) {
             Cancelar
           </button>
         </div>
+
+        {hasUpdateCardErrors[0] && <div className="error-message">{hasUpdateCardErrors[0]}</div> || 
+        hasUpdateCardErrors[1] && <div className="error-message">{hasUpdateCardErrors[1]}</div> ||
+        (updateCardTitle === '' || updateCardDescription === '') && <div className="error-message">Há campos vazios</div>}
       </form>}
     </MainContent>
     </div>
