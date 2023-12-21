@@ -7,11 +7,11 @@
 /* GENERAL STYLES */
 
 :root {
-  --fonte-principal: 'Open Sans', sans-serif;
+  --main-font: 'Open Sans', sans-serif;
   --text-color: #555;
-  --largura-sidebar: 200px;
-  --topbar-height: 9vh;
-  --page-height: 91vh;
+  --sidebar-width: 200px;
+  --topbar-height: 65px;
+  --page-height: calc(100vh - var(--topbar-height));
   --main-color: midnightblue;
   --dark-green: #26bc6a;
   --light-green: #c9eeda;
@@ -26,7 +26,7 @@
 }
 
 .body {
-  font-family: var(--fonte-principal);
+  font-family: var(--main-font);
   display: flex;
   flex-direction: column;
 }
@@ -139,7 +139,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + var(--largura-sidebar) / 2), calc(-50% - var(--topbar-height) / 2));
+  transform: translate(calc(-50% + var(--sidebar-width) / 2), calc(-50% - var(--topbar-height) / 2));
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -171,7 +171,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + var(--largura-sidebar) / 2), calc(-50% - var(--topbar-height) / 2));
+  transform: translate(calc(-50% + var(--sidebar-width) / 2), calc(-50% - var(--topbar-height) / 2));
   border-radius: var(--border-radius);
   box-shadow: 0 0 8px #333333ff;
   display: flex;
@@ -427,8 +427,8 @@ border-radius: 6px;
 /* MAIN CONTENT */
 
 .main-content {
-  width: calc(100% - var(--largura-sidebar));
-  max-height: var(--page-height);
+  width: calc(100% - var(--sidebar-width));
+  height: var(--page-height);
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -477,7 +477,7 @@ border-radius: 6px;
 /* SIDEBAR */
 
 .sidebar {
-  width: var(--largura-sidebar);
+  width: var(--sidebar-width);
   height: var(--page-height);
   background-color: #212529;
   padding: 40px 20px;

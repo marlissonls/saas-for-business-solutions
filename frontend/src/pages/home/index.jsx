@@ -20,7 +20,7 @@ function Home() {
   const { enqueueSnackbar } = useSnackbar();
 
   function messageError(message) {
-    enqueueSnackbar(message, { variant: "error" });
+    enqueueSnackbar(message, { variant: "error", style: {fontFamily: 'Arial'} });
   }
 
   useEffect(() => {
