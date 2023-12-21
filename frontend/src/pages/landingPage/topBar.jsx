@@ -205,7 +205,7 @@ function TopBar(props) {
       </form>}
 
       {isRegisterFormVisible && <form className='user-form' onSubmit={handleRegisterSubmit}>
-        <h3 className='form-title'>Cadaster-se</h3>
+        <h3 className='form-title'>Cadastre-se</h3>
 
         <input
           className="input"

@@ -360,6 +360,7 @@ border-radius: 6px;
 }
 
 .profile-container-topbar {
+  z-index: 2;
   height: fit-content;
   width: fit-content;
   padding: 25px;
@@ -508,13 +509,6 @@ border-radius: 6px;
 }
 
 
-
-/* LANDING PAGE */
-
-.pricing-cards {
-  color: red
-}
-
 /* HOME PAGE */
 
 .company-welcome {
@@ -537,4 +531,25 @@ border-radius: 6px;
 .company-info {
   color: var(--text-color);
   width: 78%;
+}
+
+/* LANDING PAGE */
+
+.hero-section {
+  width: 100vw;
+  height: 80vh;
+  position: relative;
+  background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
+  background-size: 100%;
+
+  color: #fff;
+  font-size: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pricing-cards {
+  color: red
 }
