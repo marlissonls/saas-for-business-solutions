@@ -149,6 +149,46 @@
   background-color: #212529;
 }
 
+.machine-learning-form {
+  width: fit-content;
+  height: fit-content;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+  padding: 25px;
+  background-color: #212529;
+}
+
+.machine-learning-field {
+  display: flex;
+  gap: 7px;
+}
+
+.machine-learning-field.number,
+.machine-learning-field.select {
+  display: flex;
+  flex-direction: column;
+}
+
+.machine-learning-field label{
+  color: #fff;
+}
+
+.machine-learning-field.number input,
+.machine-learning-field.select select {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text-color);
+  width: 300px;
+  padding: 6px;
+  background-color: #d5d7d9;
+  border-radius: var(--border-radius);
+  border: 1px solid #333;
+  outline: none;
+}
+
 .error-message {
   color: #ef3546;
   text-align: center;
@@ -537,4 +577,36 @@ border-radius: 6px;
 .company-info {
   color: var(--text-color);
   width: 78%;
+}
+
+/* DASHBOARD PAGE */
+
+/* MACHINE LEARNING PAGE */
+
+.machine-learning-page {
+  display: flex;
+  gap: 100px;
+}
+
+.machine-learning-result {
+  width: fit-content;
+  height: fit-content;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 25px;
+  background-color: #212529;
+  color: #fff;
+  font-size: 25px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + var(--largura-sidebar) / 2), calc(-50% - var(--topbar-height) / 2));
+}
+
+.machine-learning-result p:first-of-type {
+  font-weight: bold;
+  font-size: 30px;
 }

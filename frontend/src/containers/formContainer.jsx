@@ -32,6 +32,8 @@ const MachineLearningForm = ({ id }) => {
   const [featuresTemplate, setFeaturesTemplate] = useState({});
   const [formValues, setFormValues] = useState({});
   const [modelTitle, setModelTitle] = useState('');
+  const [prediction, setPrediction] = useState([]);
+  const [mouseState, setMouseState] = useState('default');
 
   useEffect(() => {
     const getFormInputs = async () => {
@@ -65,16 +67,28 @@ const MachineLearningForm = ({ id }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(formValues)
-    const response = await api.post(`http://127.0.0.1:8000/model/predict/${id}`, {
-      features_values: formValues,
-      features_template: featuresTemplate, 
-    })
-    
-    console.log(response.data.status)
-    console.log(response.data.message)
-    console.log(response.data.data)
+
+    setMouseState('wait');
+    try {
+      const response = await api.post(`http://127.0.0.1:8000/model/predict/${id}`, {
+        features_values: formValues,
+        features_template: featuresTemplate,
+      });
+  
+      if (response.data.status) {
+        console.log(response.data.message);
+        setPrediction(response.data.data);
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao processar a solicitação', error);
+    } finally {
+      // Após a conclusão, restaure o estado do mouse para 'default'
+      setMouseState('default');
+    }
   }
+  
 
   const renderFormField = (field) => {
     // Lógica para renderizar o campo de acordo com o tipo
@@ -137,9 +151,9 @@ const MachineLearningForm = ({ id }) => {
     }
 
     return (
-      <form className='model-form' onSubmit={handleSubmit}>
+      <form className='machine-learning-form' onSubmit={handleSubmit}>
         {formInputs.map((field) => (
-          <div className={field.type} key={field.name}>
+          <div className={'machine-learning-field ' + field.type} key={field.name}>
             {field.type === 'checkbox' ? (
               <>
                 {renderFormField(field)}
@@ -153,19 +167,37 @@ const MachineLearningForm = ({ id }) => {
             )}
           </div>
         ))}
-        {formInputs.length > 0 && (
-          <button type="submit">Enviar</button>
-        )}
+
+        <div className='button-container'>
+          {formInputs.length > 0 && (<button 
+              className='button submit-button'
+              type="submit"
+              disabled={Object.values(formValues).some(value => value === "")}
+            >
+              Enviar
+            </button>
+          )}
+        </div>
+        
+        {Object.values(formValues).some(value => value === "") && <div className="error-message">Há campos vazios</div>}
       </form>
     );
   };
 
-  return (
-    <div>
-      <h2 className='page-title'>{modelTitle}</h2>
+  return <>
+    <h2 className='page-title'>{modelTitle}</h2>
+    <div className='machine-learning-page' style={{ cursor: mouseState }}>
       {renderForm()}
+      {prediction && prediction.length > 0 && (
+        <div className='machine-learning-result'>
+          <p>Resultado</p>
+          {prediction.map((pred, index) => (
+            <p key={index}>{typeof pred === 'number' ? pred.toFixed(2) : pred}</p>
+          ))}
+        </div>
+      )}
     </div>
-  );
+  </>
 };
 
 export default MachineLearningForm;
