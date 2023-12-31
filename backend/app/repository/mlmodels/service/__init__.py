@@ -1,6 +1,6 @@
-from app.repository.mlmodels.models.model_models import RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
-from app.repository.mlmodels.models.model_repository_interface import IModelRepository
-from app.repository.mlmodels.models.model_service_interface import IModelService
+from app.repository.mlmodels.interfaces.model_interface import RegisterModelResponse, GetModelId, GetModelData, GetModelResponse
+from app.repository.mlmodels.interfaces.model_repository_interface import IModelRepository
+from app.repository.mlmodels.interfaces.model_service_interface import IModelService
 from app.db.schema import Model
 from sqlalchemy.orm import Session
 from uuid import uuid1
@@ -30,11 +30,15 @@ class ModelService(IModelService):
                     name=model.name,
                     date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
                     description=model.description,
-                    company_id=model.company_id
+                    company_id=model.company_id,
+                    features_inputs=model.features_inputs,
+                    features_template=model.features_template,
                 )
             )
 
         except Exception as error:
+            print('OLHA AQUI EMBAIXO SEU ANIMAL')
+            print(error)
             session.rollback()
             return GetModelResponse(
                 status=False,
@@ -59,7 +63,9 @@ class ModelService(IModelService):
                     name=model.name,
                     date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
                     description=model.description,
-                    company_id=model.company_id
+                    company_id=model.company_id,
+                    features_inputs=None,
+                    features_template=None,
                 )
                 for model in models
             ]
@@ -119,6 +125,8 @@ class ModelService(IModelService):
         model_id: str, 
         name: str,
         description: str,
+        features_inputs: str,
+        features_template: str,
         session: Session,
     ) -> GetModelResponse:
         try:
@@ -133,6 +141,8 @@ class ModelService(IModelService):
 
             if name: model.name=name
             if description: model.description=description
+            if features_inputs: model.features_inputs = features_inputs
+            if features_template: model.features_template = features_template
             model.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_model_repository(model, session)
@@ -147,7 +157,9 @@ class ModelService(IModelService):
                     name=model.name,
                     date=model.updated_at.strftime("%d/%m/%Y") if model.updated_at else model.created_at.strftime("%d/%m/%Y"),
                     description=model.description,
-                    company_id=model.company_id
+                    company_id=model.company_id,
+                    features_inputs=model.features_inputs,
+                    features_template=model.features_template,
                 )
             )
         

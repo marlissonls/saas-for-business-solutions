@@ -14,6 +14,8 @@ class GetModelData(BaseModel):
     date: str
     description: str
     company_id: str
+    features_inputs: Union[str, None]
+    features_template: Union[str, None]
 
 class GetModelResponse(BaseModel):
     status: bool
@@ -28,3 +30,12 @@ class RegisterModelResponse(BaseModel):
     status: bool
     message: str
     data: GetModelId | None
+
+class FeatureData(BaseModel):
+    features_values: dict
+    features_template: dict
+
+class PredictResponse(BaseModel):
+    status: bool
+    message: str
+    data: Union[List, int, str, bool, None] = None
