@@ -1,5 +1,5 @@
 from app.db.schema import Model
-from app.repository.mlmodels.models.model_models import PutModel
+from app.repository.mlmodels.interfaces.model_interface import PutModel
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
 from typing import List

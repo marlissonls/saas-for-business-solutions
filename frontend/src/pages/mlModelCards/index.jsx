@@ -140,7 +140,7 @@ function MlModelCards(props) {
     <SideBar />
     <MainContent>
       <h2 className='page-title'>
-        Machine Learning Models
+        Machine Learning
         <button
         className='button-add-new'
         onClick={() => {

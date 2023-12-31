@@ -8,3 +8,6 @@ psycopg2-binary
 python-multipart
 Pillow
 pyjwt
+joblib
+pandas
+scikit-learn

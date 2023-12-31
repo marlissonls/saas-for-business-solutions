@@ -1,15 +1,17 @@
 from fastapi import APIRouter, status, Request, Depends, Form
-from app.repository.mlmodels.models.model_models import GetModelResponse, RegisterModelResponse
+from app.repository.mlmodels.interfaces.model_interface import GetModelResponse, RegisterModelResponse, FeatureData, PredictResponse
 from app.repository.mlmodels.sqlalchemy import ModelRepository
 from app.repository.mlmodels.controller import ModelController
 from app.repository.mlmodels.service import ModelService
+from app.repository.mlmodels.predict_service import PredictService
 from app.utils.auth import get_authenticated_user
 from sqlalchemy.orm import Session
 from typing import Any, Annotated, Optional
 
 repository = ModelRepository()
 service = ModelService(repository)
-controller = ModelController(service)
+predict_service = PredictService()
+controller = ModelController(service, predict_service)
 
 router = APIRouter(prefix="/model", tags=["model"])
 
@@ -44,6 +46,8 @@ def update_model(
     model_id: str,
     name: Optional[str] = Form(None),
     description: Optional[str] = Form(None),
+    features_inputs: Optional[str] = Form(None),
+    features_template: Optional[str] = Form(None),
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
@@ -51,6 +55,8 @@ def update_model(
         model_id, 
         name,
         description,
+        features_inputs,
+        features_template,
         session
         )
 
@@ -64,3 +70,8 @@ def delete_model(model_id: str, current_user: dict = Depends(get_authenticated_u
             message='Acesso negado.',
             data=None,
         )
+
+
+@router.post('/predict/{model_id}', status_code=status.HTTP_201_CREATED, response_model=PredictResponse)
+def predict(model_id: str, features: FeatureData, current_user: dict = Depends(get_authenticated_user)) -> Any:
+    return controller.predict_controller(model_id, features)
