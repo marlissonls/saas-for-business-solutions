@@ -1,4 +1,4 @@
-function CompanyData({ data }) {
+function CompanyInfo({ data }) {
   const name = data.data.name 
   const area = data.data.area 
   const description = data.data.description 
@@ -12,4 +12,4 @@ function CompanyData({ data }) {
   </>
 }
 
-export default CompanyData;
+export default CompanyInfo;

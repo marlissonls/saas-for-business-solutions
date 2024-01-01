@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import TopBar from "../../components/topBar";
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
-import CompanyData from './company';
+import CompanyInfo from '../../containers/companyInfo';
 import { get_company_id } from "../../services/auth";
 import api from "../../services/api";
 
@@ -52,7 +52,7 @@ function Home() {
         <SideBar />
         <MainContent>
           <h2 className='page-title'>Empresa</h2>
-          {data ? <CompanyData data={data} /> : <p>Carregando dados da empresa...</p>}
+          {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
         </MainContent>
       </div>
     </div>
