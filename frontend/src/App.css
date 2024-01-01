@@ -551,18 +551,37 @@ border-radius: 6px;
 /* LANDING PAGE */
 
 .hero-section {
-  width: 100vw;
-  height: 80vh;
-  position: relative;
-  background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
-  background-size: 100%;
-
-  color: #fff;
-  font-size: 30px;
+  width: 100%;
+  height: 70vh;
+  padding: 0 150px;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  gap: 30px;
+
+  background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
+  background-size: cover; /* Usando cover para cobrir toda a largura sem esticar a imagem */
+  background-position: center; /* Ajuste conforme necessário */
+
+  color: #fff;
+  font-size: 27px;
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-weight: bold;
+  text-shadow: 0 0 5px #ddd;
+}
+
+.hero-section p:last-child {
+  font-weight: bold;
+  font-size: 30px;
+  text-shadow: 0 0 5px #ddd;
+}
+
+.aboutus-section {
+  border: var(--border-test)
 }
 
 .pricing-cards {
@@ -617,7 +636,7 @@ border-radius: 6px;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + var(--largura-sidebar) / 2), calc(-50% - var(--topbar-height) / 2));
+  transform: translate(calc(-50% + var(--sidebar-width)/2), -50%)
 }
 
 .machine-learning-result p:first-of-type {
