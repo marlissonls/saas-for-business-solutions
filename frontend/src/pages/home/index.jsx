@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSnackbar } from "notistack";
 import TopBar from "../../components/topBar";
 import SideBar from '../../components/sideBar';
 import MainContent from '../../containers/mainContent';
-import CompanyData from './company';
+import CompanyInfo from '../../containers/companyInfo';
 import { get_company_id } from "../../services/auth";
 import api from "../../services/api";
+
 
 async function getCompanyData(id) {
   const response = await api.get(`http://127.0.0.1:8000/company/${id}`)
@@ -12,23 +14,36 @@ async function getCompanyData(id) {
 }
 
 function Home() {
-  const company_id = get_company_id();
+  const refLoading = useRef(false)
   const [data, setData] = useState(null);
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  function messageError(message) {
+    enqueueSnackbar(message, { variant: "error", style: {fontFamily: 'Arial'} });
+  }
+
   useEffect(() => {
-    async function fetchCompanyData() {
+    async function fetchCompanyData(company_id) {
       try {
         const companyData = await getCompanyData(company_id);
         setData(companyData);
       } catch (error) {
-        console.error('Error fetching company data:', error);
+        messageError('Erro ao carregar dados da empresa.')
+      } finally {
+        refLoading.current = false;
       }
     }
 
-    if (company_id) {
-      fetchCompanyData();
+    const company_id = get_company_id();
+    if (!refLoading.current) {
+      if (company_id) {
+        console.log(company_id)
+        refLoading.current = true;
+        fetchCompanyData(company_id);
+      }
     }
-  }, [company_id]);
+  }, []);
 
   return (
     <div className='body'>
@@ -37,7 +52,7 @@ function Home() {
         <SideBar />
         <MainContent>
           <h2 className='page-title'>Empresa</h2>
-          {data ? <CompanyData data={data} /> : <p>Carregando dados da empresa...</p>}
+          {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
         </MainContent>
       </div>
     </div>

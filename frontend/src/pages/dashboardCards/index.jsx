@@ -21,11 +21,11 @@ function DashboardCards(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   function messageError(message) {
-    enqueueSnackbar(message, { variant: "error" });
+    enqueueSnackbar(message, { variant: "error", style: {fontFamily: 'Arial'}});
   }
 
   function messageSuccess(message) {
-    enqueueSnackbar(message, { variant: "success" });
+    enqueueSnackbar(message, { variant: "success", style: {fontFamily: 'Arial'}});
   }
 
 

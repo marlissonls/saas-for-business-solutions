@@ -13,11 +13,11 @@ function TopBar(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   function messageError(message) {
-    enqueueSnackbar(message, { variant: "error" });
+    enqueueSnackbar(message, { variant: "error", style: {fontFamily: 'Arial'} });
   }
 
   function messageSuccess(message) {
-    enqueueSnackbar(message, { variant: "success" });
+    enqueueSnackbar(message, { variant: "success", style: {fontFamily: 'Arial'} });
   }
 
   /////////////////////////////
@@ -205,7 +205,7 @@ function TopBar(props) {
       </form>}
 
       {isRegisterFormVisible && <form className='user-form' onSubmit={handleRegisterSubmit}>
-        <h3 className='form-title'>Cadaster-se</h3>
+        <h3 className='form-title'>Cadastre-se</h3>
 
         <input
           className="input"
