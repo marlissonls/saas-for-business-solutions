@@ -550,23 +550,63 @@ border-radius: 6px;
 
 /* LANDING PAGE */
 
+.body-landingpage {
+  background-color:#000725;
+}
+
+.aboutus-section,
+.ourservices-section,
+.whyus-section {
+  width: 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px
+}
+
+.aboutus-section {
+  border-top: 2px solid #ddd;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.section-divisor {
+  width: 30px;
+  height: 2px;
+  background-color: #ddd;
+  border-radius: 1px;
+}
+
+.section-title p {
+  color: #458ee5;
+  text-shadow: 0 0 5px #458ee5;
+  font-size: 20px;
+}
+
+/* Hero Section */
+
 .hero-section {
   width: 100%;
-  height: 70vh;
+  height: 50vh;
   padding: 0 150px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 30px;
 
   background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
-  background-size: cover; /* Usando cover para cobrir toda a largura sem esticar a imagem */
-  background-position: center; /* Ajuste conforme necessário */
-
+  background-size: cover; 
+  background-position: center;
+  
   color: #fff;
   font-size: 27px;
-  text-align: center;
 }
 
 .hero-section h1 {
@@ -575,17 +615,138 @@ border-radius: 6px;
 }
 
 .hero-section p:last-child {
+  width: fit-content;
   font-weight: bold;
   font-size: 30px;
-  text-shadow: 0 0 5px #ddd;
+  color: #fff;
+  background: linear-gradient(to right, #528cfe, #f239ab);
+
+  padding: 10px 30px;
+  border-radius: 20px;
 }
 
-.aboutus-section {
-  border: var(--border-test)
+/* About Us Section */
+
+.aboutus-whatwedo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: #ddd;
 }
 
-.pricing-cards {
-  color: red
+.aboutus-whatwedo p{
+  font-size: 20px;
+}
+
+/* Our Services */
+
+.ourservice-cards {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.ourservice-card {
+  width: 550px;
+  height: 350px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 #fff;
+  transition: box-shadow 0.5s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+
+  color: #ddd;
+}
+
+.ourservice-card:hover {
+  box-shadow: 0 0 15px #fff;
+}
+
+.ourservice-card h3 {
+  font-size: 22px;
+}
+
+.chart-service {
+  background: linear-gradient(135deg, #306afd, #09205d)
+}
+
+.machine-service {
+  background: linear-gradient(135deg, #64143b, #f02889)
+}
+
+/* Why Us Section */
+
+.whyus-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: #ddd;
+  font-size: 18px;
+}
+
+.whyus-compromise {
+  color: #ddd;
+  text-align: center;
+}
+
+.whyus-card {
+  width: 370px;
+  height: 300px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 #fff;
+  transition: box-shadow 0.5s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+
+  color: #ddd;
+}
+
+.whyus-card h2 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.whyus-card p {
+  text-align: justify;
+  font-size: 16px;
+}
+
+.whyus-card:hover {
+  box-shadow: 0 0 15px #fff;
+}
+
+.whyus-customization {
+  background: linear-gradient(135deg, #f02889, #8928f0)
+}
+
+.whyus-expertise {
+  background: linear-gradient(135deg, #8928f0, #2a0353)
+}
+
+.whyus-commitment {
+  background: linear-gradient(135deg, #2a0353, #306afd)
+}
+
+.whyus-compromise {
+  background: linear-gradient(135deg, #f239ab, #ab39f2, #528cfe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.whyus-compromise span {
+  color: #ddd;
 }
 
 /* HOME PAGE */
