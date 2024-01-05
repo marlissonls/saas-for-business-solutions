@@ -39,6 +39,7 @@ def create_company(
     area: Annotated[str, Form()],
     description: Annotated[str, Form()],
     localization: Annotated[str, Form()],
+    phone: Annotated[str, Form()],
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
@@ -48,6 +49,7 @@ def create_company(
             area,
             description,
             localization,
+            phone,
             session
         )
     else:
@@ -64,6 +66,7 @@ def update_company(
     area: Optional[str] = Form(None),
     description: Optional[str] = Form(None),
     localization: Optional[str] = Form(None),
+    phone: Optional[str] = Form(None),
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
@@ -74,6 +77,7 @@ def update_company(
             area,
             description,
             localization,
+            phone,
             session
         )
     else:

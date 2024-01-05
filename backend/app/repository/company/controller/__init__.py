@@ -29,6 +29,7 @@ class CompanyController(ICompanyController):
         area: str,
         description: str,
         localization: str,
+        phone: str,
         session: Session
     ) -> RegisterCompanyResponse:
         try:
@@ -37,6 +38,7 @@ class CompanyController(ICompanyController):
                 area,
                 description,
                 localization,
+                phone,
                 session
             )
         except Exception as error:
@@ -49,6 +51,7 @@ class CompanyController(ICompanyController):
         area: str,
         description: str,
         localization: str,
+        phone: str,
         session: Session, 
     ) -> GetCompanyResponse:
         try:
@@ -58,6 +61,7 @@ class CompanyController(ICompanyController):
                 area,
                 description,
                 localization,
+                phone,
                 session
             )
         except Exception as error:

@@ -13,6 +13,7 @@ class Company(Base):
     area = Column(String(255), nullable=False)
     description = Column(Text, nullable=False)
     localization = Column(String(255), nullable=False)
+    phone = Column(String(255))
     created_at = Column(DateTime(timezone=True), server_default=func.now(timezone='UTC-3'))
     updated_at = Column(DateTime, default=None)
     deleted_at = Column(DateTime, default=None)
