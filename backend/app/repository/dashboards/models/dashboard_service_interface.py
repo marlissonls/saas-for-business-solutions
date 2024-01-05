@@ -23,7 +23,7 @@ class IDashboardService(ABC):
         pass
 
     @abstractmethod
-    def update_dashboard_service(self, dashboard_id: str, dashboard_updated: PutDashboard, session: Session) -> GetDashboardResponse:
+    def update_dashboard_service(self, dashboard_id: str, name:str, description:str, dashboard_updated: PutDashboard, session: Session) -> GetDashboardResponse:
         pass
 
     @abstractmethod

@@ -23,7 +23,7 @@ class IDashboardController(ABC):
         pass
 
     @abstractmethod
-    def update_dashboard_controller(self, dashboard_id: str, dashboard: PutDashboard, session: Session) -> GetDashboardResponse:
+    def update_dashboard_controller(self, dashboard_id: str, name: str, description: str,  dashboard: PutDashboard, session: Session) -> GetDashboardResponse:
         pass
 
     @abstractmethod
