@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import TopBar from "../../components/topBar";
 import SideBar from "../../components/sideBar";
 import MainContent from "../../containers/mainContent";
-import MachineLearningForm from "../../containers/formContainer";
+import MachineLearningForm from "../../containers/machineLearningContainer";
 
 function Model(props) {
   const { id } = useParams();
