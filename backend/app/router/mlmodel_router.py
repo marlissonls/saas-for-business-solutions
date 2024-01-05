@@ -48,6 +48,7 @@ def update_model(
     description: Optional[str] = Form(None),
     features_inputs: Optional[str] = Form(None),
     features_template: Optional[str] = Form(None),
+    jupyter_link: Optional[str] = Form(None),
     current_user: dict = Depends(get_authenticated_user),
     session: Session = Depends(get_db)
 ) -> Any:
@@ -57,6 +58,7 @@ def update_model(
         description,
         features_inputs,
         features_template,
+        jupyter_link,
         session
         )
 

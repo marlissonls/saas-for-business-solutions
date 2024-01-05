@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import api from '../services/api';
 
 const getInitialValue = (field) => {
@@ -30,6 +33,7 @@ const getInitialFormValues = (fields) => {
 const MachineLearningForm = ({ id }) => {
   const [formInputs, setFormInputs] = useState([]);
   const [featuresTemplate, setFeaturesTemplate] = useState({});
+  const [jupyterLink, setJupyterLink] = useState('#');
   const [formValues, setFormValues] = useState({});
   const [modelTitle, setModelTitle] = useState('');
   const [prediction, setPrediction] = useState([]);
@@ -39,15 +43,17 @@ const MachineLearningForm = ({ id }) => {
     const getFormInputs = async () => {
       try {
         const response = await api.get(`http://127.0.0.1:8000/model/${id}`)
-        const inputs = JSON.parse(response.data.data.features_inputs);
-        const featTemplate = JSON.parse(response.data.data.features_template);
-        
-        setFormInputs(inputs);
-        setFeaturesTemplate(featTemplate);
+        const features_inputs = JSON.parse(response.data.data.features_inputs);
+        const features_template = JSON.parse(response.data.data.features_template);
+        const jupyter_link = response.data.data.jupyter_link;
+
+        setFormInputs(features_inputs);
+        setFeaturesTemplate(features_template);
+        setJupyterLink(jupyter_link);
         setModelTitle(response.data.data.name)
 
         // Inicializa os valores do formulário com base nos campos
-        const initialFormValues = getInitialFormValues(inputs);
+        const initialFormValues = getInitialFormValues(features_inputs);
         setFormValues(initialFormValues);
       } catch (error) {
         console.error('Erro ao obter dados do formulário:', error);
@@ -185,7 +191,16 @@ const MachineLearningForm = ({ id }) => {
   };
 
   return <>
-    <h2 className='page-title'>{modelTitle}</h2>
+    <h2
+      className='page-title'
+    >
+      {modelTitle}
+      <Link to={jupyterLink} target="_blank" rel="noopener noreferrer">
+        <div className=''>
+          <FontAwesomeIcon icon={faArrowUpRightFromSquare} size='1x' />
+        </div>
+      </Link>
+    </h2>
     <div className='machine-learning-page' style={{ cursor: mouseState }}>
       {renderForm()}
       {prediction && prediction.length > 0 && (

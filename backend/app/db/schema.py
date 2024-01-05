@@ -52,6 +52,7 @@ class Model(Base):
     company_id = Column(String, ForeignKey('companies.id'), nullable=False)
     features_inputs = Column(Text, server_default='[]')
     features_template = Column(Text, server_default='{}')
+    jupyter_link = Column(String(255), server_default='#')
     created_at = Column(DateTime(timezone=True), server_default=func.now(timezone='UTC-3'))
     updated_at = Column(DateTime, default=None)
     deleted_at = Column(DateTime, default=None)

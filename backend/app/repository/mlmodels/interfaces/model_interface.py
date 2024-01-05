@@ -16,6 +16,7 @@ class GetModelData(BaseModel):
     company_id: str
     features_inputs: Union[str, None]
     features_template: Union[str, None]
+    jupyter_link: Union[str, None]
 
 class GetModelResponse(BaseModel):
     status: bool

@@ -49,6 +49,7 @@ class ModelController(IModelController):
         description: str,
         features_inputs: str,
         features_template: str,
+        jupyter_link: str,
         session: Session,
     ) -> GetModelResponse:
         try:
@@ -58,6 +59,7 @@ class ModelController(IModelController):
                 description,
                 features_inputs,
                 features_template,
+                jupyter_link,
                 session
             )
         except Exception as error:

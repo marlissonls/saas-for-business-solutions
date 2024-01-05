@@ -146,7 +146,8 @@ class CompanyService(ICompanyService):
                     name=company.name,
                     area=company.area,
                     description=company.description,
-                    localization=company.localization
+                    localization=company.localization,
+                    phone=company.phone
                 )
             )
         except Exception as error:
