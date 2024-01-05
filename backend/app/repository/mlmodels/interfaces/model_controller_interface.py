@@ -22,7 +22,7 @@ class IModelController(ABC):
         pass
 
     @abstractmethod
-    def update_model_controller(self, model_id: str, model: PutModel, session: Session) -> GetModelResponse:
+    def update_model_controller(self, model_id: str, name: str, description: str, features_inputs: str,features_template: str, model: PutModel, session: Session) -> GetModelResponse:
         pass
 
     @abstractmethod

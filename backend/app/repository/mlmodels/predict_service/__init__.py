@@ -61,6 +61,7 @@ class PredictService(IPredictService):
             )
 
         except Exception as error:
+            print('Erro', error)
             return PredictResponse(
                 status=False,
                 message='Erro interno no servidor.',

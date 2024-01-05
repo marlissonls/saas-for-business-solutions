@@ -23,7 +23,7 @@ class IModelService(ABC):
         pass
 
     @abstractmethod
-    def update_model_service(self, model_id: str, model_updated: PutModel) -> GetModelResponse:
+    def update_model_service(self, model_id: str,  name: str, description: str, features_inputs: str, features_template:str, model_updated: PutModel) -> GetModelResponse:
         pass
 
     @abstractmethod
