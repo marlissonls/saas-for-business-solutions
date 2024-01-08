@@ -107,7 +107,8 @@ class UserService(IUserService):
                 email=email,
                 password=Hasher.get_password_hash(password),
                 profile_image=profile_photo_url,
-                role='client'
+                role='client',
+                company_id='5ca9fa1b-ae41-11ee-8d31-08979862a127'
             )
 
             self._repository.create_user_repository(new_user, session)
@@ -200,6 +201,7 @@ class UserService(IUserService):
         password: str,
         profile_image: UploadFile,
         company_id: str,
+        role,
         session: Session
     ) -> GetUserResponse:
         try:
@@ -216,6 +218,7 @@ class UserService(IUserService):
             if email: user.email = email
             if position: user.position = position
             if company_id: user.company_id = company_id
+            if role: user.role = role
             if password: user.password = Hasher.get_password_hash(password)
             user.updated_at = datetime.utcnow() + timedelta(hours=-3)
 

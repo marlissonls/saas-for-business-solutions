@@ -140,40 +140,23 @@ function MlModelCards(props) {
     <SideBar />
     <MainContent>
       <h2 className='page-title'>
-        Machine Learning
-        <button
-        className='button-add-new'
-        onClick={() => {
-          setIsCardVisible(false);
-          setIsEditFormVisible(false);
-          setIsCreateCardVisible(true);
-        }}
-      >
-        <FontAwesomeIcon icon={faPlus}  size='2x' />
-      </button>
+        Modelos Precify
       </h2>
       <table className='table'>
         <thead>
           <tr className='table-title-row'>
-            <th className='th table-title-col-id'>ID</th>
-            <th className='th table-title-col-name'>Título</th>
+            <th className='th table-title-col-name'>Modelo</th>
             <th className='th table-title-col-data'>Criado / Atualizado</th>
-            <th className='th table-title-col-action'>Ação</th>
+            <th className='th table-title-col-action'>Ver / Avaliar</th>
           </tr>
         </thead>
         <tbody>
           {data.map((card, index) => (
             <tr key={index} className={`${index % 2 === 0 ? 'even-row' : 'odd-row'}`}>
-              <td className='td'>{card.id}</td>
               <td className='td'>{card.name}</td>
               <td className='td'>{card.date}</td>
               <td className='td'>
                 <div className='table-action-container'>
-                  <Link to={`/models/${card.id}`}>
-                    <div className='table-action-icon arrow'>
-                      <FontAwesomeIcon icon={faCogs} size='1x' />
-                    </div>
-                  </Link>
                   <button
                     className='table-action-icon eye'
                     onClick={() => {
@@ -186,19 +169,11 @@ function MlModelCards(props) {
                   >
                     <FontAwesomeIcon icon={faEye} size='1x' />
                   </button>
-                  <button
-                    className='table-action-icon edit'
-                    onClick={() => {
-                      setIsCreateCardVisible(false);
-                      setIsCardVisible(false)
-                      setIsEditFormVisible(true);
-                      setUpdatingCardId(card.id);
-                      setUpdateCardTitle(card.name);
-                      setUpdateCardDescription(card.description);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faEdit} size='1x' />
-                  </button>
+                  <Link to={`/models/${card.id}`}>
+                    <div className='table-action-icon arrow'>
+                      <FontAwesomeIcon icon={faCogs} size='1x' />
+                    </div>
+                  </Link>
                 </div>
               </td>
             </tr>

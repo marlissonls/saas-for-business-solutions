@@ -205,9 +205,9 @@ const MachineLearningForm = ({ id }) => {
       {renderForm()}
       {prediction && prediction.length > 0 && (
         <div className='machine-learning-result'>
-          <p>Resultado</p>
+          <p>Estimativa de Preço</p>
           {prediction.map((pred, index) => (
-            <p key={index}>{typeof pred === 'number' ? pred.toFixed(2) : pred}</p>
+            <p key={index}>{typeof pred === 'number' ? 'R$ ' + pred.toFixed(2) : pred}</p>
           ))}
         </div>
       )}

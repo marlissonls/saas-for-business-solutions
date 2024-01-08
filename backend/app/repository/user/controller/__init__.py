@@ -69,7 +69,8 @@ class UserController(IUserController):
         position: str,
         password: str,
         profile_image: UploadFile,
-        company_id,
+        company_id: str,
+        role: str,
         session: Session
     ) -> GetUserResponse:
         try:
@@ -81,6 +82,7 @@ class UserController(IUserController):
                 password,
                 profile_image,
                 company_id,
+                role,
                 session
             )
         except Exception as error:

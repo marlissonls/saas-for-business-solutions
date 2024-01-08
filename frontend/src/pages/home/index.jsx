@@ -56,7 +56,7 @@ function Home() {
       <div className='display-flex'>
         <SideBar />
         <MainContent>
-          <h2 className='page-title'>Empresa</h2>
+          <h2 className='page-title'>Sobre a SmartAvalia Avaliação Imobiliária</h2>
           {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
         </MainContent>
       </div>
