@@ -158,7 +158,7 @@ function TopBar(props) {
 
   return <div className='topbar'>
     <div className='logo'>
-      Insight
+      SmartAvalia
     </div>
 
     <img

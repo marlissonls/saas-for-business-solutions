@@ -33,6 +33,7 @@ class ModelService(IModelService):
                     company_id=model.company_id,
                     features_inputs=model.features_inputs,
                     features_template=model.features_template,
+                    jupyter_link=model.jupyter_link
                 )
             )
 
@@ -66,6 +67,7 @@ class ModelService(IModelService):
                     company_id=model.company_id,
                     features_inputs=None,
                     features_template=None,
+                    jupyter_link=None
                 )
                 for model in models
             ]
@@ -127,6 +129,7 @@ class ModelService(IModelService):
         description: str,
         features_inputs: str,
         features_template: str,
+        jupyter_link: str,
         session: Session,
     ) -> GetModelResponse:
         try:
@@ -143,6 +146,7 @@ class ModelService(IModelService):
             if description: model.description=description
             if features_inputs: model.features_inputs = features_inputs
             if features_template: model.features_template = features_template
+            if jupyter_link: model.jupyter_link = jupyter_link
             model.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_model_repository(model, session)
@@ -160,6 +164,7 @@ class ModelService(IModelService):
                     company_id=model.company_id,
                     features_inputs=model.features_inputs,
                     features_template=model.features_template,
+                    jupyter_link=model.jupyter_link
                 )
             )
         

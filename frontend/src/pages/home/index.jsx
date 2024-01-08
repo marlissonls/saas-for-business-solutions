@@ -26,8 +26,12 @@ function Home() {
   useEffect(() => {
     async function fetchCompanyData(company_id) {
       try {
-        const companyData = await getCompanyData(company_id);
-        setData(companyData);
+        const reqData = await getCompanyData(company_id);
+        if (reqData.status) {
+          setData(reqData.data);
+        } else {
+          setData(false)
+        }
       } catch (error) {
         messageError('Erro ao carregar dados da empresa.')
       } finally {
@@ -36,9 +40,10 @@ function Home() {
     }
 
     const company_id = get_company_id();
+    if (company_id == "null") return;
+
     if (!refLoading.current) {
       if (company_id) {
-        console.log(company_id)
         refLoading.current = true;
         fetchCompanyData(company_id);
       }
@@ -51,7 +56,7 @@ function Home() {
       <div className='display-flex'>
         <SideBar />
         <MainContent>
-          <h2 className='page-title'>Empresa</h2>
+          <h2 className='page-title'>Sobre a SmartAvalia Avaliação Imobiliária</h2>
           {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
         </MainContent>
       </div>

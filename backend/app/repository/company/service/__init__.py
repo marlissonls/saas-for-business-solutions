@@ -31,7 +31,8 @@ class CompanyService(ICompanyService):
                     name=company.name,
                     area=company.area,
                     description=company.description,
-                    localization=company.localization
+                    localization=company.localization,
+                    phone=company.phone
                 )
             )
 
@@ -54,7 +55,7 @@ class CompanyService(ICompanyService):
                     data=[]
                 )
             
-            companies_data_list = [GetCompanyData(id=company.id, name=company.name, area=company.area, description=company.description, localization=company.localization) for company in companies]
+            companies_data_list = [GetCompanyData(id=company.id, name=company.name, area=company.area, description=company.description, localization=company.localization, phone=company.phone) for company in companies]
             return GetCompanyResponse(
                 status=True,
                 message='Empresas encontradas com sucesso.',
@@ -75,6 +76,7 @@ class CompanyService(ICompanyService):
         area: str,
         description: str,
         localization: str,
+        phone: str,
         session: Session
     ) -> RegisterCompanyResponse:
         try:
@@ -85,7 +87,8 @@ class CompanyService(ICompanyService):
                 name=name,
                 area=area,
                 description=description,
-                localization=localization
+                localization=localization,
+                phone=phone
             )
 
             self._repository.create_company_repository(new_company, session)
@@ -112,6 +115,7 @@ class CompanyService(ICompanyService):
         area: str,
         description: str,
         localization: str,
+        phone: str,
         session: Session) -> GetCompanyResponse:
         try:
             company = self._repository.get_company_by_id_repository(company_id, session)
@@ -127,6 +131,7 @@ class CompanyService(ICompanyService):
             if area: company.area = area
             if description: company.description = description
             if localization: company.localization = localization
+            if phone: company.phone = phone
             company.updated_at = datetime.utcnow() + timedelta(hours=-3)
 
             self._repository.update_company_repository(company, session)
@@ -141,7 +146,8 @@ class CompanyService(ICompanyService):
                     name=company.name,
                     area=company.area,
                     description=company.description,
-                    localization=company.localization
+                    localization=company.localization,
+                    phone=company.phone
                 )
             )
         except Exception as error:

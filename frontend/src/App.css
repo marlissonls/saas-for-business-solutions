@@ -298,7 +298,7 @@ border-radius: 6px;
 }
 
 .table-title-col-name {
-  width: 60%;
+  width: 50%;
 }
 
 .table-title-col-data {
@@ -306,7 +306,7 @@ border-radius: 6px;
 }
 
 .table-title-col-action {
-  width: 15%;
+  width: 10%;
 }
 
 .even-row {

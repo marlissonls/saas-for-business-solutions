@@ -1,14 +1,16 @@
+import React from 'react';
+
 function CompanyInfo({ data }) {
-  const name = data.data.name 
-  const area = data.data.area 
-  const description = data.data.description 
-  const localization = data.data.localization  
+  const name = data.name 
+  const description = data.description 
+  const localization = data.localization
+  const phone = data.phone
 
   return <>
-    <h1 className='company-welcome'>Bem-vindo à empresa {name}</h1>
-    <div className='company-data-container'><p className='company-label'>Setor:</p><p className='company-info'>{area}</p></div>
-    <div className='company-data-container'><p className='company-label'>Localização:</p><p className='company-info'>{localization}</p></div>
-    <div className='company-data-container'><p className='company-label'>Descrição:</p><p className='company-info'>{description}</p></div>
+    <h1 className='company-welcome'>Bem-vindo(a) à {name}</h1>
+    <div className='company-data-container'><p className='company-info'>{description}</p></div>
+    <div className='company-data-container'><p className='company-info'>{'Estamos Localizados na ' + localization}</p></div>
+    <div className='company-data-container'><p className='company-info'>{'Contato: ' + phone}</p></div>
   </>
 }
 

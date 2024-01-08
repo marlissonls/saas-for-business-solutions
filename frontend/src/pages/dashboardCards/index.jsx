@@ -140,31 +140,19 @@ function DashboardCards(props) {
     <SideBar />
     <MainContent>
       <h2 className='page-title'>
-        Dashboards
-        <button
-        className='button-add-new'
-        onClick={() => {
-          setIsCardVisible(false);
-          setIsEditFormVisible(false);
-          setIsCreateCardVisible(true);
-        }}
-      >
-        <FontAwesomeIcon icon={faPlus}  size='2x' />
-      </button>
+        Análise de Dados
       </h2>
       <table className='table'>
         <thead>
           <tr className='table-title-row'>
-            <th className='th table-title-col-id'>ID</th>
-            <th className='th table-title-col-name'>Título</th>
+            <th className='th table-title-col-name'>Modelo</th>
             <th className='th table-title-col-data'>Criado / Atualizado</th>
-            <th className='th table-title-col-action'>Ação</th>
+            <th className='th table-title-col-action'>Analisar</th>
           </tr>
         </thead>
         <tbody>
           {data.map((card, index) => (
             <tr key={index} className={`${index % 2 === 0 ? 'even-row' : 'odd-row'}`}>
-              <td className='td'>{card.id}</td>
               <td className='td'>{card.name}</td>
               <td className='td'>{card.date}</td>
               <td className='td'>

@@ -16,6 +16,7 @@ class GetCompanyData(BaseModel):
     area: str
     description: str
     localization: str
+    phone: str
 
 class GetCompanyResponse(BaseModel):
     status: bool

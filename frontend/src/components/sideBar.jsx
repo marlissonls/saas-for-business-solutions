@@ -15,9 +15,9 @@ function SideBar(props) {
   }, [location.pathname]);
 
   const links = [
-    { to: '/home', text: 'Empresa', icon: faBuilding },
-    { to: '/dashboards', text: 'Dashboards', icon: faChartColumn },
+    { to: '/home', text: 'Sobre Nós', icon: faBuilding },
     { to: '/models', text: 'Modelos', icon: faCogs },
+    { to: '/dashboards', text: 'Analytics', icon: faChartColumn },
   ];
 
   return (
