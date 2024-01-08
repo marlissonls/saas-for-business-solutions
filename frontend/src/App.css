@@ -751,26 +751,22 @@ border-radius: 6px;
 
 /* HOME PAGE */
 
+.company-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
 .company-welcome {
   color: var(--text-color);
 }
 
-.company-data-container {
-  font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.company-label {
-  color: var(--text-color);
-  font-weight: bold;
-  text-align: right;
-  width: 20%;
-}
-
 .company-info {
+  font-size: 20px;
   color: var(--text-color);
-  width: 78%;
+  width: 65%;
+  text-align: justify;
 }
 
 /* DASHBOARD PAGE */
