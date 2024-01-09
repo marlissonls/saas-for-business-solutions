@@ -554,6 +554,7 @@ border-radius: 6px;
   background-color:#000725;
 }
 
+.whoweare-section,
 .aboutus-section,
 .ourservices-section,
 .whyus-section {
@@ -564,7 +565,7 @@ border-radius: 6px;
   gap: 30px
 }
 
-.aboutus-section {
+.whoweare-section {
   border-top: 2px solid #ddd;
 }
 
@@ -593,7 +594,7 @@ border-radius: 6px;
 .hero-section {
   width: 100%;
   height: 50vh;
-  padding: 0 150px;
+  padding: 0 50px;
 
   display: flex;
   flex-direction: column;
@@ -601,9 +602,10 @@ border-radius: 6px;
   align-items: center;
   gap: 30px;
 
-  background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
-  background-size: cover; 
-  background-position: center;
+  background-image: linear-gradient(to bottom, #fff3, #fff3), url('/images/hero.jpg');
+  background-size: 100% 100%; 
+  background-position: top;
+  background-repeat: no-repeat;
   
   color: #fff;
   font-size: 27px;
@@ -611,7 +613,14 @@ border-radius: 6px;
 
 .hero-section h1 {
   font-weight: bold;
-  text-shadow: 0 0 5px #ddd;
+  text-shadow: 0 0 3px #ddd;
+}
+
+.hero-section p:first-of-type {
+  text-shadow: 0 0 8px #111;
+  background-color: #1115;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .hero-section p:last-child {
@@ -724,15 +733,15 @@ border-radius: 6px;
   box-shadow: 0 0 15px #fff;
 }
 
-.whyus-customization {
+.whyus-buytime {
   background: linear-gradient(135deg, #f02889, #8928f0)
 }
 
-.whyus-expertise {
+.whyus-practicality {
   background: linear-gradient(135deg, #8928f0, #2a0353)
 }
 
-.whyus-commitment {
+.whyus-precision {
   background: linear-gradient(135deg, #2a0353, #306afd)
 }
 
@@ -751,26 +760,22 @@ border-radius: 6px;
 
 /* HOME PAGE */
 
+.company-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
 .company-welcome {
   color: var(--text-color);
 }
 
-.company-data-container {
-  font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.company-label {
-  color: var(--text-color);
-  font-weight: bold;
-  text-align: right;
-  width: 20%;
-}
-
 .company-info {
+  font-size: 20px;
   color: var(--text-color);
-  width: 78%;
+  width: 65%;
+  text-align: justify;
 }
 
 /* DASHBOARD PAGE */

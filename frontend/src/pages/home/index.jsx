@@ -9,7 +9,7 @@ import api from "../../services/api";
 
 
 async function getCompanyData(id) {
-  const response = await api.get(`http://127.0.0.1:8000/company/${id}`)
+  const response = await api.get(`/company/${id}`)
   return response.data
 }
 
@@ -57,7 +57,9 @@ function Home() {
         <SideBar />
         <MainContent>
           <h2 className='page-title'>Sobre a SmartAvalia Avaliação Imobiliária</h2>
-          {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
+          <div className='company-info-body'>
+            {data ? <CompanyInfo data={data} /> : <p>Carregando dados da empresa...</p>}
+          </div>
         </MainContent>
       </div>
     </div>

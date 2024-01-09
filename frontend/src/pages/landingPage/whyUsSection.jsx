@@ -3,27 +3,27 @@ function WhyUsSection(props) {
     <div className='whyus-section'>
       <div className='section-title'>
         <div className='section-divisor'></div>
-        <p>Por Que Escolher a Insight ?</p>
+        <p>Por Que Escolher a SmartAvalia ?</p>
       </div>
 
       <div className='whyus-cards'>
-        <div className='whyus-customization whyus-card'>
-          <h2>Personalização</h2>
-          <p>Acreditamos que os dados são o ativo mais valioso de qualquer empresa e entendemos que cada empresa é única. Portanto, nossos serviços são altamente personalizados para atender às necessidades da sua empresa.</p>
+        <div className='whyus-buytime whyus-card'>
+          <h2>Ganhe tempo!</h2>
+          <p>Diga adeus à demorada coleta! Nós da SmartAvalia cuidamos disso para você, proporcionamos aos corretores a liberdade de focar no que realmente importa: <strong>fechar negócios</strong>. Economize tempo e impulsione sua eficiência no mercado imobiliário em constante crescimento.</p>
         </div>
-        <div className='whyus-expertise whyus-card'>
-          <h2>Expertise Técnica</h2>
-          <p>Nossa equipe é composta por pessoas criativas, experientes e apaixonadas por análise de dados e Machine Learning e estão compromissadas a garantir os insights que impulsionaram sua empresa ao sucesso.</p>
+        <div className='whyus-practicality whyus-card'>
+          <h2>Praticidade</h2>
+          <p>Simples assim! Basta o corretor informar as características do imóvel desejado, e em questão de segundos, nossa inovadora calculadora Precify fornece uma estimativa de preço. Agilidade e precisão para facilitar o seu trabalho no dinâmico mercado imobiliário.</p>
         </div>
-        <div className='whyus-commitment whyus-card'>
-          <h2>Excelência</h2>
-          <p>Buscamos a excelência em tudo o que fazemos. Nossos serviços são projetados para fornecer insights precisos e confiáveis que impulsionam a tomada de decisões estratégicas.</p>
+        <div className='whyus-precision whyus-card'>
+          <h2>Precisão</h2>
+          <p>Comprometidos com a excelência, reajustamos periodicamente nosso modelo para acompanhar as variações de valores nas flutuações do mercado imobiliário. Essa abordagem garante previsões precisas, impulsionando decisões estratégicas no dinâmico cenário imobiliário.</p>
         </div>
       </div>
 
       <div>
-        <p className='whyus-compromise'>Nos comprometemos a desbloquear o verdadeiro potencial da sua empresa!</p>
-        <p className='whyus-compromise'><span>Crie sua conta</span> e junte-se a nós nessa jornada de descoberta e transformação!</p>
+        <p className='whyus-compromise'>Estamos comprometidos com a renovação do mercado de avaliações imobiliárias!</p>
+        <p className='whyus-compromise'><span>Registre-se</span> e participe conosco dessa jornada de excelência no mercado imobiliário!</p>
       </div>
     </div>
   </>

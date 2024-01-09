@@ -1,7 +1,7 @@
 function HeroSection(props) {
   return <div className='hero-section'>
-    <h1>Insight</h1>
-    <p>Descomplicamos seus dados para impulsionar o sucesso do seu negócio!</p>
+    <h1>SmartAvalia</h1>
+    <p>Oferecemos tecnologia e praticidade para corretores de imóveis otimizarem avaliações imobiliárias!</p>
     <p>Crie sua conta!</p>
   </div>
 }
