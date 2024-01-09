@@ -72,7 +72,7 @@ function TopBar(props) {
   async function handleLoginSubmit(e) {
     e.preventDefault();
 
-    const response = await api.post('http://127.0.0.1:8000/user/login', {
+    const response = await api.post(`/user/login`, {
       email: email, password: password
     })
 
@@ -132,7 +132,7 @@ function TopBar(props) {
     formData.append('password', registerPassword);
     formData.append('profile_image', photo !== undefined ? photo : '');
 
-    const response = await api.post(`http://127.0.0.1:8000/user/register`, formData, {
+    const response = await api.post(`/user/register`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -151,7 +151,7 @@ function TopBar(props) {
 
   return <div className='topbar'>
     <div className='logo'>
-      Insight
+      SmartAvalia
     </div>
 
     <div

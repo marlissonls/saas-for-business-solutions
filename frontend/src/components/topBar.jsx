@@ -7,7 +7,7 @@ import { get_photo_url, get_id, get_username, get_email, get_company, get_positi
   set_username, set_email, set_position } from '../services/auth';
 import { validateName, validateEmail, validatePosition, validatePassword } from "../services/validateFields";
 import api from "../services/api";
-
+import HOST_API from "../services/apiUrl";
 
 function TopBar(props) {
 
@@ -71,7 +71,7 @@ function TopBar(props) {
   const [company, setCompany] = useState('');
 
   useEffect(() => {
-    setPhoto(`http://127.0.0.1:8000${get_photo_url()}`);
+    setPhoto(`${HOST_API}${get_photo_url()}`);
     setUsername(get_username());
     setEmail(get_email());
     setPosition(get_position());
@@ -120,7 +120,7 @@ function TopBar(props) {
     formData.append('password', updatePassword);
     formData.append('profile_image', updatePhoto !== undefined ? updatePhoto : '');
 
-    const response = await api.put(`http://127.0.0.1:8000/user/${get_id()}`, formData, {
+    const response = await api.put(`/user/${get_id()}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -143,7 +143,7 @@ function TopBar(props) {
   // DELETE ACCOUNT
 
   async function handleDeleteProfile() {
-    const response = await api.delete(`http://127.0.0.1:8000/user/${get_id()}`)
+    const response = await api.delete(`/user/${get_id()}`)
 
     if (response.data.status) {
       messageSuccess(response.data.message)
@@ -174,7 +174,6 @@ function TopBar(props) {
         <p className='username-topbar'>{`Olá, ${username.split(' ')[0]}`}</p>
         <p className='email-topbar'>{email}</p>
         <p className='position-topbar'>{position !== 'null' ? position : 'Cargo a definir'}</p>
-        <p className='company-topbar'>{company !== 'null' ? company : 'Empresa a definir'}</p>
         <div 
           className='profile-action'
           onClick={() => {handleProfileDataCard(); handleUpdateProfileCard()}}

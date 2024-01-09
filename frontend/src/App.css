@@ -593,7 +593,7 @@ border-radius: 6px;
 .hero-section {
   width: 100%;
   height: 50vh;
-  padding: 0 150px;
+  padding: 0 50px;
 
   display: flex;
   flex-direction: column;
@@ -601,9 +601,10 @@ border-radius: 6px;
   align-items: center;
   gap: 30px;
 
-  background-image: linear-gradient(to bottom, #382048cf, #382048cf), url('/images/hero-section.webp');
-  background-size: cover; 
-  background-position: center;
+  background-image: linear-gradient(to bottom, #fff3, #fff3), url('/images/hero.jpg');
+  background-size: 100% 100%; 
+  background-position: top;
+  background-repeat: no-repeat;
   
   color: #fff;
   font-size: 27px;
@@ -611,7 +612,14 @@ border-radius: 6px;
 
 .hero-section h1 {
   font-weight: bold;
-  text-shadow: 0 0 5px #ddd;
+  text-shadow: 0 0 3px #ddd;
+}
+
+.hero-section p:first-of-type {
+  text-shadow: 0 0 8px #111;
+  background-color: #1115;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .hero-section p:last-child {

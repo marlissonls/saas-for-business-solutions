@@ -9,7 +9,7 @@ import api from "../../services/api";
 
 
 async function getCompanyData(id) {
-  const response = await api.get(`http://127.0.0.1:8000/company/${id}`)
+  const response = await api.get(`/company/${id}`)
   return response.data
 }
 

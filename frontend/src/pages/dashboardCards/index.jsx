@@ -12,7 +12,7 @@ import api from '../../services/api';
 
 
 async function getDashboardsData(id) {
-  const response = await api.get(`http://127.0.0.1:8000/dashboard?company_id=${id}`)
+  const response = await api.get(`/dashboard?company_id=${id}`)
   return response.data.data
 }
 
@@ -81,7 +81,7 @@ function DashboardCards(props) {
     formData.append('description', createCardDescription);
     formData.append('company_id', company_id);
 
-    const response = await api.post(`http://127.0.0.1:8000/dashboard`, formData, {
+    const response = await api.post(`/dashboard`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -119,7 +119,7 @@ function DashboardCards(props) {
     formData.append('name', updateCardTitle);
     formData.append('description', updateCardDescription);
 
-    const response = await api.put(`http://127.0.0.1:8000/dashboard/${updatingCardId}`, formData, {
+    const response = await api.put(`/dashboard/${updatingCardId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

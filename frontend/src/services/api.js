@@ -1,11 +1,13 @@
 import axios from "axios"
 import { get_token, logout } from "./auth"
 import { redirect } from 'react-router-dom';
-
-const HOST_API = "http://localhost"
+import HOST_API from "./apiUrl";
 
 const api = axios.create({
     baseURL: HOST_API,
+    headers: {
+      "ngrok-skip-browser-warning": "69420",
+    }
   });
 
 api.interceptors.request.use(

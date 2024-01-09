@@ -12,7 +12,7 @@ import api from '../../services/api';
 
 
 async function getModelsData(id) {
-  const response = await api.get(`http://127.0.0.1:8000/model?company_id=${id}`)
+  const response = await api.get(`/model?company_id=${id}`)
   return response.data.data
 }
 
@@ -81,7 +81,7 @@ function MlModelCards(props) {
     formData.append('description', createCardDescription);
     formData.append('company_id', company_id);
 
-    const response = await api.post(`http://127.0.0.1:8000/model`, formData, {
+    const response = await api.post(`/model`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -119,7 +119,7 @@ function MlModelCards(props) {
     formData.append('name', updateCardTitle);
     formData.append('description', updateCardDescription);
 
-    const response = await api.put(`http://127.0.0.1:8000/model/${updatingCardId}`, formData, {
+    const response = await api.put(`/model/${updatingCardId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

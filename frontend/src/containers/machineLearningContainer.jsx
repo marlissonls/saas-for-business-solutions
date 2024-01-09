@@ -42,7 +42,7 @@ const MachineLearningForm = ({ id }) => {
   useEffect(() => {
     const getFormInputs = async () => {
       try {
-        const response = await api.get(`http://127.0.0.1:8000/model/${id}`)
+        const response = await api.get(`/model/${id}`)
         const features_inputs = JSON.parse(response.data.data.features_inputs);
         const features_template = JSON.parse(response.data.data.features_template);
         const jupyter_link = response.data.data.jupyter_link;
@@ -76,7 +76,7 @@ const MachineLearningForm = ({ id }) => {
 
     setMouseState('wait');
     try {
-      const response = await api.post(`http://127.0.0.1:8000/model/predict/${id}`, {
+      const response = await api.post(`/model/predict/${id}`, {
         features_values: formValues,
         features_template: featuresTemplate,
       });
