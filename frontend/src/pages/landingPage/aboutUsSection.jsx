@@ -7,10 +7,10 @@ function AboutUsSection(props) {
       </div>
 
       <div className='aboutus-whatwedo'>
-        <h1>Descomplicamos dados para impulsionar o sucesso de empresas que:</h1>
-        <p>- Buscam extrair insights valiosos de seus dados para tomada de decisões conscientes e eficazes.</p>
-        <p>- Buscam ferramentas práticas e intuitivas que impulsionem a descoberta de insights para alavancar seu negócio.</p>
-        <p>- Buscam promover um crescimento sustentável e adaptável às tendências do mercado.</p>
+        <h1>Impulsionamos o sucesso de corretores e imobiliárias que:</h1>
+        <p>- Buscam simplificar o processo de avaliações imobiliárias aumentando a precisão.</p>
+        <p>- Buscam ferramentas eficientes para agilizar o processo de avaliação de imóveis.</p>
+        <p>- Buscam adotar tecnologia inovadora para se destacar no mercado imobiliário em crescimento.</p>
       </div>
     </div>
   </>

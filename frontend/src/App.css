@@ -554,6 +554,7 @@ border-radius: 6px;
   background-color:#000725;
 }
 
+.whoweare-section,
 .aboutus-section,
 .ourservices-section,
 .whyus-section {
@@ -564,7 +565,7 @@ border-radius: 6px;
   gap: 30px
 }
 
-.aboutus-section {
+.whoweare-section {
   border-top: 2px solid #ddd;
 }
 
@@ -732,15 +733,15 @@ border-radius: 6px;
   box-shadow: 0 0 15px #fff;
 }
 
-.whyus-customization {
+.whyus-buytime {
   background: linear-gradient(135deg, #f02889, #8928f0)
 }
 
-.whyus-expertise {
+.whyus-practicality {
   background: linear-gradient(135deg, #8928f0, #2a0353)
 }
 
-.whyus-commitment {
+.whyus-precision {
   background: linear-gradient(135deg, #2a0353, #306afd)
 }
 

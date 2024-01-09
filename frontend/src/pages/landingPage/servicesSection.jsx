@@ -7,18 +7,17 @@ function ServicesSection(props) {
       </div>
 
       <div className='ourservice-cards'>
-        <div className='chart-service ourservice-card'>
-          <h3>Descubra Insights com Visualizações Gráficas e Dinâmicas dos Dados</h3>
-          <p>- Personalize suas visualizações escolhendo manualmente as variáveis relevantes.</p>
-          <p>- Agrupe dados de maneira inteligente por média, soma ou quantidade.</p>
-          <p>- Explore gráficos dinâmicos com opções de zoom para uma compreensão mais profunda.</p>
-          <p>- Aproveite o poder da automação para otimizar processos e alcançar resultados extraordinários.</p>
-        </div>
         <div className='machine-service ourservice-card'>
-          <h3>Faça Previsões Assertivas com Modelos de Machine Learning Avançados dos Dados</h3>
-          <p>- Solicite modelos específicos de machine learning para impulsionar estratégias únicas de crescimento.</p>
-          <p>- Tenha à sua disposição formulários específicos para cada modelo, que se adaptam às suas necessidades.</p>
-          <p>- Obtenha previsões precisas e relevantes para guiar suas decisões de negócios.</p>
+          <h3>Calculadora Precify</h3>
+          <p>- Permite realizar estimativas de preços de imóveis de modo fácil e rápido.</p>
+          <p>- Sempre atualizado seguindo as tendências e flutuações do mercado imobiliáriop.</p>
+          <p>- Fornece estimativas precisas e relevantes para orientar suas decisões no mercado imobiliário.</p>
+        </div>
+        <div className='chart-service ourservice-card'>
+          <h3>Smart BI</h3>
+          <p>- Permite a visualização gráfica dos dados do modelo, facilitando a elaboração de relatórios.</p>
+          <p>- Apresenta visualizações sofisticadas e envolventes para uma análise detalhada.</p>
+          <p>- Apresenta gráficos dinâmicos, aprofundando a compreensão e interpretação dos dados.</p>
         </div>
       </div>
     </div>
